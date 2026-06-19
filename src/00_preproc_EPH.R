@@ -11,15 +11,49 @@ vars <- c("ANO4", "TRIMESTRE","CODUSU", "NRO_HOGAR", "COMPONENTE", ## identifica
           "PP07H", "PP07I", #informalidad registro
           "PP03C")
 
+periods <- expand_grid(year = 2007:2025, period = 1:4)
+tictoc::tic()
+for (i in 1:nrow(periods)){
+  p <- periods$period[[i]]
+  y <- periods$year[[i]]
+  
+  out <- paste0('./data/raw_data/', y, "_", p, "_EPH_individuo.rds")
+  
+  if (!file.exists(out)){
+    
+    cat("El archivo no existe. Descargando ", out )
+    df <- get_microdata(
+      period = p,
+      year = y,
+      type = "individual",
+      vars = vars
+    ) 
+    
+    df %>% write_rds(out)
+  } else {
+    cat("El archivo existe...")
+     next
+    }
+  }
+tictoc::toc()
+
+#df <- get_microdata(year=2007:2025, period=1:4, 
+#                    type="individual",
+#                    vars = vars)
 
 
-df <- get_microdata(year=2007:2025, period=1:4, 
-                    type="individual",
-                    vars = vars)
-## Preprocesamiento
+
+# 1. Get a list of all CSV files with their full system paths
+files <- list.files(path = "./data/raw_data/", 
+                    pattern = "\\.rds$", 
+                    full.names = TRUE)
+
 ### Carga archivo raw
-df <- read_rds('./data/raw_data_eph.rds')
+df <- files %>% 
+  map(read_rds) %>% 
+  bind_rows()
 
+## Preprocesamiento
 ### Agrega etiquetas
 df <- df %>%
   organize_labels(type = "individual")
@@ -93,19 +127,53 @@ df <- df %>%
 df <- df %>%
   mutate(la_rioja_aglo = if_else(AGLOMERADO == "La Rioja", "La Rioja", "Resto"),
          la_rioja_region = case_when(
-           AGLOMERADO == "La Rioja" ~ "2. La Rioja", 
-           AGLOMERADO != "La Rioja" & REGION == "Noroeste" ~ "1. NOA-Resto",
-           TRUE ~ "3. Resto país"))
+           AGLOMERADO == "La Rioja" ~ "3. La Rioja", 
+           AGLOMERADO != "La Rioja" & REGION == "Noroeste" ~ "2. NOA-Resto",
+           TRUE ~ "1. Resto país"))
 
 ### Procesamiento indicadores
+#### Tasa empleo
+df %>%
+  filter(ANO4 >= 2007) %>%
+  group_by(fecha, REGION, AGLOMERADO, la_rioja_region) %>%
+  summarise(ocupado = sum(ocupado*PONDERA),
+            pob_tot = sum(PONDERA),
+  ) %>%
+  mutate(tasa_empleo = ocupado/pob_tot*100) %>%
+  write_csv('./data/inputs_md/10_tasa_empleo.csv')
+
+
+#### Tasa desocupación
 df %>%
   filter(ANO4 >= 2007) %>%
   group_by(fecha, REGION, AGLOMERADO, la_rioja_region) %>%
   summarise(desoc = sum(desocupado*PONDERA),
             pea = sum(pea*PONDERA),
   ) %>%
-  mutate(tasa_desoc = desoc/pea*100)
+  mutate(tasa_desoc = desoc/pea*100) %>%
+  write_csv('./data/inputs_md/04_tasa_desoc.csv')
 
+#### Tasa informalidad a
+df %>%
+  filter(ANO4 >= 2007) %>%
+  filter(ESTADO == "Ocupado" & CAT_OCUP=="Obrero o empleado") %>%
+  group_by(fecha, REGION, AGLOMERADO, la_rioja_region) %>%
+  summarise(formales = sum(aportes_descuentos*PONDERA),
+            asalariados = sum(asalariado_ocupado*PONDERA),
+  ) %>%
+  mutate(tasa_inf_aportes = 100 - (formales/asalariados*100)) %>%
+  write_csv('./data/inputs_md/09a_tasa_informalidad_aportes.csv')
+
+#### Tasa informalidad b PENDIENTE
+
+
+#### % mayores de 25 años con NED universitario
+df %>%
+  group_by(fecha, REGION, AGLOMERADO, la_rioja_region) %>%
+  summarise(mayor_25_superior = sum(mayor_25_superior*PONDERA),
+            pob_tot = sum(PONDERA)) %>%
+  mutate(porc_mayor_25_superior = mayor_25_superior/pob_tot * 100) %>%
+  write_csv('./data/inputs_md/12_mayor_25_superior.csv')
 
 
 

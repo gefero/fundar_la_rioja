@@ -22,6 +22,9 @@
 | Trayectoria escolar                                                                              | Desarrollo - Educación                               |
 | Resultado fiscal (ingreso total - gasto total)                                                   | Macroeconomía - Crecimiento                          |
 | Recursos propios sobre recursos totales (incluyendo coparticipación y transferencias nacionales) | Macroeconomía - Crecimiento                          |
+- Los scripts a ejectuar están en "./src/"
+- Los d
+
 
 ## Etapas del proyecto
 - Etapa 1. Coordinación inicial y definición de indicadores: Esta etapa tiene como propósito articular el trabajo del Componente 3 con los demás equipos del proyecto. Se propone realizar al menos una reunión de alineación con los equipos de los Componentes 1 y 2 para relevar el listado preliminar de indicadores y su naturaleza (evolución temporal, comparación territorial, distribución, proporción, etc.).
@@ -37,4 +40,5 @@
 - Desarrollar el código para el pipeline: para esto, 
       - se deberán descargar los datasets de la EPH usando el paquete `eph`
       - se deberán procesar los datos tomando como base el archivo ./src/00_preproc_EPH.R
-      - 
+- Generar un archivo markdpwn que ejecute los siguientes scripts () que generan
+los gráficos estáticos para el informe.
