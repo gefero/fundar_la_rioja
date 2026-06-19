@@ -112,7 +112,19 @@ install.packages(c("eph", "tidyverse", "lubridate", "tictoc"))
 | `tictoc` | Medición de tiempos en la descarga |
 
 ## Cómo reproducir
-PENDIENTE
+
+```r
+# 1. Descargar microdatos, procesar y generar CSVs de indicadores (una sola vez)
+source("src/00_preproc_EPH.R")
+
+# 2. Generar visualizaciones por indicador
+source("src/04_desoc.R")                # Tasa de desocupación
+source("src/09a_informalidad_aportes.R") # Tasa de informalidad
+source("src/10_tasa_empleo.R")           # Tasa de empleo
+source("src/12_educ.R")                  # Educación superior
+```
+
+> La descarga completa (2007–2025) puede tomar varios minutos. El script es incremental: si se interrumpe, retoma desde el último archivo faltante.
 
 ## Contexto del proyecto
 
