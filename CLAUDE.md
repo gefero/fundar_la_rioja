@@ -29,5 +29,9 @@
 - Etapa 3. Diseño de materiales para talleres de visualización de datos y diseño de maquetas de visualizaciones  
 
 ## Tareas a realizar
-- Diseñar un pipeline replicable de procesamiento de los indicadores
+- Diseñar un pipeline replicable de procesamiento de los siguientes indicadores:
+      - Tasa de desempleo (% de la PEA)
+      - Tasa de empleo (ocupados cada 100 habitantes)
+      - Tasa de informalidad (% de los asalariados)
+      - % de la población +25 con estudios superiores completos  
 - Desarrollar el código para el pipeline
