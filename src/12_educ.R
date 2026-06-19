@@ -17,3 +17,4 @@ df %>%
        y = "% de personas mayores de 25 años con estudios superiores completos",
        caption = "Fuente: EPH-INDEC")
 
+ggsave('./outputs/plots/12_educ.png', width=12, height=8)

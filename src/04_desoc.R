@@ -17,3 +17,4 @@ df %>%
        y = "Tasa de desocupación (%)",
        caption = "Fuente: EPH-INDEC")
 
+ggsave('./outputs/plots/04_desoc.png', width=12, height=8)

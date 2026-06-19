@@ -16,3 +16,5 @@ df %>%
   labs(x = "Año-Trimestre",
        y = "Tasa de informalidad por aportes a SS (%)",
        caption = "Fuente: EPH-INDEC")
+
+ggsave('./outputs/plots/10_tasa_empleo.png', width=12, height=8)
