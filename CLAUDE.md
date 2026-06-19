@@ -34,4 +34,7 @@
       - Tasa de empleo (ocupados cada 100 habitantes)
       - Tasa de informalidad (% de los asalariados)
       - % de la población +25 con estudios superiores completos  
-- Desarrollar el código para el pipeline
+- Desarrollar el código para el pipeline: para esto, 
+      - se deberán descargar los datasets de la EPH usando el paquete `eph`
+      - se deberán procesar los datos tomando como base el archivo ./src/00_preproc_EPH.R
+      - 

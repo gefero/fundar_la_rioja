@@ -2,7 +2,7 @@ library(eph)
 library(tidyverse)
 library(lubridate)
 
-### Descarga datos
+## Descarga datos
 vars <- c("ANO4", "TRIMESTRE","CODUSU", "NRO_HOGAR", "COMPONENTE", ## identificadores
           "REGION", "AGLOMERADO", "PONDERA", # region
           "CH04", "CH06", "NIVEL_ED", # demográficas
@@ -11,37 +11,33 @@ vars <- c("ANO4", "TRIMESTRE","CODUSU", "NRO_HOGAR", "COMPONENTE", ## identifica
           "PP07H", "PP07I", #informalidad registro
           "PP03C")
 
-df <- get_microdata(year=2003:2025, period=1:4, 
+
+
+df <- get_microdata(year=2007:2025, period=1:4, 
                     type="individual",
                     vars = vars)
-
-### Guarda archivo raw
-df %>% write_rds('./data/raw_data_eph.rds')
-
-
+## Preprocesamiento
 ### Carga archivo raw
-
 df <- read_rds('./data/raw_data_eph.rds')
 
-###
+### Agrega etiquetas
 df <- df %>%
   organize_labels(type = "individual")
 
-
-#df <- read_rds('./data/proc_data_eph.rds')
+## Transforma variables clave
 df <- df %>%
   mutate(
     REGION = as.character(REGION),
     AGLOMERADO = as.character(AGLOMERADO),
     ESTADO = as.character(ESTADO),
     NIVEL_ED = as.character(NIVEL_ED),
-         PP04C = as.character(PP04C),
-         PP04C99 = as.character(PP04C99),
-         CAT_OCUP = as.character(CAT_OCUP),
-         PP07H = as.character(PP07H),
-         PP07I = as.character(PP07I),
-         ANO4 = as.numeric(ANO4),
-         TRIMESTRE = unclass(TRIMESTRE)) %>%
+    PP04C = as.character(PP04C),
+    PP04C99 = as.character(PP04C99),
+    CAT_OCUP = as.character(CAT_OCUP),
+    PP07H = as.character(PP07H),
+    PP07I = as.character(PP07I),
+    ANO4 = as.numeric(ANO4),
+    TRIMESTRE = unclass(TRIMESTRE)) %>%
   mutate(fecha = paste0(ANO4, "-0", TRIMESTRE))
 
 ### Procesamiento tasas laborales
@@ -54,7 +50,6 @@ df <- df %>%
   )
 
 ### Procesamiento nivel educativo
-
 df <- df %>%
   mutate(niv_educ_sup = if_else(
     NIVEL_ED %in% c("Superior universitaria incompleta", 
@@ -62,10 +57,8 @@ df <- df %>%
   mutate(mayor_25 = if_else((CH06 > 25 & CH06 != 99), 1, 0)) %>%
   mutate(mayor_25_superior = if_else((mayor_25 == 1 & niv_educ_sup == 1),1,0))
 
-
 ### Procesamiento informalidad
 #### Tamanio
-
 df <- df %>%
   mutate(PP04C_rec = case_when(
     PP04C == "0" ~ "NC",
@@ -84,20 +77,19 @@ df <- df %>%
   ))
 
 #### Aportes
-
 df <- df %>%
   mutate(
     descuento = if_else(PP07H == "Si", 1, 0),
     aporta = if_else(PP07I == "Si", 1, 0),
     asalariado_ocupado = if_else(
-        (CAT_OCUP == "Obrero o empleado" & ESTADO == "Ocupado"), 1, 0)
-    ) %>%
+      (CAT_OCUP == "Obrero o empleado" & ESTADO == "Ocupado"), 1, 0)
+  ) %>%
   mutate(
     aportes_descuentos = if_else(
-      (
-        aportes == 1 & descuentos == 1), 1, 1, 0)
-    )
+        (aporta == 1 | descuento == 1), 1, 0)
+  )
 
+## Generación de agregados greográficos
 df <- df %>%
   mutate(la_rioja_aglo = if_else(AGLOMERADO == "La Rioja", "La Rioja", "Resto"),
          la_rioja_region = case_when(
@@ -105,39 +97,18 @@ df <- df %>%
            AGLOMERADO != "La Rioja" & REGION == "Noroeste" ~ "1. NOA-Resto",
            TRUE ~ "3. Resto país"))
 
+### Procesamiento indicadores
+df %>%
+  filter(ANO4 >= 2007) %>%
+  group_by(fecha, REGION, AGLOMERADO, la_rioja_region) %>%
+  summarise(desoc = sum(desocupado*PONDERA),
+            pea = sum(pea*PONDERA),
+  ) %>%
+  mutate(tasa_desoc = desoc/pea*100)
+
+
+
 
 ### Salva archivo final
-#df %>% write_rds('./data/proc_data_eph.rds')
-
-## para mí hay que ir bajando cada onda eph, calculando la tasa 
-# y agregándola a un archivo csv con la serie temporal
-
-
-### Tablas y gráficos
-## Evolucion indicador NED
-library(eph)
-library(tidyverse)
-library(lubridate)
-
-
-nombres_aglomerados <- df %>% select(la_rioja_region) %>% distinct()%>% pull()
-#nombres_aglomerados[order(names(nombres_aglomerados))]
-nombres_aglomerados<-nombres_aglomerados[order(nombres_aglomerados)]
-colores <- sub("FF$", "99", viridis::rocket(length(nombres_aglomerados)))
-
-names(colores)<-nombres_aglomerados
-
-colores["2. La Rioja"] <- "#E84A2F"  # warm coral-red: contrasts with blue-gren-yellow viridis
-
-df %>%
-  group_by(fecha, REGION, AGLOMERADO, la_rioja_region) %>%
-  summarise(value = mean(mayor_25_superior)) %>%
-  ggplot() + 
-    geom_line(aes(x=fecha, y=value, group=AGLOMERADO, color=la_rioja_region), 
-              show.legend = TRUE) +
-  scale_color_manual(values = colores, name = "Region") +
-  labs(x="Año-Trimestre", 
-       y="% de personas mayores de 25 años con estudios superiores completos") +
-    theme_minimal() +
-  theme(axis.text.x = element_text(size=6, angle = 45, hjust = 1))
+df %>% write_rds('./data/proc_data_eph.rds')
 
