@@ -23,9 +23,9 @@ FUNDAR_TEXTO    <- "#1C1C1C"   # Texto principal
 
 # Paleta para series múltiples (gráficos de comparación entre períodos)
 FUNDAR_MULTI <- c(
-  "serie_1" = "#A8DCC8",   # Verde menta claro
-  "serie_2" = "#2D6E6E",   # Verde azulado oscuro
-  "serie_3" = "#C8C87A",   # Amarillo oliva
+  "serie_1" = "#A8DCC8",   # Verde menta claro  → 1. Resto país
+  "serie_2" = "#C8C87A",   # Amarillo oliva     → 2. NOA-Resto
+  "serie_3" = "#2D6E6E",   # Verde azulado oscuro → 3. La Rioja (énfasis)
   "serie_4" = "#F4877A",   # Rosa salmón
   "serie_5" = "#9B8BC4"    # Violeta
 )
