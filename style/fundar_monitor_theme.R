@@ -178,6 +178,34 @@ fuente_fundar <- function(texto) {
 }
 
 # -----------------------------------------------------------------------------
+# 3b. HELPER: puntos de etiqueta (máximo, mínimo y último por grupo)
+# -----------------------------------------------------------------------------
+# Devuelve un dataframe con las filas correspondientes al máximo, mínimo
+# y último valor de var_y dentro de cada grupo (var_grupo).
+# Diseñado para pasarse a geom_text() / geom_label().
+#
+# Uso:
+#   pts <- puntos_etiqueta(df, fecha, tasa_desoc, AGLOMERADO)
+#   ... + geom_text(data = pts, aes(label = round(tasa_desoc, 1)), size = 2.5)
+
+puntos_etiqueta <- function(data, var_x, var_y, var_grupo) {
+  var_x     <- ensym(var_x)
+  var_y     <- ensym(var_y)
+  var_grupo <- ensym(var_grupo)
+
+  data %>%
+    filter(!is.na(!!var_y)) %>%
+    group_by(!!var_grupo) %>%
+    filter(
+      !!var_y == max(!!var_y, na.rm = TRUE) |
+      !!var_y == min(!!var_y, na.rm = TRUE) |
+      !!var_x == max(!!var_x, na.rm = TRUE)
+    ) %>%
+    ungroup() %>%
+    distinct()
+}
+
+# -----------------------------------------------------------------------------
 # 4. HELPER: gráfico de línea simple estilo Monitor
 # -----------------------------------------------------------------------------
 # Replica el estilo de la página "¿Cuántas empresas hay en Argentina?"
