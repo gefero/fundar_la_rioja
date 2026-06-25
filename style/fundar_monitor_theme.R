@@ -196,12 +196,18 @@ puntos_etiqueta <- function(data, var_x, var_y, var_grupo) {
   data %>%
     filter(!is.na(!!var_y)) %>%
     group_by(!!var_grupo) %>%
-    filter(
-      !!var_y == max(!!var_y, na.rm = TRUE) |
-      !!var_y == min(!!var_y, na.rm = TRUE) |
-      !!var_x == max(!!var_x, na.rm = TRUE)
+    mutate(
+      .es_ultimo = !!var_x == max(!!var_x, na.rm = TRUE),
+      .es_max    = !!var_y == max(!!var_y, na.rm = TRUE),
+      .es_min    = !!var_y == min(!!var_y, na.rm = TRUE)
+    ) %>%
+    filter(.es_ultimo | .es_max | .es_min) %>%
+    mutate(
+      .hjust = if_else(.es_ultimo, 1.2, 0.5),
+      .vjust = if_else(.es_ultimo, 0.5, -0.8)
     ) %>%
     ungroup() %>%
+    select(-.es_ultimo, -.es_max, -.es_min) %>%
     distinct()
 }
 

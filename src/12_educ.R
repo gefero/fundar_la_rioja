@@ -15,8 +15,8 @@ df_plot %>%
              color = la_rioja_region)) +
   geom_line(linewidth = 0.7) +
   geom_text(data = pts,
-            aes(label = round(porc_mayor_25_superior, 1)),
-            size = 3.5, vjust = -0.8, show.legend = FALSE) +
+            aes(label = round(porc_mayor_25_superior, 1), hjust = .hjust, vjust = .vjust),
+            size = 3.5, show.legend = FALSE) +
   scale_color_fundar_multi(name = "Región") +
   labs(title   = "Población mayor de 25 años con estudios superiores completos",
        x       = "Año-Trimestre",

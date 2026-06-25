@@ -15,8 +15,8 @@ df_plot %>%
              color = la_rioja_region)) +
   geom_line(linewidth = 0.7) +
   geom_text(data = pts,
-            aes(label = round(tasa_inf_aportes, 1)),
-            size = 3.5, vjust = -0.8, show.legend = FALSE) +
+            aes(label = round(tasa_inf_aportes, 1), hjust = .hjust, vjust = .vjust),
+            size = 3.5, show.legend = FALSE) +
   scale_color_fundar_multi(name = "Región") +
   labs(title   = "Tasa de informalidad por aportes a la seguridad social",
        x       = "Año-Trimestre",
