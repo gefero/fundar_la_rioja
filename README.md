@@ -40,7 +40,8 @@ fundar_la_rioja/
 │   ├── raw_data/                 # Microdatos EPH por año y trimestre (*.rds)
 │   └── inputs_md/                # Agregados por indicador listos para graficar (*.csv)
 ├── style/
-│   └── fundar_larioja_theme.R    # Tema ggplot2, paleta de colores y escalas del proyecto
+│   ├── fundar_larioja_theme.R    # Tema original (paleta La Rioja / NOA / Resto país)
+│   └── fundar_monitor_theme.R    # Tema inspirado en el Monitor Mensual de Empresas de Fundar
 └── fundar_larioja.Rproj          # Proyecto RStudio
 ```
 
@@ -83,20 +84,54 @@ Calcula los indicadores agrupando por `fecha`, `REGION`, `AGLOMERADO` y `la_rioj
 
 ### 5. Visualización
 
-Cada script `src/XX_*.R` lee su CSV correspondiente y genera un gráfico de líneas con `ggplot2`, usando las escalas definidas en `style/fundar_larioja_theme.R`.
+Cada script `src/XX_*.R` lee su CSV correspondiente y genera un gráfico de líneas con `ggplot2`, usando las escalas definidas en `style/fundar_monitor_theme.R`.
 
-## Sistema de estilos (`style/fundar_larioja_theme.R`)
+## Sistema de estilos
 
-Define la identidad visual del proyecto:
+El proyecto cuenta con dos archivos de estilo en `style/`:
 
-- **`scale_color_larioja()`** / **`scale_fill_larioja()`**: paleta de colores regional (gris para Resto país, azul para NOA-Resto, naranja para La Rioja).
-- **`scale_linewidth_larioja()`**: grosor de línea diferenciado por región (La Rioja en primer plano).
-- **`theme_larioja()`**: tema `ggplot2` minimalista con tipografía y márgenes estandarizados.
-- **`theme_larioja_mapa()`**: variante sin ejes ni grilla, para visualizaciones cartográficas.
-- **`grafico_lineas_regional()`**: función helper para construir gráficos de líneas regionales de forma estandarizada.
-- **`PALETA_CONTINUA`**: gradiente azul → blanco → naranja para variables continuas y mapas.
+### `fundar_larioja_theme.R` (tema original)
 
-Los prefijos numéricos en la clasificación regional (`"1. Resto país"`, `"2. NOA-Resto"`, `"3. La Rioja"`) garantizan que ggplot dibuje La Rioja por encima del resto sin transformaciones adicionales.
+- **`scale_color_larioja()`** / **`scale_fill_larioja()`**: paleta regional (gris para Resto país, azul para NOA-Resto, naranja para La Rioja).
+- **`scale_linewidth_larioja()`**: grosor de línea diferenciado por región.
+- **`theme_larioja()`**: tema minimalista con tipografía y márgenes estandarizados.
+- **`theme_larioja_mapa()`**: variante sin ejes ni grilla para cartografía.
+- **`grafico_lineas_regional()`**: helper para gráficos de líneas regionales.
+- **`PALETA_CONTINUA`**: gradiente azul → blanco → naranja para variables continuas.
+
+### `fundar_monitor_theme.R` (tema activo — Monitor Mensual de Empresas)
+
+Replica el estilo visual del [Monitor Mensual de Empresas](https://fund.ar/publicacion/monitor-mensual-de-empresas/) de Fundar. Es el tema usado por todos los scripts de visualización.
+
+**Paleta de colores:**
+
+| Variable | Color | Uso |
+|---|---|---|
+| `FUNDAR_VERDE` | `#52C8A0` | Verde menta — color principal / positivo |
+| `FUNDAR_ROSA` | `#F4877A` | Rosa salmón — negativo / caídas |
+| `FUNDAR_BEIGE` | `#EDE8E0` | Fondo del área del gráfico |
+| `FUNDAR_OSCURO` | `#1C1C1C` | Fondo oscuro para slides de KPIs |
+
+**Asignación regional:**
+
+| Región | Color |
+|---|---|
+| `1. Resto país` | `#A8DCC8` (verde menta claro) |
+| `2. NOA-Resto` | `#C8C87A` (amarillo oliva) |
+| `3. La Rioja` | `#2D6E6E` (verde azulado oscuro — énfasis) |
+
+**Componentes:**
+
+- **`theme_fundar()`**: tema base con fondo beige, grilla horizontal suave, leyenda arriba, etiquetas del eje X a 45°.
+- **`theme_fundar_oscuro()`**: variante con fondo oscuro.
+- **`theme_fundar_barras_h()`**: variante para gráficos de barras horizontales.
+- **`scale_color_fundar_multi()`** / **`scale_fill_fundar_multi()`**: escala de color para series múltiples.
+- **`scale_fill_fundar_div()`**: escala verde/rosa para gráficos divergentes.
+- **`fuente_fundar()`**: helper para el caption en formato `"Fuente: ..."`.
+- **`grafico_lineas_monitor()`**: helper para gráfico de línea única estilo Monitor.
+- **`grafico_barras_div()`**: helper para barras horizontales divergentes con etiquetas.
+
+Los prefijos numéricos en la clasificación regional garantizan que ggplot dibuje La Rioja por encima del resto sin transformaciones adicionales.
 
 ## Dependencias
 
