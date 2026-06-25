@@ -81,7 +81,7 @@ theme_fundar <- function(base_size = 12,
       # Ejes
       axis.text          = element_text(size  = base_size * 0.75,
                                         color = "#555555"),
-      axis.text.x        = element_text(margin = margin(t = 4)),
+      axis.text.x        = element_text(margin = margin(t = 4), angle = 45, hjust = 1),
       axis.text.y        = element_text(margin = margin(r = 4)),
       axis.title         = element_text(size  = base_size * 0.85,
                                         color = FUNDAR_TEXTO),
