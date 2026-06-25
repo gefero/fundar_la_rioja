@@ -6,7 +6,8 @@ source('./style/fundar_monitor_theme.R')
 df <- read_csv('./data/inputs_md/04_tasa_desoc.csv')
 
 df_plot <- df %>% mutate(la_rioja_region = factor(la_rioja_region))
-pts     <- puntos_etiqueta(df_plot, fecha, tasa_desoc, AGLOMERADO)
+pts     <- puntos_etiqueta(df_plot, fecha, tasa_desoc, AGLOMERADO) %>%
+  filter(la_rioja_region %in% c("2. NOA-Resto", "3. La Rioja"))
 
 df_plot %>%
   ggplot(aes(x = fecha, y = tasa_desoc,
