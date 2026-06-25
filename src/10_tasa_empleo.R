@@ -1,20 +1,20 @@
 ## 10- Tasa de empleo
 
 library(tidyverse)
-source('./style/fundar_larioja_theme.R')
+source('./style/fundar_monitor_theme.R')
 
 df <- read_csv('./data/inputs_md/10_tasa_empleo.csv')
 
 df %>%
+  mutate(la_rioja_region = factor(la_rioja_region)) %>%
   ggplot(aes(x = fecha, y = tasa_empleo,
              group = AGLOMERADO,
-             color = la_rioja_region,
-             linewidth = la_rioja_region)) +
-  geom_line() +
-  scale_color_larioja() +
-  scale_linewidth_larioja() +
-  labs(x = "Año-Trimestre",
-       y = "Tasa de informalidad por aportes a SS (%)",
-       caption = "Fuente: EPH-INDEC")
+             color = la_rioja_region)) +
+  geom_line(linewidth = 0.7) +
+  scale_color_fundar_multi(name = "Región") +
+  labs(title   = "Tasa de empleo",
+       x       = "Año-Trimestre",
+       y       = "Tasa de empleo (ocupados cada 100 hab.)",
+       caption = fuente_fundar("EPH-INDEC"))
 
 ggsave('./outputs/plots/10_tasa_empleo.png', width=12, height=8)
