@@ -61,7 +61,7 @@ scale_color_fundar <- function(name = NULL, ...) {
 # 2. TEMA BASE
 # -----------------------------------------------------------------------------
 
-theme_fundar <- function(base_size = 12,
+theme_monitor <- function(base_size = 12,
                          legend_position = "top",
                          fondo_beige = TRUE) {
 
@@ -127,8 +127,8 @@ theme_fundar <- function(base_size = 12,
 }
 
 # Variante con fondo oscuro (para slides de KPIs / portada)
-theme_fundar_oscuro <- function(base_size = 12, legend_position = "top") {
-  theme_fundar(base_size = base_size,
+theme_monitor_oscuro <- function(base_size = 12, legend_position = "top") {
+  theme_monitor(base_size = base_size,
                legend_position = legend_position,
                fondo_beige = FALSE) %+replace%
     theme(
@@ -150,8 +150,8 @@ theme_fundar_oscuro <- function(base_size = 12, legend_position = "top") {
 
 # Variante para gráficos de barras horizontales (sin grilla vertical,
 # grilla vertical suave en su lugar para leer valores)
-theme_fundar_barras_h <- function(base_size = 12) {
-  theme_fundar(base_size = base_size) %+replace%
+theme_monitor_barras_h <- function(base_size = 12) {
+  theme_monitor(base_size = base_size) %+replace%
     theme(
       panel.grid.major.x = element_line(color = FUNDAR_GRILLA, linewidth = 0.4),
       panel.grid.major.y = element_blank(),
@@ -162,7 +162,7 @@ theme_fundar_barras_h <- function(base_size = 12) {
 }
 
 # Activar el tema como default en la sesión
-theme_set(theme_fundar())
+theme_set(theme_monitor())
 
 # -----------------------------------------------------------------------------
 # 3. HELPER: etiqueta de fuente en formato Fundar
@@ -297,7 +297,7 @@ grafico_barras_div <- function(data,
          x        = NULL,
          y        = NULL,
          caption  = caption) +
-    theme_fundar_barras_h()
+    theme_monitor_barras_h()
 }
 
 message("✔ Tema Fundar Monitor cargado.")

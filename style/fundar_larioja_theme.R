@@ -42,7 +42,7 @@ scale_fill_larioja_continua <- function(name = "", ...) {
 # 2. TEMA BASE
 # -----------------------------------------------------------------------------
 
-theme_larioja <- function(base_size = 11, legend_position = "right") {
+theme_la_rioja <- function(base_size = 11, legend_position = "right") {
   theme_minimal(base_size = base_size) %+replace%
     theme(
       # Grilla
@@ -78,8 +78,8 @@ theme_larioja <- function(base_size = 11, legend_position = "right") {
 }
 
 # Variante para mapas (sin ejes ni grilla)
-theme_larioja_mapa <- function(base_size = 11, legend_position = "right") {
-  theme_larioja(base_size = base_size, legend_position = legend_position) %+replace%
+theme_la_rioja_mapa <- function(base_size = 11, legend_position = "right") {
+  theme_la_rioja(base_size = base_size, legend_position = legend_position) %+replace%
     theme(
       axis.text          = element_blank(),
       axis.title         = element_blank(),
@@ -90,7 +90,7 @@ theme_larioja_mapa <- function(base_size = 11, legend_position = "right") {
 }
 
 # Activar el tema como default en la sesión
-theme_set(theme_larioja())
+theme_set(theme_la_rioja())
 
 # -----------------------------------------------------------------------------
 # 3. PARÁMETROS GEOMÉTRICOS RECOMENDADOS
