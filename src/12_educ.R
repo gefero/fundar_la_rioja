@@ -12,6 +12,7 @@ df_plot %>%
              color = la_rioja_region)) +
   geom_line(linewidth = 0.7) +
   scale_color_fundar_multi(name = "Región") +
+  theme_monitor() +
   labs(title   = "Población mayor de 25 años con estudios superiores completos",
        x       = "Año-Trimestre",
        y       = "% de personas mayores de 25 años",
