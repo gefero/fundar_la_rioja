@@ -20,7 +20,7 @@ df %>%
   geom_line(linewidth = 0.7) +
   scale_color_fundar_multi(name = "Jurisdicción") +
   theme_monitor() +
-  scale_x_date()
+  scale_x_date(date_labels = "%m-%Y") +
   labs(
     title   = "Cantidad de empresas por jurisdicción",
     x       = "Fecha",
