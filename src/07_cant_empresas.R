@@ -35,7 +35,7 @@ key_pts <- df_agg %>%
   mutate(
     label = paste0(
       mes_es[as.integer(format(fecha, "%m"))], " ", format(fecha, "%Y"), "\n",
-      format(round(empresas), big.mark = ".", scientific = FALSE)
+      format(round(empresas), big.mark = ".", decimal.mark = ",", scientific = FALSE)
     ),
     vjust = if_else(tipo == "fecha_min", 1.8, -0.6),
     hjust = if_else(tipo == "fecha_last", 1.1, 0.5)
