@@ -57,9 +57,11 @@ df_agg %>%
     show.legend = FALSE
   ) +
   scale_color_fundar_multi(name = "Jurisdicción") +
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.18))) +
   theme_monitor() +
   theme(axis.text.x = element_text(size = 8)) +
   scale_x_date(date_labels = "%m-%Y", date_breaks = "6 month") +
+  coord_cartesian(clip = "off") +
   labs(
     title   = "Cantidad de empresas por jurisdicción",
     x       = "Fecha",
