@@ -135,7 +135,7 @@ df <- df %>%
 #### Tasa empleo
 df %>%
   filter(ANO4 >= 2007) %>%
-  group_by(fecha, REGION, AGLOMERADO, la_rioja_region) %>%
+  group_by(fecha, la_rioja_region) %>%
   summarise(ocupado = sum(ocupado*PONDERA),
             pob_tot = sum(PONDERA),
   ) %>%
@@ -146,7 +146,7 @@ df %>%
 #### Tasa desocupación
 df %>%
   filter(ANO4 >= 2007) %>%
-  group_by(fecha, REGION, AGLOMERADO, la_rioja_region) %>%
+  group_by(fecha, la_rioja_region) %>%
   summarise(desoc = sum(desocupado*PONDERA),
             pea = sum(pea*PONDERA),
   ) %>%
@@ -157,7 +157,7 @@ df %>%
 df %>%
   filter(ANO4 >= 2007) %>%
   filter(ESTADO == "Ocupado" & CAT_OCUP=="Obrero o empleado") %>%
-  group_by(fecha, REGION, AGLOMERADO, la_rioja_region) %>%
+  group_by(fecha, la_rioja_region) %>%
   summarise(formales = sum(aportes_descuentos*PONDERA),
             asalariados = sum(asalariado_ocupado*PONDERA),
   ) %>%
@@ -169,7 +169,7 @@ df %>%
 
 #### % mayores de 25 años con NED universitario
 df %>%
-  group_by(fecha, REGION, AGLOMERADO, la_rioja_region) %>%
+  group_by(fecha, la_rioja_region) %>%
   summarise(mayor_25_superior = sum(mayor_25_superior*PONDERA),
             pob_tot = sum(PONDERA)) %>%
   mutate(porc_mayor_25_superior = mayor_25_superior/pob_tot * 100) %>%
@@ -178,5 +178,5 @@ df %>%
 
 
 ### Salva archivo final
-df %>% write_rds('./data/proc_data_eph.rds')
+#df %>% write_rds('./data/proc_data_eph.rds')
 
