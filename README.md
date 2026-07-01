@@ -43,7 +43,8 @@ fundar_la_rioja/
 │   ├── 10_tasa_empleo.R          # Visualización: tasa de empleo
 │   ├── 12_educ.R                 # Visualización: % población +25 con estudios superiores
 │   ├── 13a_nbi_hogares.R         # Visualización: % hogares con NBI
-│   └── 13b_nbi_poblacion.R       # Visualización: % población en hogares con NBI
+│   ├── 13b_nbi_poblacion.R       # Visualización: % población en hogares con NBI
+│   └── 999_run_pipeline.R        # Corre todo el pipeline EPH de punta a punta
 ├── data/
 │   ├── raw_data/                 # Microdatos EPH crudos por año y trimestre (*.rds)
 │   ├── proc_data/                # Datasets EPH canónicos, ya limpios (eph_individuo.rds, eph_hogar.rds)
@@ -82,8 +83,10 @@ analíticas reutilizables, y persiste dos datasets canónicos comprimidos:
 
 Para mantener estos archivos livianos, se dropean las columnas crudas ya consumidas por las variables
 derivadas (ej. `PP04C`/`PP04C99` de individuo, `IV4`-`IV7`/`IV9`/`IV10` de hogar) y se comprimen con
-`compress = "xz"`. Los `.rds` crudos por trimestre no se tocan — siguen teniendo todas las columnas
-descargadas, por si hiciera falta reconstruir el canónico con otras variables sin re-descargar nada.
+`compress = "gz"` (buen balance entre peso en disco y velocidad de lectura, ya que estos archivos se
+leen en cada corrida de la etapa de indicadores). Los `.rds` crudos por trimestre no se tocan — siguen
+teniendo todas las columnas descargadas, por si hiciera falta reconstruir el canónico con otras
+variables sin re-descargar nada.
 
 `la_rioja_region` clasifica cada aglomerado en tres grupos: `1. Resto país`, `2. NOA-Resto`,
 `3. La Rioja` *(énfasis visual)*.
@@ -167,6 +170,15 @@ install.packages(c("eph", "tidyverse", "lubridate", "tictoc"))
 | `tictoc` | Medición de tiempos en la descarga |
 
 ## Cómo reproducir
+
+Para correr todo el pipeline EPH de punta a punta (descarga → limpieza → indicadores →
+visualización) de una sola vez:
+
+```r
+source("src/999_run_pipeline.R")
+```
+
+O paso a paso:
 
 ```r
 # 1. Descargar microdatos EPH (individuo y hogar)
