@@ -12,7 +12,11 @@ ocupados_esc <- df_ind %>%
   group_by(CODUSU, NRO_HOGAR, fecha) %>%
   summarise(
     ocupados         = sum(ESTADO == "Ocupado", na.rm = TRUE),
-    hay_nino_sin_esc = any(CH06 >= 6 & CH06 <= 12 & CH10 != "Sí, asiste", na.rm = TRUE),
+    # Con y sin tilde, mismo patrón defensivo que IV8/IV9/PP07H/PP07I (issue #2:
+    # "Sí, asiste" solo, sin la variante sin tilde, dejaba pct_hogares_NBI_ESC
+    # sospechosamente alto -- ver diagnóstico en el issue).
+    hay_nino_sin_esc = any(CH06 >= 6 & CH06 <= 12 &
+                             !(CH10 %in% c("Sí, asiste", "Si, asiste")), na.rm = TRUE),
     .groups = "drop"
   )
 
