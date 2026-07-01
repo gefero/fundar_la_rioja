@@ -94,11 +94,13 @@ df <- df %>%
 ### NBI_SAN: condiciones sanitarias (sin baño, o baño sin desagüe adecuado)
 df <- df %>%
   mutate(NBI_SAN = case_when(
-    IV9 %in% c("No") ~ 1,
-    IV9 %in% c("Sí", "Si") & IV11 %in% c("Sólo a pozo ciego", "A hoyo/excavación en la tierra") ~ 1,
-    IV9 %in% c("Sí", "Si") ~ 0,
+    IV8 %in% c("No") ~ 1,
+    IV8 %in% c("Sí", "Si") & IV11 %in% c("9", "0", "4") ~ 1,
+    IV8 %in% c("Sí", "Si") ~ 0,
     TRUE ~ NA_real_
   ))
+
+
 
 ### NBI_ESC y NBI_SUB requieren datos de individuo (edad, asistencia escolar,
 ### relación de parentesco y nivel educativo del jefe/a). Ajustar esta ruta si
