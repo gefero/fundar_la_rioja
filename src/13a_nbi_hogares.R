@@ -13,6 +13,7 @@ df_plot %>%
              color = la_rioja_region)) +
   geom_line(linewidth = 0.7) +
   scale_color_fundar_multi(name = "Región") +
+  ylim(0,50) +
   theme_monitor() +
   labs(title   = "Hogares con Necesidades Básicas Insatisfechas (NBI)",
        x       = "Año-Trimestre",
