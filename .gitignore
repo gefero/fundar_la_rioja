@@ -1,6 +1,6 @@
 # Files
 
-data/proc_data_eph.rds
+data/proc_data/
 data/raw_data_eph.rds
 
 

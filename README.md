@@ -33,7 +33,11 @@ Generar un pipeline replicable que permita calcular y visualizar una serie de in
 ```
 fundar_la_rioja/
 ├── src/
-│   ├── 00_preproc_EPH.R          # Descarga, procesamiento y generación de agregados
+│   ├── utils_eph.R                # Funciones compartidas: descarga, limpieza, región
+│   ├── 00_descarga_eph.R          # Etapa 1: descarga incremental (individuo + hogar)
+│   ├── 01_limpieza_eph.R          # Etapa 2: limpieza y canonización -> data/proc_data/
+│   ├── 02_indicadores_eph_individuo.R # Etapa 3: indicadores de individuo -> CSVs
+│   ├── 02_indicadores_eph_hogar.R # Etapa 3: indicadores NBI de hogar -> CSVs
 │   ├── 04_desoc.R                # Visualización: tasa de desocupación
 │   ├── 09a_informalidad_aportes.R # Visualización: tasa de informalidad (aportes)
 │   ├── 10_tasa_empleo.R          # Visualización: tasa de empleo
@@ -41,7 +45,8 @@ fundar_la_rioja/
 │   ├── 13a_nbi_hogares.R         # Visualización: % hogares con NBI
 │   └── 13b_nbi_poblacion.R       # Visualización: % población en hogares con NBI
 ├── data/
-│   ├── raw_data/                 # Microdatos EPH por año y trimestre (*.rds)
+│   ├── raw_data/                 # Microdatos EPH crudos por año y trimestre (*.rds)
+│   ├── proc_data/                # Datasets EPH canónicos, ya limpios (eph_individuo.rds, eph_hogar.rds)
 │   └── inputs_md/                # Agregados por indicador listos para graficar (*.csv)
 ├── style/
 │   ├── fundar_larioja_theme.R    # Tema original (paleta La Rioja / NOA / Resto país)
@@ -49,35 +54,44 @@ fundar_la_rioja/
 └── fundar_larioja.Rproj          # Proyecto RStudio
 ```
 
-> Los archivos en `data/raw_data/` y el dataset procesado `data/proc_data_eph.rds` están excluidos del control de versiones (`.gitignore`). Los CSVs en `data/inputs_md/` sí están versionados.
+> Los archivos en `data/raw_data/` y `data/proc_data/` están excluidos del control de versiones (`.gitignore`). Los CSVs en `data/inputs_md/` sí están versionados.
 
 ## Pipeline de datos (EPH)
 
-El flujo de trabajo se ejecuta íntegramente desde `src/00_preproc_EPH.R`:
+El flujo de trabajo de la EPH se separa en 3 etapas, cada una en su propio script, para poder
+re-ejecutar solo una parte sin repetir las anteriores (por ejemplo, recalcular un indicador sin
+volver a descargar ni relimpiar los microdatos):
 
-### 1. Descarga incremental
+### 1. Descarga incremental (`00_descarga_eph.R`)
 
-Itera sobre todos los años (2007–2025) y trimestres (1–4) y descarga los microdatos individuales de la EPH usando `eph::get_microdata()`. Cada trimestre se guarda como un `.rds` separado en `data/raw_data/`. Si el archivo ya existe, se omite la descarga.
+Itera sobre todos los años (2007–2025) y trimestres (1–4) y descarga los microdatos de individuo y
+de hogar de la EPH usando `eph::get_microdata()`. Cada trimestre se guarda como un `.rds` separado en
+`data/raw_data/eph/individuo/` y `data/raw_data/eph/hogar/`. Si el archivo ya existe, se omite la
+descarga.
 
-### 2. Carga y unión
+### 2. Limpieza y canonización (`01_limpieza_eph.R`)
 
-Lee todos los `.rds` de `data/raw_data/` y los une en un único dataframe.
+Une todos los `.rds` crudos de cada fuente, aplica `organize_labels()`, construye las variables
+analíticas reutilizables, y persiste dos datasets canónicos comprimidos:
 
-### 3. Preprocesamiento
+- **`data/proc_data/eph_individuo.rds`**: `ocupado`, `desocupado`, `pea`, `no_pea`, `niv_educ_sup`,
+  `mayor_25`, `mayor_25_superior`, `tamanio_estab`, `descuento`, `aporta`, `aportes_descuentos`,
+  `asalariado_ocupado`, `la_rioja_region`.
+- **`data/proc_data/eph_hogar.rds`**: `la_rioja_region` y los indicadores NBI que dependen solo de
+  hogar (`NBI_HAC`, `NBI_VIV`, `NBI_SAN`).
 
-Construye las variables analíticas necesarias sobre el dataframe unificado:
+Para mantener estos archivos livianos, se dropean las columnas crudas ya consumidas por las variables
+derivadas (ej. `PP04C`/`PP04C99` de individuo, `IV4`-`IV7`/`IV9`/`IV10` de hogar) y se comprimen con
+`compress = "xz"`. Los `.rds` crudos por trimestre no se tocan — siguen teniendo todas las columnas
+descargadas, por si hiciera falta reconstruir el canónico con otras variables sin re-descargar nada.
 
-- **Laborales**: `ocupado`, `desocupado`, `pea`, `no_pea`
-- **Educativas**: `niv_educ_sup`, `mayor_25`, `mayor_25_superior`
-- **Informalidad**: `tamanio_estab` (tamaño del establecimiento), `descuento`, `aporta`, `aportes_descuentos`, `asalariado_ocupado`
-- **Geográficas**: `la_rioja_region` — clasifica cada aglomerado en tres grupos:
-  - `1. Resto país`
-  - `2. NOA-Resto`
-  - `3. La Rioja` *(énfasis visual)*
+`la_rioja_region` clasifica cada aglomerado en tres grupos: `1. Resto país`, `2. NOA-Resto`,
+`3. La Rioja` *(énfasis visual)*.
 
-### 4. Generación de agregados
+### 3. Cálculo de indicadores (`02_indicadores_eph_individuo.R` / `02_indicadores_eph_hogar.R`)
 
-Calcula los indicadores agrupando por `fecha`, `REGION`, `AGLOMERADO` y `la_rioja_region`, y guarda cada uno como CSV en `data/inputs_md/`:
+Leen los `.rds` canónicos (el de hogar cruza además con el de individuo, para NBI_ESC/NBI_SUB/NBI_TOT)
+y agrupan por `fecha` y `la_rioja_region`, guardando cada indicador como CSV en `data/inputs_md/`:
 
 | Archivo CSV | Indicador | Variable clave |
 |---|---|---|
@@ -88,7 +102,7 @@ Calcula los indicadores agrupando por `fecha`, `REGION`, `AGLOMERADO` y `la_rioj
 | `13a_nbi_hogares.csv` | % Hogares con NBI (total y por sub-dimensión) | `pct_hogares_NBI_TOT` |
 | `13b_nbi_poblacion.csv` | % Población en hogares con NBI (total y por sub-dimensión) | `pct_pob_NBI_TOT` |
 
-### 5. Visualización
+### 4. Visualización
 
 Cada script `src/XX_*.R` lee su CSV correspondiente y genera un gráfico de líneas con `ggplot2`, usando las escalas definidas en `style/fundar_monitor_theme.R`.
 
@@ -155,17 +169,26 @@ install.packages(c("eph", "tidyverse", "lubridate", "tictoc"))
 ## Cómo reproducir
 
 ```r
-# 1. Descargar microdatos, procesar y generar CSVs de indicadores (una sola vez)
-source("src/00_preproc_EPH.R")
+# 1. Descargar microdatos EPH (individuo y hogar)
+source("src/00_descarga_eph.R")
 
-# 2. Generar visualizaciones por indicador
-source("src/04_desoc.R")                # Tasa de desocupación
+# 2. Limpiar y canonizar -> data/proc_data/eph_individuo.rds, eph_hogar.rds
+source("src/01_limpieza_eph.R")
+
+# 3. Calcular indicadores -> CSVs en data/inputs_md/
+source("src/02_indicadores_eph_individuo.R")
+source("src/02_indicadores_eph_hogar.R")
+
+# 4. Generar visualizaciones por indicador
+source("src/04_desoc.R")                 # Tasa de desocupación
 source("src/09a_informalidad_aportes.R") # Tasa de informalidad
 source("src/10_tasa_empleo.R")           # Tasa de empleo
 source("src/12_educ.R")                  # Educación superior
+source("src/13a_nbi_hogares.R")          # % Hogares con NBI
+source("src/13b_nbi_poblacion.R")        # % Población en hogares con NBI
 ```
 
-> La descarga completa (2007–2025) puede tomar varios minutos. El script es incremental: si se interrumpe, retoma desde el último archivo faltante.
+> La descarga completa (2007–2025) puede tomar varios minutos. El script de descarga es incremental: si se interrumpe, retoma desde el último archivo faltante.
 
 ## Contexto del proyecto
 
