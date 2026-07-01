@@ -74,7 +74,7 @@ df_ind <- df_ind %>%
 df_ind <- df_ind %>%
   select(-PP04C, -PP04C99, -CH04, -PP03C)
 
-write_rds(df_ind, "./data/proc_data/eph_individuo.rds", compress = "xz")
+write_rds(df_ind, "./data/proc_data/eph_individuo.rds", compress = "gz")
 
 ## ================================ Hogar =====================================
 
@@ -129,4 +129,4 @@ df_hog <- df_hog %>%
 df_hog <- df_hog %>%
   select(-IV2, -IV4, -IV5, -IV6, -IV7, -IV9, -IV10, -II2, -II1_num, -personas_por_cuarto)
 
-write_rds(df_hog, "./data/proc_data/eph_hogar.rds", compress = "xz")
+write_rds(df_hog, "./data/proc_data/eph_hogar.rds", compress = "gz")

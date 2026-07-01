@@ -7,28 +7,40 @@ library(tidyverse)
 df <- read_rds("./data/proc_data/eph_hogar.rds")
 df_ind <- read_rds("./data/proc_data/eph_individuo.rds")
 
-## Único agregado por hogar a partir de individuo
-agg_ind <- df_ind %>%
+## Ocupados y chequeo de escolaridad: agregaciones vectorizadas sobre todas las personas
+ocupados_esc <- df_ind %>%
   group_by(CODUSU, NRO_HOGAR, fecha) %>%
   summarise(
     ocupados         = sum(ESTADO == "Ocupado", na.rm = TRUE),
     hay_nino_sin_esc = any(CH06 >= 6 & CH06 <= 12 & CH10 != "Sí, asiste", na.rm = TRUE),
-    tiene_jefe       = any(CH03 == "Jefe/a", na.rm = TRUE),
-    CH12_jefe        = first(CH12[CH03 == "Jefe/a"]),
-    CH13_jefe        = first(CH13[CH03 == "Jefe/a"]),
-    CH14_jefe        = first(CH14[CH03 == "Jefe/a"]),
     .groups = "drop"
-  ) %>%
+  )
+
+## Educación del jefe/a: filtrar primero (barato, vectorizado), agrupar después
+## sobre un dataframe mucho más chico (~1 fila por hogar en vez de todas las personas).
+## Evita el patrón lento first(x[condición]) dentro de un summarise() agrupado sobre
+## el total de personas.
+jefe_educ <- df_ind %>%
+  filter(CH03 == "Jefe/a") %>%
+  group_by(CODUSU, NRO_HOGAR, fecha) %>%
+  summarise(
+    CH12_jefe = first(CH12),
+    CH13_jefe = first(CH13),
+    CH14_jefe = first(CH14),
+    .groups = "drop"
+  )
+
+agg_ind <- ocupados_esc %>%
+  left_join(jefe_educ, by = c("CODUSU", "NRO_HOGAR", "fecha")) %>%
   mutate(
     NBI_ESC = if_else(hay_nino_sin_esc, 1, 0),
     primaria_3er_grado = case_when(
-      !tiene_jefe ~ NA_real_,                                       # jefe no identificado -> excluir
+      is.na(CH12_jefe) ~ NA_real_,                                  # jefe no identificado -> excluir
       CH12_jefe %in% c("Primario", "EGB") & CH13_jefe == "Sí" ~ 1,
       CH12_jefe %in% c("Primario", "EGB") & CH13_jefe == "No" & as.numeric(CH14_jefe) >= 3 ~ 1,
       CH12_jefe %in% c("Primario", "EGB") & CH13_jefe == "No" & as.numeric(CH14_jefe) < 3 ~ 0,
       CH12_jefe == "Sin instrucción" ~ 0,
-      !is.na(CH12_jefe) ~ 1,  # secundario o más implica primario completo
-      TRUE ~ NA_real_
+      TRUE ~ 1  # secundario o más implica primario completo
     )
   ) %>%
   select(CODUSU, NRO_HOGAR, fecha, ocupados, NBI_ESC, primaria_3er_grado)
