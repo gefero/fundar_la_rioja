@@ -7,6 +7,8 @@ source("./src/utils_eph.R")
 ## el punto de partida único para la etapa de cálculo de indicadores
 ## (02_indicadores_eph_individuo.R y 02_indicadores_eph_hogar.R).
 
+dir.create("./data/proc_data", showWarnings = FALSE, recursive = TRUE)
+
 ## ============================== Individuo ==================================
 
 cols_character_individuo <- c("REGION", "AGLOMERADO", "ESTADO", "NIVEL_ED",
