@@ -36,6 +36,20 @@ descargar_eph_incremental <- function(vars, type, out_dir, file_tag = type,
   tictoc::toc()
 }
 
+## Saca la clase "labelled" (expss/haven) y sus atributos de etiqueta de una
+## columna, si los tiene. organize_labels() deja MUCHAS columnas numéricas
+## (no solo las categóricas) como labelled, lo cual rompe operaciones
+## aritméticas y comparaciones de tipo estrictas más adelante (if_else(),
+## left_join()...) apenas se mezclan con valores planos (ej. Inf) o entre
+## dos bases etiquetadas por separado (individuo vs hogar).
+quitar_labelled <- function(x) {
+  if (inherits(x, "labelled")) {
+    x <- unclass(x)
+    attributes(x) <- attributes(x)[intersect(names(attributes(x)), "names")]
+  }
+  x
+}
+
 ## Carga todos los .rds crudos de una carpeta, une, etiqueta y limpia variables comunes.
 limpiar_base_eph <- function(files_dir, type, cols_a_character) {
   files <- list.files(files_dir, pattern = "\\.rds$", full.names = TRUE)
@@ -44,22 +58,15 @@ limpiar_base_eph <- function(files_dir, type, cols_a_character) {
     bind_rows()
 
   df <- df %>%
-    organize_labels(type = type)
+    organize_labels(type = type) %>%
+    mutate(across(everything(), quitar_labelled))
 
   df %>%
     mutate(across(all_of(cols_a_character), as.character)) %>%
     mutate(
       ANO4 = as.numeric(ANO4),
       TRIMESTRE = unclass(TRIMESTRE),
-      fecha = paste0(ANO4, "-Q", TRIMESTRE),
-      # organize_labels() deja CODUSU/NRO_HOGAR como clase "labelled" (expss/haven).
-      # Individuo y hogar se etiquetan por separado, así que sus atributos de
-      # etiqueta terminan siendo distintos aunque el valor sea el mismo, y
-      # dplyr::left_join() los trata como tipos incompatibles. unclass() saca
-      # cualquier clase/atributo antes de castear, sin depender de que
-      # as.character()/as.numeric() por sí solos remuevan la clase "labelled".
-      CODUSU = as.character(unclass(CODUSU)),
-      NRO_HOGAR = as.numeric(unclass(NRO_HOGAR))
+      fecha = paste0(ANO4, "-Q", TRIMESTRE)
     )
 }
 
