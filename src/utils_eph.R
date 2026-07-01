@@ -6,8 +6,14 @@ library(tidyverse)
 ## `file_tag` es la etiqueta usada en el nombre del archivo (ej. "individuo"), que
 ## puede diferir de `type` -- deben mantenerse separados para que file.exists()
 ## compare contra el nombre real de los .rds ya descargados.
+## `years` por defecto llega hasta el año en curso, así una onda nueva de la EPH
+## se intenta descargar sola sin tener que editar el rango a mano cada año.
+## Si un trimestre todavía no está publicado en INDEC, get_microdata() falla:
+## se captura el error, se avisa por consola y se sigue con el resto (no corta
+## el loop ni pierde lo ya descargado en trimestres anteriores).
 descargar_eph_incremental <- function(vars, type, out_dir, file_tag = type,
-                                       years = 2007:2025, periods = 1:4) {
+                                       years = 2007:as.integer(format(Sys.Date(), "%Y")),
+                                       periods = 1:4) {
   periodos <- expand_grid(year = years, period = periods)
   tictoc::tic()
   for (i in seq_len(nrow(periodos))) {
@@ -19,8 +25,13 @@ descargar_eph_incremental <- function(vars, type, out_dir, file_tag = type,
       next
     }
     cat("Descargando", out, "\n")
-    df <- get_microdata(period = p, year = y, type = type, vars = vars)
-    write_rds(df, out)
+    tryCatch({
+      df <- get_microdata(period = p, year = y, type = type, vars = vars)
+      write_rds(df, out)
+    }, error = function(e) {
+      cat("No se pudo descargar", out, "- probablemente todavía no está publicado. Detalle:",
+          conditionMessage(e), "\n")
+    })
   }
   tictoc::toc()
 }
