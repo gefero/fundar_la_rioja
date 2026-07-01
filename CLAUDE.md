@@ -22,8 +22,8 @@
 | Trayectoria escolar                                                                              | Desarrollo - Educación                               |
 | Resultado fiscal (ingreso total - gasto total)                                                   | Macroeconomía - Crecimiento                          |
 | Recursos propios sobre recursos totales (incluyendo coparticipación y transferencias nacionales) | Macroeconomía - Crecimiento                          |
+
 - Los scripts a ejectuar están en "./src/"
-- Los d
 
 
 ## Etapas del proyecto
@@ -37,8 +37,25 @@
       - Tasa de empleo (ocupados cada 100 habitantes)
       - Tasa de informalidad (% de los asalariados)
       - % de la población +25 con estudios superiores completos  
+      - % Hogares con NBI
+      - % Población con NBI
 - Desarrollar el código para el pipeline: para esto, 
       - se deberán descargar los datasets de la EPH usando el paquete `eph`
       - se deberán procesar los datos tomando como base el archivo ./src/00_preproc_EPH.R
 - Generar un archivo markdpwn que ejecute los siguientes scripts () que generan
 los gráficos estáticos para el informe.
+
+## Definición indicadores NBI (Necesidades Básicas Insatisfechas)
+- NBI Hacinamiento (NBI_HAC): hogares que tienen más de tres personas por cuarto.
+- NBI Vivienda de tipo inconveniente (NBI_VIV): hogares que viven en inquilinato, hotel o
+pensión, viviendas no destinadas a fines habitacionales, viviendas precarias y otro tipo de vivienda.
+Se excluye a las viviendas tipo casa, departamento y rancho.
+- NBI Condiciones sanitarias (NBI_SAN): hogares que viven en viviendas sin baño o letrina.
+-  NBI Escolaridad (NBI_ESC): hogares que tienen al menos un niño en edad escolar (6 a 12 años)
+que no asiste a la escuela.
+- NBI Capacidad de subsistencia (NBI_SUB): hogares que tienen cuatro o más personas por
+miembro ocupado y que tienen un jefe que no ha completado el tercer grado de escolaridad
+primaria.
+- Necesidades básicas insatisfechas (NBI_TOT): hogares que presentan al menos uno de los
+ indicadores anteriores de privación
+ 
