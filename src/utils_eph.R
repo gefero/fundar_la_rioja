@@ -59,10 +59,17 @@ limpiar_base_eph <- function(files_dir, type, cols_a_character) {
 
   df <- df %>%
     organize_labels(type = type) %>%
-    mutate(across(everything(), quitar_labelled))
+    # Primero se resuelve el texto de las columnas categóricas (as.character()
+    # sobre un objeto labelled devuelve la etiqueta, ej. "Casa"), y RECIÉN
+    # DESPUÉS se pela la clase labelled del resto (columnas numéricas: IDs,
+    # conteos, ponderadores). Si se pela todo antes de castear a texto, el
+    # as.character() posterior devuelve el código numérico como string
+    # (ej. "2") en vez de la etiqueta, y todas las comparaciones de texto
+    # (case_when, %in%, ==) dejan de matchear silenciosamente.
+    mutate(across(all_of(cols_a_character), as.character)) %>%
+    mutate(across(!all_of(cols_a_character), quitar_labelled))
 
   df %>%
-    mutate(across(all_of(cols_a_character), as.character)) %>%
     mutate(
       ANO4 = as.numeric(ANO4),
       TRIMESTRE = unclass(TRIMESTRE),

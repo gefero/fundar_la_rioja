@@ -12,7 +12,8 @@ dir.create("./data/proc_data", showWarnings = FALSE, recursive = TRUE)
 ## ============================== Individuo ==================================
 
 cols_character_individuo <- c("REGION", "AGLOMERADO", "ESTADO", "NIVEL_ED",
-                               "PP04C", "PP04C99", "CAT_OCUP", "PP07H", "PP07I")
+                               "PP04C", "PP04C99", "CAT_OCUP", "PP07H", "PP07I",
+                               "CH03", "CH10", "CH12", "CH13")
 
 df_ind <- limpiar_base_eph("./data/raw_data/eph/individuo", type = "individual",
                             cols_a_character = cols_character_individuo)
