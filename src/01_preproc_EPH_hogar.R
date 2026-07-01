@@ -92,6 +92,8 @@ df <- df %>%
   ))
 
 ### NBI_SAN: condiciones sanitarias (sin baño, o baño sin desagüe adecuado)
+### IV8 = ¿tiene baño/letrina? (Sí/No). IV9 es la UBICACIÓN del baño (dentro/fuera
+### de la vivienda), no si tiene o no, por eso NO se usa acá.
 df <- df %>%
   mutate(NBI_SAN = case_when(
     IV8 %in% c("No") ~ 1,
