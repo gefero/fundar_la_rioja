@@ -20,8 +20,8 @@ vars_hogar <- c("ANO4", "TRIMESTRE","CODUSU", "NRO_HOGAR", ## identificadores
                  "II1", "II2", # hacinamiento
                  "IX_TOT") # Total miembros
 
-descargar_eph_incremental(vars_individuo, type = "individual",
+descargar_eph_incremental(vars_individuo, type = "individual", file_tag = "individuo",
                            out_dir = "./data/raw_data/eph/individuo")
 
-descargar_eph_incremental(vars_hogar, type = "hogar",
+descargar_eph_incremental(vars_hogar, type = "hogar", file_tag = "hogar",
                            out_dir = "./data/raw_data/eph/hogar")

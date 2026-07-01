@@ -2,13 +2,18 @@ library(eph)
 library(tidyverse)
 
 ## Descarga incremental: baja un trimestre a la vez, saltea los que ya existen en disco.
-descargar_eph_incremental <- function(vars, type, out_dir, years = 2007:2025, periods = 1:4) {
+## `type` es el valor que espera eph::get_microdata() ("individual" o "hogar").
+## `file_tag` es la etiqueta usada en el nombre del archivo (ej. "individuo"), que
+## puede diferir de `type` -- deben mantenerse separados para que file.exists()
+## compare contra el nombre real de los .rds ya descargados.
+descargar_eph_incremental <- function(vars, type, out_dir, file_tag = type,
+                                       years = 2007:2025, periods = 1:4) {
   periodos <- expand_grid(year = years, period = periods)
   tictoc::tic()
   for (i in seq_len(nrow(periodos))) {
     y <- periodos$year[[i]]
     p <- periodos$period[[i]]
-    out <- file.path(out_dir, paste0(y, "_", p, "_EPH_", type, ".rds"))
+    out <- file.path(out_dir, paste0(y, "_", p, "_EPH_", file_tag, ".rds"))
     if (file.exists(out)) {
       cat("El archivo existe:", out, "\n")
       next
