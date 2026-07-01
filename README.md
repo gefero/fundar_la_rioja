@@ -14,6 +14,8 @@ Generar un pipeline replicable que permita calcular y visualizar una serie de in
 | 09a | Tasa de informalidad por aportes a SS (% de asalariados) | Trabajo – Informalidad y Desempleo | EPH | ✓ |
 | 10 | Tasa de empleo (ocupados cada 100 hab.) | Trabajo – Participación laboral | EPH | ✓ |
 | 12 | % de población +25 con estudios superiores completos | Desarrollo – Educación | EPH | ✓ |
+| 13a | % Hogares con Necesidades Básicas Insatisfechas (NBI) | Desarrollo – Pobreza | EPH | ✓ |
+| 13b | % Población en hogares con NBI | Desarrollo – Pobreza | EPH | ✓ |
 | — | Salarios en el sector formal (público y privado) | Trabajo – Salarios e ingresos | — | Pendiente |
 | — | Puestos de trabajo asalariados formales privados totales | Trabajo – Salarios e ingresos | — | Pendiente |
 | — | Cantidad de empleados públicos cada 1.000 hab. | Trabajo – Salarios e ingresos | — | Pendiente |
@@ -35,7 +37,9 @@ fundar_la_rioja/
 │   ├── 04_desoc.R                # Visualización: tasa de desocupación
 │   ├── 09a_informalidad_aportes.R # Visualización: tasa de informalidad (aportes)
 │   ├── 10_tasa_empleo.R          # Visualización: tasa de empleo
-│   └── 12_educ.R                 # Visualización: % población +25 con estudios superiores
+│   ├── 12_educ.R                 # Visualización: % población +25 con estudios superiores
+│   ├── 13a_nbi_hogares.R         # Visualización: % hogares con NBI
+│   └── 13b_nbi_poblacion.R       # Visualización: % población en hogares con NBI
 ├── data/
 │   ├── raw_data/                 # Microdatos EPH por año y trimestre (*.rds)
 │   └── inputs_md/                # Agregados por indicador listos para graficar (*.csv)
@@ -81,6 +85,8 @@ Calcula los indicadores agrupando por `fecha`, `REGION`, `AGLOMERADO` y `la_rioj
 | `09a_tasa_informalidad_aportes.csv` | Tasa de informalidad (aportes) | `tasa_inf_aportes` |
 | `10_tasa_empleo.csv` | Tasa de empleo | `tasa_empleo` |
 | `12_mayor_25_superior.csv` | % población +25 con estudios superiores | `porc_mayor_25_superior` |
+| `13a_nbi_hogares.csv` | % Hogares con NBI (total y por sub-dimensión) | `pct_hogares_NBI_TOT` |
+| `13b_nbi_poblacion.csv` | % Población en hogares con NBI (total y por sub-dimensión) | `pct_pob_NBI_TOT` |
 
 ### 5. Visualización
 
