@@ -28,6 +28,14 @@ jefe_educ <- df_ind %>%
     CH13_jefe = first(CH13),
     CH14_jefe = first(CH14),
     .groups = "drop"
+  ) %>%
+  mutate(
+    # CH14 viene vacío ("") por patrón de salto normal (cuando CH13=="Sí" no
+    # aplica la pregunta), y en un puñado de casos con texto no numérico. Se
+    # reemplaza por NA ANTES de convertir a número, para que as.numeric() nunca
+    # reciba un string no numérico y no dispare "NAs introduced by coercion".
+    CH14_jefe = if_else(grepl("^[0-9]+$", CH14_jefe), CH14_jefe, NA_character_),
+    CH14_num  = as.numeric(CH14_jefe)
   )
 
 agg_ind <- ocupados_esc %>%
@@ -37,8 +45,8 @@ agg_ind <- ocupados_esc %>%
     primaria_3er_grado = case_when(
       is.na(CH12_jefe) ~ NA_real_,                                  # jefe no identificado -> excluir
       CH12_jefe %in% c("Primario", "EGB") & CH13_jefe == "Sí" ~ 1,
-      CH12_jefe %in% c("Primario", "EGB") & CH13_jefe == "No" & as.numeric(CH14_jefe) >= 3 ~ 1,
-      CH12_jefe %in% c("Primario", "EGB") & CH13_jefe == "No" & as.numeric(CH14_jefe) < 3 ~ 0,
+      CH12_jefe %in% c("Primario", "EGB") & CH13_jefe == "No" & CH14_num >= 3 ~ 1,
+      CH12_jefe %in% c("Primario", "EGB") & CH13_jefe == "No" & CH14_num < 3 ~ 0,
       CH12_jefe == "Sin instrucción" ~ 0,
       TRUE ~ 1  # secundario o más implica primario completo
     )
