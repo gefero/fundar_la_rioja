@@ -23,7 +23,7 @@ Generar un pipeline replicable que permita calcular y visualizar una serie de in
 | — | Trayectoria escolar | Desarrollo – Educación | — | Pendiente |
 | — | PIB provincial | Macroeconomía – Crecimiento | — | Pendiente |
 | — | % del PIB que es industrial | Macroeconomía – Crecimiento | — | Pendiente |
-| — | Cantidad de empresas | Macroeconomía – Crecimiento | — | Pendiente |
+| — | Cantidad de empresas | Macroeconomía – Crecimiento | — | ✓ |
 | — | Exportaciones | Macroeconomía – Crecimiento | — | Pendiente |
 | — | Resultado fiscal (ingreso total – gasto total) | Macroeconomía – Crecimiento | — | Pendiente |
 | — | Recursos propios sobre recursos totales | Macroeconomía – Crecimiento | — | Pendiente |
