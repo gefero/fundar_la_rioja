@@ -7,7 +7,8 @@ vars <- c("ANO4", "TRIMESTRE","CODUSU", "NRO_HOGAR", ## identificadores
           "REGION", "AGLOMERADO", "PONDERA", # region
           "IV1","IV2", # vivienda
           "IV4", "IV5", "IV6", "IV7", "IV8", "IV9", "IV10", "IV11" , # saneamiento 
-          "II1", "II2" # hacinamiento
+          "II1", "II2", # hacinamiento
+          "IX_TOT" # Total miembros
           )
 
 periods <- expand_grid(year = 2007:2025, period = 1:4)
@@ -16,7 +17,7 @@ for (i in 1:nrow(periods)){
   p <- periods$period[[i]]
   y <- periods$year[[i]]
   
-  out <- paste0('./data/raw_data/hogar/', y, "_", p, "_EPH_hogar.rds")
+  out <- paste0('./data/raw_data/eph/hogar/', y, "_", p, "_EPH_hogar.rds")
   
   if (!file.exists(out)){
     
@@ -37,7 +38,7 @@ for (i in 1:nrow(periods)){
 tictoc::toc()
 
 # 1. Get a list of all CSV files with their full system paths
-files <- list.files(path = "./data/raw_data/hogar/", 
+files <- list.files(path = "./data/raw_data/eph/hogar/", 
                     pattern = "\\.rds$", 
                     full.names = TRUE)
 
