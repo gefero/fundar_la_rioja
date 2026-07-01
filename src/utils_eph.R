@@ -51,7 +51,14 @@ limpiar_base_eph <- function(files_dir, type, cols_a_character) {
     mutate(
       ANO4 = as.numeric(ANO4),
       TRIMESTRE = unclass(TRIMESTRE),
-      fecha = paste0(ANO4, "-Q", TRIMESTRE)
+      fecha = paste0(ANO4, "-Q", TRIMESTRE),
+      # organize_labels() deja CODUSU/NRO_HOGAR como clase "labelled" (expss/haven).
+      # Individuo y hogar se etiquetan por separado, así que sus atributos de
+      # etiqueta terminan siendo distintos aunque el valor sea el mismo, y
+      # dplyr::left_join() los trata como tipos incompatibles. Se sacan las
+      # etiquetas acá para que ambas bases queden con claves de join planas.
+      CODUSU = as.character(CODUSU),
+      NRO_HOGAR = as.numeric(NRO_HOGAR)
     )
 }
 
