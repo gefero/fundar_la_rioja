@@ -55,10 +55,11 @@ limpiar_base_eph <- function(files_dir, type, cols_a_character) {
       # organize_labels() deja CODUSU/NRO_HOGAR como clase "labelled" (expss/haven).
       # Individuo y hogar se etiquetan por separado, así que sus atributos de
       # etiqueta terminan siendo distintos aunque el valor sea el mismo, y
-      # dplyr::left_join() los trata como tipos incompatibles. Se sacan las
-      # etiquetas acá para que ambas bases queden con claves de join planas.
-      CODUSU = as.character(CODUSU),
-      NRO_HOGAR = as.numeric(NRO_HOGAR)
+      # dplyr::left_join() los trata como tipos incompatibles. unclass() saca
+      # cualquier clase/atributo antes de castear, sin depender de que
+      # as.character()/as.numeric() por sí solos remuevan la clase "labelled".
+      CODUSU = as.character(unclass(CODUSU)),
+      NRO_HOGAR = as.numeric(unclass(NRO_HOGAR))
     )
 }
 
