@@ -5,7 +5,7 @@ library(lubridate)
 ## Descarga datos
 vars <- c("ANO4", "TRIMESTRE","CODUSU", "NRO_HOGAR", "COMPONENTE", ## identificadores
           "REGION", "AGLOMERADO", "PONDERA", # region
-          "CH04", "CH06", "NIVEL_ED", # demográficas
+          "CH03", "CH04", "CH06", "NIVEL_ED", "CH10", "CH12", "CH13", "CH14", # demográficas
           "ESTADO", "CAT_OCUP", # laborales
           "PP04C", "PP04C99", # informalidad tamaño 
           "PP07H", "PP07I", #informalidad registro
@@ -17,7 +17,7 @@ for (i in 1:nrow(periods)){
   p <- periods$period[[i]]
   y <- periods$year[[i]]
   
-  out <- paste0('./data/raw_data/', y, "_", p, "_EPH_individuo.rds")
+  out <- paste0('./data/raw_data/eph/individuo/', y, "_", p, "_EPH_individuo.rds")
   
   if (!file.exists(out)){
     
