@@ -12,11 +12,18 @@ ocupados_esc <- df_ind %>%
   group_by(CODUSU, NRO_HOGAR, fecha) %>%
   summarise(
     ocupados         = sum(ESTADO == "Ocupado", na.rm = TRUE),
-    # Con y sin tilde, mismo patrón defensivo que IV8/IV9/PP07H/PP07I (issue #2:
-    # "Sí, asiste" solo, sin la variante sin tilde, dejaba pct_hogares_NBI_ESC
-    # sospechosamente alto -- ver diagnóstico en el issue).
+    # Match positivo contra las categorías de "no asiste" (en vez de negar
+    # "asiste"), con y sin tilde por las dudas de codificación -- issue #3.
+    # Excluye a propósito el código "no corresponde" (CH10==0), que la
+    # verificación independiente en Python (sobre los códigos numéricos
+    # crudos, sin pasar por organize_labels()) mostró que no debe contarse
+    # como "no asiste": entre niños de 6-12 años es un caso raro (24 sobre
+    # 439.361 registros) y conceptualmente no es lo mismo que "no asiste".
     hay_nino_sin_esc = any(CH06 >= 6 & CH06 <= 12 &
-                             !(CH10 %in% c("Sí, asiste", "Si, asiste")), na.rm = TRUE),
+                             CH10 %in% c("Nunca asistió", "Nunca asistio",
+                                         "No asiste, pero asistió", "No asiste, pero asistio",
+                                         "Ns./Nr.", "Ns/Nr.", "Ns./Nr", "Ns/Nr"),
+                           na.rm = TRUE),
     .groups = "drop"
   )
 
