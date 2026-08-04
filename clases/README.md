@@ -36,9 +36,14 @@ Cada clase tiene la misma estructura:
 clase_N_.../
 ├── guion.md       # minutado del dictado: qué se dice, con qué slides y qué anclaje en el repo
 ├── practica.md    # consignas de los ejercicios, para repartir a los participantes
-├── ejercicios/    # scripts .R con TODOs, para completar en clase
+├── practica.Rmd   # los mismos ejercicios, empaquetados en un notebook único
+├── ejercicios/    # los .R de la práctica, sueltos (mismo contenido que practica.Rmd)
 └── soluciones/    # scripts .R resueltos
 ```
+
+`practica.md` y `practica.Rmd` tienen la misma consigna; `ejercicios/*.R` y `practica.Rmd` tienen
+el mismo código. Usá lo que prefieras: archivos sueltos para ir de a uno, o el notebook para
+navegar toda la clase en un solo documento con la consigna al lado de cada chunk.
 
 ## Antes de la primera clase
 
@@ -66,6 +71,9 @@ En [`materiales/`](materiales/):
 - **[`Informe_final_argendata.pdf`](materiales/Informe_final_argendata.pdf)** — *Evaluación, análisis
   y propuesta de mejoras del sistema de visualizaciones de Argendata* (Rosati, 2024). Es la fuente
   del catálogo de herramientas gráficas de la clase 2.
+- **[`paleta_regional_swatch.R`](materiales/paleta_regional_swatch.R)** — genera un swatch de los
+  3 colores regionales, leyendo `FUNDAR_MULTI` desde `style/fundar_monitor_theme.R` (no repite los
+  hex), en `outputs/plots/paleta_regional_la_rioja.png`.
 - **`../Copia de Pract_Clase_1_introducción.pdf`** — el deck de 169 diapositivas del que salen los
   bloques teóricos de las clases 1 y 2. Los guiones indican qué diapositivas usa cada bloque.
 

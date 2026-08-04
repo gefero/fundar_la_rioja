@@ -30,6 +30,7 @@ paquetes <- c(
   "ggrepel",      # etiquetas sin solapamiento (lo usa src/03b_...)
   "scales",       # formateo de ejes
   "lubridate",    # fechas
+  "rmarkdown",    # tejer los practica.Rmd de cada clase (trae knitr)
   # Clase 2: auditoría de paletas
   "farver",       # distancias perceptuales entre colores (ΔE)
   "colorspace",   # simulación de daltonismo

@@ -1,0 +1,474 @@
+---
+title: "Clase 1 — Práctica: Gramática de gráficos y percepción"
+subtitle: "Taller de visualización de datos — Monitor La Rioja (Fundar)"
+date: "`r format(Sys.Date(), '%d de %B de %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: false
+    theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE, warning = FALSE, message = FALSE)
+```
+
+> **Cómo usar este notebook.** Los chunks tienen `eval = FALSE` a propósito: varios contienen
+> `______` (blancos a completar) que no son R válido y romperían un `Knit`. Para la práctica no
+> hace falta tejer el documento — corré cada chunk de forma interactiva con **Ctrl+Enter**
+> (Cmd+Enter en Mac), en orden, igual que harías con los `.R` de `ejercicios/`. El texto de cada
+> sección es la misma consigna de `practica.md`.
+>
+> Antes de empezar: abrí `fundar_larioja.Rproj` en RStudio. Los tres ejercicios trabajan sobre
+> los CSV de `data/inputs_md/`, ya versionados — **no hace falta descargar microdatos**.
+>
+> **Ojo con las rutas.** Los `.R` de `ejercicios/` asumen la raíz del repo como directorio de
+> trabajo (lo fija el `.Rproj`). R Markdown funciona distinto: tanto al tejer como al correr
+> chunks de forma interactiva, usa **la carpeta donde vive el propio `.Rmd`** como directorio de
+> trabajo por defecto. Por eso las rutas de este notebook llevan `../../` adelante — para volver
+> a la raíz del repo desde `clases/clase_1_gramatica_y_percepcion/` — mientras que los `.R`
+> originales las usan sin prefijo.
+>
+> Si te trabás, la solución completa está en `soluciones/`. Miralas después de intentarlo.
+
+```{r libs}
+library(tidyverse)
+source("../../style/fundar_monitor_theme.R")
+```
+
+---
+
+# Ejercicio 1 — La gramática, capa por capa (15')
+
+Vamos a reconstruir el gráfico de la tasa de desocupación (`src/04_desoc.R`) desde cero, agregando
+**una capa por vez** y ejecutando en cada paso.
+
+La consigna es simple pero importante: **ejecutá cada chunk y mirá el gráfico antes de pasar al
+siguiente.** El objetivo no es llegar al gráfico final —ya existe— sino ver qué aporta exactamente
+cada línea.
+
+**Preguntas para responder mientras lo hacés** (las vas a necesitar para la puesta en común):
+
+- En el paso 2, ¿por qué ggplot dibuja una sola línea que va y viene? ¿Qué le falta saber?
+- En el paso 4, `color = la_rioja_region` va **dentro** de `aes()` y `linewidth = 0.7` va
+  **fuera**. ¿Cuál es la regla?
+- En el paso 6, ¿el tema cambió algún dato?
+
+## Los datos
+
+Un CSV de `data/inputs_md/`: la frontera entre el equipo de datos y el de comunicación. Tres
+regiones × 72 trimestres.
+
+```{r ej1-datos, eval=TRUE}
+df <- read_csv("../../data/inputs_md/04_tasa_desoc.csv", show_col_types = FALSE)
+
+glimpse(df)
+# fecha            : el trimestre, como texto ("2007-Q1")
+# la_rioja_region  : "1. Resto país" / "2. NOA-Resto" / "3. La Rioja"
+# desoc, pea       : los totales ponderados con los que se calculó la tasa
+# tasa_desoc       : el indicador
+```
+
+## Paso 1 — datos y mapeo estético, sin geometría
+
+`ggplot() + aes()` declara QUÉ variable va a QUÉ propiedad visual. Todavía no dijimos con qué
+dibujarlo.
+
+**Pregunta:** ¿qué se ve? ¿Por qué el eje x está tan cargado?
+
+```{r ej1-paso1}
+ggplot(df, aes(x = fecha, y = tasa_desoc))
+```
+
+## Paso 2 — agregamos la geometría
+
+`geom_line()` = la marca. Una línea (1D).
+
+¡Esto va a salir mal! Mirá el resultado antes de seguir.
+
+**Pregunta:** ¿por qué dibuja una sola línea que sube y baja en zigzag? ¿Qué información le falta
+a ggplot?
+
+```{r ej1-paso2}
+ggplot(df, aes(x = fecha, y = tasa_desoc)) +
+  geom_line()
+```
+
+## Paso 3 — le decimos dónde cortar la línea
+
+`group` le dice a ggplot que hay TRES series, no una. Sin esto, une todos los puntos en el orden
+del eje x, saltando de una región a otra.
+
+```{r ej1-paso3}
+ggplot(df, aes(x = fecha, y = tasa_desoc,
+               group = la_rioja_region)) +
+  geom_line()
+```
+
+## Paso 4 — mapeamos la región al color
+
+Ahora la región está codificada en DOS canales: agrupamiento y matiz.
+
+**Atención** a la diferencia: `color = la_rioja_region` va **dentro** de `aes()` (depende del
+dato); `linewidth = 0.7` va **fuera** (es una constante). Confundir esto es el error nº 1 de quien
+arranca con ggplot. Probá poner `linewidth` adentro de `aes()` y mirá qué pasa con la leyenda.
+
+```{r ej1-paso4}
+ggplot(df, aes(x = fecha, y = tasa_desoc,
+               group = la_rioja_region,
+               color = la_rioja_region)) +
+  geom_line(linewidth = 0.7)
+```
+
+## Paso 5 — la escala del proyecto
+
+Hasta acá ggplot eligió los colores solo. `scale_color_fundar_multi()` impone la paleta
+institucional: dos tonos claros para el resto y el teal oscuro para La Rioja.
+
+**Pregunta:** ¿cuánto tardás en encontrar La Rioja antes y después de esta línea?
+
+```{r ej1-paso5}
+ggplot(df, aes(x = fecha, y = tasa_desoc,
+               group = la_rioja_region,
+               color = la_rioja_region)) +
+  geom_line(linewidth = 0.7) +
+  scale_color_fundar_multi(name = "Región")
+```
+
+## Paso 6 — el tema
+
+`theme_monitor()` no toca NINGÚN dato: solo decide cómo se ve lo que no es dato (fondo, grilla,
+tipografía, posición de la leyenda). Por eso vive en un archivo aparte y se aplica igual a los
+diez indicadores del monitor.
+
+`ylim(0, 20)` sí es una escala: fuerza que el eje y arranque en cero.
+
+```{r ej1-paso6}
+ggplot(df, aes(x = fecha, y = tasa_desoc,
+               group = la_rioja_region,
+               color = la_rioja_region)) +
+  geom_line(linewidth = 0.7) +
+  scale_color_fundar_multi(name = "Región") +
+  ylim(0, 20) +
+  theme_monitor()
+```
+
+## Paso 7 — la anotación
+
+Título, ejes y fuente. Esto es lo que separa un gráfico de exploración de un gráfico publicable.
+Volvemos sobre cómo redactarlos en la clase 3.
+
+```{r ej1-paso7}
+ggplot(df, aes(x = fecha, y = tasa_desoc,
+               group = la_rioja_region,
+               color = la_rioja_region)) +
+  geom_line(linewidth = 0.7) +
+  scale_color_fundar_multi(name = "Región") +
+  ylim(0, 20) +
+  theme_monitor() +
+  labs(title   = "Tasa de desocupación",
+       x       = "Año-Trimestre",
+       y       = "Tasa de desocupación (%)",
+       caption = fuente_fundar("EPH-INDEC"))
+```
+
+Llegamos exactamente a `src/04_desoc.R`. Abrilo y comparalo.
+
+## Extra (si te sobra tiempo)
+
+El eje x tiene 72 etiquetas de texto a 45°: es ilegible. Pasa porque `fecha` es un string
+(`"2007-Q1"`) y ggplot trata cada valor como una categoría. Convirtiéndolo a fecha real, ggplot
+puede elegir marcas cada N años. (Esto lo retomamos en la clase 2 como caso de "visual
+cluttering".)
+
+```{r ej1-extra}
+df %>%
+  mutate(fecha = lubridate::yq(fecha)) %>%
+  ggplot(aes(x = fecha, y = tasa_desoc,
+             group = la_rioja_region, color = la_rioja_region)) +
+  geom_line(linewidth = 0.7) +
+  scale_color_fundar_multi(name = "Región") +
+  scale_x_date(date_labels = "%Y", date_breaks = "2 years") +
+  ylim(0, 20) +
+  theme_monitor() +
+  labs(title = "Tasa de desocupación", x = NULL, y = "% de la PEA",
+       caption = fuente_fundar("EPH-INDEC"))
+```
+
+---
+
+# Ejercicio 2 — Tres mapeos del mismo dato (15')
+
+`data/inputs_md/13a_nbi_hogares.csv` tiene, para cada trimestre y cada región, el porcentaje de
+hogares con NBI **total** y también las **cinco sub-dimensiones**: hacinamiento (`HAC`), vivienda
+inconveniente (`VIV`), condiciones sanitarias (`SAN`), escolaridad (`ESC`) y capacidad de
+subsistencia (`SUB`).
+
+Hoy `src/13a_nbi_hogares.R` grafica **solo el total**, con una línea por región. Las cinco
+sub-dimensiones están calculadas y no se muestran en ningún lado.
+
+Tenés tres versiones del mismo dato para completar:
+
+- **Versión A** — color = dimensión, un panel por región.
+- **Versión B** — color = región, un panel por dimensión.
+- **Versión C** — todo superpuesto en un solo panel: color = región, tipo de línea = dimensión.
+
+**La consigna no es "cuál es la más linda", es "a qué pregunta responde mejor cada una".** Anotá,
+para cada versión, una pregunta que se conteste bien mirándola:
+
+| Versión | ¿Qué pregunta contesta bien? | ¿Qué pregunta contesta mal? |
+|---|---|---|
+| A | | |
+| B | | |
+| C | | |
+
+Pistas de discusión:
+
+- ¿Cuál sirve para "¿qué privación pesa más en La Rioja?"
+- ¿Cuál sirve para "¿La Rioja está mejor o peor que el NOA en hacinamiento?"
+- La versión C usa **dos canales a la vez** (matiz y tipo de línea) sobre la misma marca. Mirando
+  la slide 37 del deck, ¿son separables? ¿Cuántas series terminás viendo?
+
+## Datos
+
+```{r ej2-datos, eval=TRUE}
+df <- read_csv("../../data/inputs_md/13a_nbi_hogares.csv", show_col_types = FALSE)
+
+glimpse(df)
+# pct_hogares_NBI_TOT + pct_hogares_NBI_{HAC, VIV, SAN, ESC, SUB}
+```
+
+## Preparación: de formato ancho a formato largo
+
+ggplot necesita UNA fila por (trimestre, región, dimensión). Hoy las dimensiones son 6 columnas
+distintas: hay que apilarlas. (Este paso —`pivot_longer`— es el 80% del trabajo de preparar datos
+para graficar. Vale la pena leerlo con calma.)
+
+```{r ej2-largo, eval=TRUE}
+df_largo <- df %>%
+  select(fecha, la_rioja_region, starts_with("pct_hogares_NBI_")) %>%
+  pivot_longer(
+    cols      = starts_with("pct_hogares_NBI_"),
+    names_to  = "dimension",
+    values_to = "pct"
+  ) %>%
+  mutate(
+    dimension = str_remove(dimension, "pct_hogares_NBI_"),
+    dimension = recode(dimension,
+                       TOT = "Total",
+                       HAC = "Hacinamiento",
+                       VIV = "Vivienda",
+                       SAN = "Sanitarias",
+                       ESC = "Escolaridad",
+                       SUB = "Subsistencia"),
+    fecha = lubridate::yq(fecha)   # a fecha real, para que el eje x respire
+  ) %>%
+  filter(dimension != "Total")     # las 5 sub-dimensiones; el total ya se grafica
+
+glimpse(df_largo)
+```
+
+## Versión A — color = dimensión, un panel por región
+
+**TODO:** completá el `aes()` y el `facet_wrap()`.
+
+- `color` debe mapear a `dimension`
+- el facetado debe partir por `la_rioja_region`
+
+```{r ej2-version-a}
+df_largo %>%
+  ggplot(aes(x = fecha, y = pct,
+             group = dimension,
+             color = ______)) +          # <-- TODO
+  geom_line(linewidth = 0.6) +
+  facet_wrap(~ ______) +                  # <-- TODO
+  theme_monitor() +
+  labs(title = "Versión A — una dimensión por color, un panel por región",
+       x = NULL, y = "% de hogares",
+       caption = fuente_fundar("EPH-INDEC"))
+```
+
+**Pregunta:** mirando el panel de La Rioja, ¿podés decir qué privación pesa más?
+
+## Versión B — color = región, un panel por dimensión
+
+**TODO:** es la versión A dada vuelta. Cambiá qué va al color y qué al facet. Usá
+`scale_color_fundar_multi()` para que La Rioja se destaque.
+
+```{r ej2-version-b}
+df_largo %>%
+  ggplot(aes(x = fecha, y = pct,
+             group = ______,             # <-- TODO
+             color = ______)) +          # <-- TODO
+  geom_line(linewidth = 0.6) +
+  scale_color_fundar_multi(name = "Región") +
+  facet_wrap(~ ______, scales = "free_y") +   # <-- TODO
+  theme_monitor() +
+  labs(title = "Versión B — una región por color, un panel por dimensión",
+       x = NULL, y = "% de hogares",
+       caption = fuente_fundar("EPH-INDEC"))
+```
+
+**Preguntas:**
+
+- ¿Podés decir si La Rioja está mejor o peor que el NOA en hacinamiento? ¿Y en la versión A?
+- `scales = "free_y"` hace que cada panel tenga su propia escala. ¿Qué se gana y qué se pierde con
+  eso?
+
+## Versión C — todo superpuesto: color = región, linetype = dimensión
+
+Sin facetado: dos canales sobre la misma marca, en un solo panel.
+
+```{r ej2-version-c}
+df_largo %>%
+  ggplot(aes(x = fecha, y = pct,
+             group    = interaction(la_rioja_region, dimension),
+             color    = la_rioja_region,
+             linetype = dimension)) +
+  geom_line(linewidth = 0.6) +
+  scale_color_fundar_multi(name = "Región") +
+  theme_monitor() +
+  labs(title = "Versión C — todo en un panel",
+       x = NULL, y = "% de hogares",
+       caption = fuente_fundar("EPH-INDEC"))
+```
+
+**Preguntas:**
+
+- ¿Cuántas series hay dibujadas? (contá: regiones × dimensiones)
+- Mirando la slide 37 del deck: matiz + tipo de línea, ¿son separables?
+- ¿Podés seguir UNA serie de punta a punta?
+
+## Para la puesta en común
+
+Completá:
+
+| Versión | ¿Qué pregunta contesta BIEN? | ¿Qué pregunta contesta MAL? |
+|---------|------------------------------|------------------------------|
+| A       |                              |                              |
+| B       |                              |                              |
+| C       |                              |                              |
+
+---
+
+# Ejercicio 3 — Romper el gráfico a propósito (10')
+
+Este ejercicio es para **comprobar en carne propia** la jerarquía de canales que vimos en la
+teoría.
+
+Tomá el gráfico de la tasa de empleo (`data/inputs_md/10_tasa_empleo.csv`) y hacé tres versiones
+donde la región se codifique con canales distintos:
+
+- **A** — con `color` (el canal que usa el repo).
+- **B** — con `shape` (forma del punto).
+- **C** — con `size` (grosor de línea).
+
+Después, para cada una, contestá lo más honestamente posible:
+
+1. ¿Cuánto tardás en encontrar la serie de **La Rioja**?
+2. Si dos series se cruzan, ¿podés seguirlas?
+3. ¿Podrías distinguir seis series en vez de tres con ese canal?
+
+**Bonus (2'):** en la versión A, cambiá la paleta del proyecto por una donde las tres regiones
+tengan la **misma luminancia** (el chunk de bonus trae una preparada). La Rioja deja de saltar a
+la vista. Ese es, exactamente, el efecto que la paleta del proyecto está diseñada para producir.
+
+## Datos
+
+```{r ej3-datos, eval=TRUE}
+df <- read_csv("../../data/inputs_md/10_tasa_empleo.csv", show_col_types = FALSE) %>%
+  mutate(fecha = lubridate::yq(fecha))
+```
+
+## Versión A — región mapeada a COLOR (matiz + luminancia)
+
+Es lo que hace el repo.
+
+```{r ej3-version-a}
+df %>%
+  ggplot(aes(x = fecha, y = tasa_empleo,
+             group = la_rioja_region,
+             color = la_rioja_region)) +
+  geom_line(linewidth = 0.7) +
+  scale_color_fundar_multi(name = "Región") +
+  theme_monitor() +
+  labs(title = "A — región por COLOR", x = NULL, y = "Tasa de empleo (%)")
+```
+
+**Cronometrate:** ¿cuánto tardás en encontrar la serie de La Rioja?
+
+## Versión B — región mapeada a FORMA del punto
+
+La forma es, según Munzner, el PEOR canal para variables categóricas. Necesitamos puntos (la
+forma no se puede aplicar a una línea).
+
+```{r ej3-version-b}
+df %>%
+  ggplot(aes(x = fecha, y = tasa_empleo,
+             group = la_rioja_region,
+             shape = la_rioja_region)) +
+  geom_line(linewidth = 0.4, color = "grey40") +
+  geom_point(size = 1.6, color = "grey20") +
+  theme_monitor() +
+  labs(title = "B — región por FORMA", x = NULL, y = "Tasa de empleo (%)")
+```
+
+**Preguntas:**
+
+- ¿Cuánto tardás ahora en encontrar La Rioja?
+- Donde dos series se cruzan, ¿podés seguirlas?
+- ¿Distinguirías SEIS regiones con este canal?
+
+## Versión C — región mapeada a TAMAÑO (grosor de línea)
+
+El tamaño tiene ordinalidad implícita: sugiere que una categoría es "más" que otra. Para una
+variable puramente categórica, eso es información falsa.
+
+```{r ej3-version-c}
+df %>%
+  ggplot(aes(x = fecha, y = tasa_empleo,
+             group     = la_rioja_region,
+             linewidth = la_rioja_region)) +
+  geom_line(color = "grey25") +
+  scale_linewidth_manual(values = c(0.4, 0.9, 1.6), name = "Región") +
+  theme_monitor() +
+  labs(title = "C — región por TAMAÑO", x = NULL, y = "Tasa de empleo (%)")
+```
+
+**Pregunta:** ¿qué te sugiere que "3. La Rioja" sea la línea más gruesa? ¿Es información que está
+en los datos o la agregó el gráfico?
+
+## Bonus — la misma paleta, sin contraste de luminancia
+
+Volvemos a la versión A, pero con tres colores de LUMINANCIA PAREJA. El matiz sigue distinguiendo
+las regiones... pero La Rioja deja de saltar a la vista.
+
+Ese contraste es exactamente lo que la paleta del proyecto está diseñada para producir (ver
+`style/fundar_monitor_theme.R:25-31`).
+
+```{r ej3-bonus}
+PALETA_PLANA <- c("#7FB3D5", "#7FD5A8", "#D5B37F")   # tres tonos, misma luminancia
+
+df %>%
+  ggplot(aes(x = fecha, y = tasa_empleo,
+             group = la_rioja_region,
+             color = la_rioja_region)) +
+  geom_line(linewidth = 0.7) +
+  scale_color_manual(values = PALETA_PLANA, name = "Región") +
+  theme_monitor() +
+  labs(title = "BONUS — misma paleta, sin contraste de luminancia",
+       x = NULL, y = "Tasa de empleo (%)")
+```
+
+**Pregunta final:** compará esta con la versión A. ¿Cuál usarías en un informe donde el
+protagonista es La Rioja? ¿Y en uno que compara las tres regiones en pie de igualdad?
+
+---
+
+# Puesta en común (10')
+
+Traé a la puesta en común:
+
+- Del ejercicio 2: tu tabla de "qué pregunta contesta cada versión".
+- Del ejercicio 3: en cuál de las tres versiones tardaste más en encontrar La Rioja.
