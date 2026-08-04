@@ -43,9 +43,22 @@ esas copias automáticamente. La app queda en
 
 ## 2. Sitio estático en GitHub Pages
 
-El workflow `.github/workflows/dashboard.yml` renderiza `dashboard/index.qmd` a
-un HTML autocontenido y lo publica en la rama `gh-pages` en cada push a `main`
-que toque el dashboard o los datos.
+El workflow `.github/workflows/dashboard.yml` publica **dos secciones del mismo
+sitio** en un solo deploy a la rama `gh-pages`:
+
+- **`/`** — `dashboard/index.qmd` renderizado a un HTML autocontenido (Quarto).
+- **`/clases/`** — los materiales del taller de visualización (`clases/`),
+  convertidos con Pandoc: `guion.md`/`practica.md` de cada clase a HTML legible
+  en el navegador, y `practica.Rmd` + `ejercicios/*.R` + `soluciones/*` +
+  `materiales/*` copiados tal cual como descarga, más un `.zip` por clase con
+  todo el material. Fuente de verdad: `clases/index.md` (la página de
+  navegación) y `clases/_pandoc_template.html` (el template compartido).
+
+Se disparan juntos porque publican al mismo árbol (`peaceiris/actions-gh-pages`
+reemplaza `gh-pages` entero en cada corrida, `keep_files: false`): el job
+reconstruye las dos secciones en `_site/` antes de publicar, así ninguna pisa a
+la otra. El trigger incluye cambios en `dashboard/**`, `data/inputs_md/**`,
+`style/**` **y `clases/**`**.
 
 > **Estado actual:** el workflow ya corre y publica. La rama `gh-pages` existe y
 > contiene el `index.html` renderizado (autocontenido, sin recursos externos). Lo
@@ -60,15 +73,18 @@ que toque el dashboard o los datos.
 - [ ] Esperar 1–2 min la primera vez y abrir la URL:
       **`https://gefero.github.io/fundar_la_rioja/`**.
 - [ ] Verificar que carga el dashboard (no un 404 "There isn't a GitHub Pages site here").
+- [ ] Verificar también **`https://gefero.github.io/fundar_la_rioja/clases/`** (los materiales
+      del taller).
 
 Una vez activado, no hay que volver a tocar nada: cada push a `main` que toque
-`dashboard/**`, `data/inputs_md/**` o `style/**` regenera y republica el sitio solo.
-Si un render llegara a fallar, el sitio live **no se pisa** (la acción de deploy sólo
-publica cuando el render tuvo éxito).
+`dashboard/**`, `data/inputs_md/**`, `style/**` o `clases/**` regenera y republica el sitio
+entero (las dos secciones se reconstruyen juntas en cada corrida). Si un render llegara a
+fallar, el sitio live **no se pisa** (la acción de deploy sólo publica cuando el render tuvo
+éxito).
 
 ### Comprobar que el workflow corrió
 
-En la pestaña **Actions** del repo, el workflow *"Dashboard estático (GitHub Pages)"*
+En la pestaña **Actions** del repo, el workflow *"Sitio estático (GitHub Pages)"*
 debe figurar en verde para el último commit. También se puede confirmar desde la
 terminal que `gh-pages` apunta al deploy del `main` actual:
 

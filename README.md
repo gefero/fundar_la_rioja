@@ -329,7 +329,8 @@ Este repositorio corresponde al **Componente 3** de un proyecto más amplio con 
 
 El directorio [`clases/`](clases/) contiene los materiales del taller de tres clases de dos horas
 para el equipo de La Rioja (Etapa 3), con público mixto: quienes mantienen el repositorio y quienes
-comunican los resultados.
+comunican los resultados. También están publicados en
+**[gefero.github.io/fundar_la_rioja/clases/](https://gefero.github.io/fundar_la_rioja/clases/)**.
 
 | # | Clase | Contenido |
 |---|---|---|

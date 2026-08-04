@@ -3,6 +3,12 @@
 Materiales para las **3 clases de 2 horas** del Componente 3 (Etapa 3: *diseño de materiales para
 talleres de visualización de datos*).
 
+> **Publicado:** estos materiales también están en
+> **[gefero.github.io/fundar_la_rioja/clases/](https://gefero.github.io/fundar_la_rioja/clases/)**
+> — la misma estructura que este directorio, pero navegable desde el navegador (guion y práctica
+> renderizados, `.Rmd`/`.R` como descarga, un `.zip` por clase). Se regenera solo con cada push a
+> `main` que toque `clases/**` (ver [`.github/workflows/dashboard.yml`](../.github/workflows/dashboard.yml)).
+
 ## A quién está dirigido
 
 El taller tiene un público mixto y está diseñado alrededor de esa mezcla:

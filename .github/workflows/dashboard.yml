@@ -1,6 +1,9 @@
-name: Dashboard estático (GitHub Pages)
+name: Sitio estático (GitHub Pages)
 
-# Renderiza dashboard/index.qmd a HTML autocontenido y lo publica en gh-pages.
+# Renderiza dashboard/index.qmd a HTML autocontenido (queda en la raíz del sitio)
+# y publica los materiales de clases/ (queda en /clases/), todo en un mismo
+# deploy a gh-pages para no pisarse entre sí (peaceiris/actions-gh-pages
+# reemplaza el árbol completo en cada corrida con keep_files: false).
 on:
   push:
     branches: [main]
@@ -8,6 +11,7 @@ on:
       - "dashboard/**"
       - "data/inputs_md/**"
       - "style/**"
+      - "clases/**"
       - ".github/workflows/dashboard.yml"
   workflow_dispatch:
 
@@ -23,6 +27,9 @@ jobs:
 
       - name: Instalar Quarto
         uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Instalar Pandoc
+        uses: r-lib/actions/setup-pandoc@v2
 
       - name: Instalar R
         uses: r-lib/actions/setup-r@v2
@@ -48,6 +55,65 @@ jobs:
           quarto render dashboard/index.qmd
           mkdir -p _site
           cp dashboard/index.html _site/index.html
+
+      - name: Construir el sitio de clases/
+        run: |
+          set -euo pipefail
+
+          TEMPLATE="clases/_pandoc_template.html"
+          OUT="_site/clases"
+          mkdir -p "$OUT/materiales"
+
+          render_md () {
+            # render_md <origen.md> <destino.html> <título> [subtítulo]
+            local titulo_arg=(--metadata "title=$3")
+            local subtitulo_arg=()
+            if [ -n "${4:-}" ]; then subtitulo_arg=(--metadata "subtitle=$4"); fi
+            pandoc "$1" -s -t html5 --template="$TEMPLATE" \
+              "${titulo_arg[@]}" "${subtitulo_arg[@]}" -o "$2"
+          }
+
+          # ---- Página principal del taller --------------------------------
+          render_md clases/index.md "$OUT/index.html" \
+            "Taller de visualización de datos" \
+            "Monitor La Rioja · Fundar — grupo factor~data"
+
+          # ---- Materiales transversales ------------------------------------
+          render_md clases/materiales/checklist_visualizacion.md \
+            "$OUT/materiales/checklist_visualizacion.html" \
+            "Checklist de visualización"
+          render_md clases/materiales/cheatsheet_repo.md \
+            "$OUT/materiales/cheatsheet_repo.html" \
+            "Cheatsheet — mantenimiento del repositorio"
+          cp clases/materiales/00_setup.R "$OUT/materiales/"
+          cp clases/materiales/paleta_regional_swatch.R "$OUT/materiales/"
+          cp "clases/materiales/Informe_final_argendata.pdf" "$OUT/materiales/"
+          cp "clases/Copia de Pract_Clase_1_introducción.pdf" \
+             "$OUT/materiales/deck_clase_1_introduccion.pdf"
+
+          # ---- Una clase a la vez ------------------------------------------
+          declare -A TITULOS=(
+            [clase_1_gramatica_y_percepcion]="Clase 1 — Gramática de gráficos y percepción"
+            [clase_2_integridad_y_catalogo]="Clase 2 — Integridad visual y catálogo de herramientas"
+            [clase_3_pipeline_y_narrativa]="Clase 3 — Del microdato al producto"
+          )
+
+          for dir in "${!TITULOS[@]}"; do
+            titulo="${TITULOS[$dir]}"
+            src="clases/$dir"
+            dst="$OUT/$dir"
+            mkdir -p "$dst/ejercicios" "$dst/soluciones"
+
+            render_md "$src/guion.md"    "$dst/guion.html"    "$titulo" "Guion"
+            render_md "$src/practica.md" "$dst/practica.html" "$titulo" "Práctica"
+
+            cp "$src/practica.Rmd" "$dst/"
+            cp "$src"/ejercicios/*.R "$dst/ejercicios/" 2>/dev/null || true
+            cp "$src"/soluciones/*   "$dst/soluciones/"   2>/dev/null || true
+
+            # Bundle descargable con todo el material de la clase.
+            (cd clases && zip -rq "../$dst/$dir.zip" "$dir")
+          done
 
       - name: Publicar en gh-pages
         uses: peaceiris/actions-gh-pages@v4
