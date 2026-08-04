@@ -48,11 +48,13 @@ sitio** en un solo deploy a la rama `gh-pages`:
 
 - **`/`** — `dashboard/index.qmd` renderizado a un HTML autocontenido (Quarto).
 - **`/clases/`** — los materiales del taller de visualización (`clases/`),
-  convertidos con Pandoc: `guion.md`/`practica.md` de cada clase a HTML legible
-  en el navegador, y `practica.Rmd` + `ejercicios/*.R` + `soluciones/*` +
+  convertidos con Pandoc: `practica.md` de cada clase a HTML legible en el
+  navegador, y `practica.Rmd` + `ejercicios/*.R` + `soluciones/*` +
   `materiales/*` copiados tal cual como descarga, más un `.zip` por clase con
-  todo el material. Fuente de verdad: `clases/index.md` (la página de
-  navegación) y `clases/_pandoc_template.html` (el template compartido).
+  ese material. Fuente de verdad: `clases/index.md` (la página de navegación)
+  y `clases/_pandoc_template.html` (el template compartido).
+  `guion.md` (el minutado para quien dicta) **no se publica**: ni como página
+  ni adentro del zip, queda solo en el repo.
 
 Se disparan juntos porque publican al mismo árbol (`peaceiris/actions-gh-pages`
 reemplaza `gh-pages` entero en cada corrida, `keep_files: false`): el job

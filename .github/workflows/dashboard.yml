@@ -104,15 +104,16 @@ jobs:
             dst="$OUT/$dir"
             mkdir -p "$dst/ejercicios" "$dst/soluciones"
 
-            render_md "$src/guion.md"    "$dst/guion.html"    "$titulo" "Guion"
             render_md "$src/practica.md" "$dst/practica.html" "$titulo" "Práctica"
 
             cp "$src/practica.Rmd" "$dst/"
             cp "$src"/ejercicios/*.R "$dst/ejercicios/" 2>/dev/null || true
             cp "$src"/soluciones/*   "$dst/soluciones/"   2>/dev/null || true
 
-            # Bundle descargable con todo el material de la clase.
-            (cd clases && zip -rq "../$dst/$dir.zip" "$dir")
+            # Bundle descargable con todo el material de la clase. guion.md queda
+            # afuera a propósito: es material interno para quien dicta, no para
+            # publicar (ni como página ni adentro del zip).
+            (cd clases && zip -rq "../$dst/$dir.zip" "$dir" -x "$dir/guion.md")
           done
 
       - name: Publicar en gh-pages

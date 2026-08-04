@@ -29,7 +29,6 @@ descargar microdatos** para hacer el taller.
 Cómo está construido un script de visualización del repo, capa por capa. Marcas, canales y
 jerarquía perceptual: por qué un gráfico se entiende o no.
 
-- [Guion (para quien dicta)](./clase_1_gramatica_y_percepcion/guion.html)
 - [Práctica — consigna](./clase_1_gramatica_y_percepcion/practica.html)
 - [Práctica — notebook (.Rmd)](./clase_1_gramatica_y_percepcion/practica.Rmd)
 - Ejercicios sueltos:
@@ -47,7 +46,6 @@ jerarquía perceptual: por qué un gráfico se entiende o no.
 Tufte y el caso Challenger, factor de mentira, el catálogo de herramientas gráficas de Argendata y
 cómo elegir la correcta según la pregunta que se busca responder.
 
-- [Guion (para quien dicta)](./clase_2_integridad_y_catalogo/guion.html)
 - [Práctica — consigna](./clase_2_integridad_y_catalogo/practica.html)
 - [Práctica — notebook (.Rmd)](./clase_2_integridad_y_catalogo/practica.Rmd)
 - Ejercicios sueltos:
@@ -68,7 +66,6 @@ cómo elegir la correcta según la pregunta que se busca responder.
 El pipeline completo (descarga, limpieza, indicadores, publicación), cómo alinear narrativa y
 visualización, y una práctica integradora: agregar un indicador nuevo al monitor de punta a punta.
 
-- [Guion (para quien dicta)](./clase_3_pipeline_y_narrativa/guion.html)
 - [Práctica — consigna](./clase_3_pipeline_y_narrativa/practica.html)
 - [Práctica — notebook (.Rmd)](./clase_3_pipeline_y_narrativa/practica.Rmd)
 - Ejercicios sueltos:
