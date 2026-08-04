@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clase 3 — Del microdato al
+producto · Taller de visualización — Monitor La Rioja</title>
+<style>
+  /* Paleta: la misma de style/fundar_monitor_theme.R (FUNDAR_VERDE, FUNDAR_BEIGE,
+     FUNDAR_OSCURO, FUNDAR_MULTI serie_3), para que esta sección se sienta parte
+     del mismo sitio que el dashboard, no un tema importado de otro lado. */
+  :root {
+    --bg: #FBFAF6;
+    --panel: #FFFFFF;
+    --ink: #1C1C1C;        /* FUNDAR_OSCURO / FUNDAR_TEXTO */
+    --ink-muted: #6b6558;
+    --rule: #E4DFD3;
+    --banner-a: #2D6E6E;   /* FUNDAR_MULTI serie_3 — La Rioja */
+    --banner-b: #1C1C1C;   /* FUNDAR_OSCURO */
+    --accent: #2D6E6E;
+    --code-bg: #EDE8E0;    /* FUNDAR_BEIGE */
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  a { color: var(--accent); }
+  a:hover { text-decoration: none; }
+
+  .site-nav {
+    background: var(--ink);
+    padding: 10px 24px;
+    font-size: 0.82rem;
+  }
+  .site-nav a {
+    color: #EFEAE0;
+    text-decoration: none;
+    margin-right: 18px;
+    letter-spacing: 0.02em;
+  }
+  .site-nav a:hover { text-decoration: underline; }
+
+  header.banner {
+    background: linear-gradient(120deg, var(--banner-a), var(--banner-b));
+    color: #FFFFFF;
+    padding: 48px 24px 40px;
+  }
+  header.banner .inner { max-width: 760px; margin: 0 auto; }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #C9E8DE;
+    margin: 0 0 10px;
+  }
+  header.banner h1 {
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    line-height: 1.2;
+    margin: 0 0 8px;
+  }
+  header.banner .subtitle {
+    font-size: 1.02rem;
+    color: #E4F2ED;
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  main h2 {
+    margin-top: 2.2em;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+  }
+  main h3 {
+    margin-top: 1.8em;
+    color: var(--banner-a);
+  }
+  main ul { padding-left: 1.3em; }
+  main li { margin-bottom: 4px; }
+
+  main blockquote {
+    margin: 1.2em 0;
+    padding: 10px 18px;
+    background: var(--code-bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+  }
+  main blockquote p { margin: 0.4em 0; }
+
+  code {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.88em;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+  pre code { background: none; padding: 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.2em 0;
+    font-size: 0.92rem;
+  }
+  th, td {
+    border-bottom: 1px solid var(--rule);
+    padding: 6px 10px;
+    text-align: left;
+  }
+  th { color: var(--ink-muted); font-weight: 600; }
+
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2.4em 0; }
+
+  footer.site-footer {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+  }
+  footer.site-footer a { color: var(--ink-muted); }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <!-- Rutas absolutas con el prefijo del repo: esta es una GitHub Project Page
+       (usuario.github.io/fundar_la_rioja/), así que un link absoluto funciona
+       igual sin importar la profundidad de la página actual. Si el sitio se
+       muda de URL, actualizar este prefijo acá (único lugar). -->
+  <a href="/fundar_la_rioja/">Monitor La Rioja</a>
+  <a href="/fundar_la_rioja/clases/">Taller de visualización</a>
+  <a href="https://github.com/gefero/fundar_la_rioja">Repositorio ↗</a>
+</nav>
+
+<header class="banner">
+  <div class="inner">
+    <p class="eyebrow">Fundar · grupo factor~data</p>
+    <h1>Clase 3 — Del microdato al producto</h1>
+    <p class="subtitle">Práctica</p>
+  </div>
+</header>
+
+<main>
+<h1 id="práctica-clase-3">Práctica — Clase 3</h1>
+<p><strong>Duración:</strong> 50 minutos. <strong>En parejas de perfiles
+mezclados.</strong></p>
+<hr />
+<h2 id="el-ejercicio-agregar-un-indicador-nuevo-al-monitor">El
+ejercicio: agregar un indicador nuevo al monitor</h2>
+<p>Vamos a recorrer el circuito completo, de punta a punta, con un
+indicador que <strong>hoy no existe en el proyecto</strong>: la
+<strong>tasa de actividad</strong> (población económicamente activa
+sobre población total).</p>
+<p>Es una buena elección por dos razones. Primero, porque completa el
+trío clásico del mercado de trabajo: hoy el monitor tiene tasa de empleo
+y tasa de desocupación, pero no la de actividad, que es la que dice
+<strong>cuánta gente se ofrece al mercado</strong>. Y segundo, porque se
+puede derivar de dos CSV que <strong>ya están versionados</strong>, sin
+descargar un solo microdato:</p>
+<ul>
+<li><code>data/inputs_md/04_tasa_desoc.csv</code> tiene la columna
+<strong><code>pea</code></strong> (población económicamente activa,
+ponderada).</li>
+<li><code>data/inputs_md/10_tasa_empleo.csv</code> tiene la columna
+<strong><code>pob_tot</code></strong> (población total, ponderada).</li>
+</ul>
+<pre><code>tasa_actividad = pea / pob_tot × 100</code></pre>
+<hr />
+<h2 id="paso-1-el-cálculo-perfil-mantenimiento-10">Paso 1 — El cálculo
+<em>(perfil mantenimiento, 10’)</em></h2>
+<p><strong>Archivo:</strong>
+<code>ejercicios/01_tasa_actividad_calculo.R</code> → copialo a
+<code>src/06_prep_tasa_actividad.R</code></p>
+<p>Hacé el <code>left_join()</code> de los dos CSV por
+<code>fecha</code> y <code>la_rioja_region</code>, calculá la tasa y
+escribí <code>data/inputs_md/06_tasa_actividad.csv</code>.</p>
+<blockquote>
+<p><strong>Por qué <code>06_prep_</code>:</strong> el repositorio ya usa
+esa convención para los scripts que preparan un CSV a partir de otra
+fuente (ver <code>03_prep_salarios_privados_SIPA.R</code> y
+<code>05_prep_puestos_asalariados_privados.R</code>). El número 06
+estaba libre.</p>
+</blockquote>
+<hr />
+<h2 id="paso-2-verificar-los-dos-5">Paso 2 — Verificar <em>(los dos,
+5’)</em></h2>
+<p>Antes de graficar nada. Tres chequeos, en este orden:</p>
+<ol type="1">
+<li><p><strong>¿Cuántas filas quedaron?</strong> Tienen que ser
+<strong>216</strong> = 72 trimestres × 3 regiones. Si son menos, el join
+perdió filas; si son más, duplicó.</p></li>
+<li><p><strong>¿Hay <code>NA</code>?</strong> No tiene que haber
+ninguno.</p></li>
+<li><p><strong>La verificación conceptual, que es la
+importante:</strong></p>
+<pre><code>tasa_actividad ≈ tasa_empleo + (desocupados / pob_tot × 100)</code></pre>
+<p>Porque la PEA son los ocupados más los desocupados. Si esta identidad
+no se cumple, algo está mal en el join.</p></li>
+</ol>
+<p><strong>Pregunta:</strong> ¿por qué la tasa de actividad
+<strong>no</strong> es igual a <code>tasa_empleo + tasa_desoc</code>?
+Las dos son porcentajes, pero no del mismo denominador. ¿Cuál es
+cuál?</p>
+<hr />
+<h2 id="paso-3-la-narrativa-perfil-comunicación-10">Paso 3 — La
+narrativa <em>(perfil comunicación, 10’)</em></h2>
+<p>Antes de que se escriba el <code>labs()</code>, mirá los datos y
+decidí <strong>qué historia cuenta este indicador</strong>.</p>
+<p>Abrí el CSV que produjo tu compañero o compañera y mirá la serie de
+La Rioja: ¿sube, baja, se mantiene? ¿Cómo se compara con el NOA y con el
+resto del país? ¿Hay algún quiebre?</p>
+<p>Después escribí los tres campos, siguiendo la tabla de la clase:</p>
+<ul>
+<li><strong>Título</strong> — el hallazgo afirmado, una oración que se
+lea sola. <strong>No</strong> “Tasa de actividad”.</li>
+<li><strong>Subtítulo</strong> — unidad, universo, período.</li>
+<li><strong>Caption</strong> — la fuente completa y las advertencias
+metodológicas que correspondan.</li>
+</ul>
+<p><strong>Preguntas para decidir el caption:</strong></p>
+<ul>
+<li>¿Hay que advertir sobre el quiebre de 2015/2016? ¿Aplica a este
+indicador o solo a los de ingresos? (Pista: ¿este cálculo usa
+<code>PONDIIO</code>?)</li>
+<li>¿Hay que advertir algo sobre el tamaño de muestra de La Rioja?</li>
+<li>La serie tiene un hueco entre 2015-T3 y 2016-T1. ¿Se ve en el
+gráfico? ¿Debería?</li>
+</ul>
+<hr />
+<h2 id="paso-4-el-gráfico-perfil-mantenimiento-10">Paso 4 — El gráfico
+<em>(perfil mantenimiento, 10’)</em></h2>
+<p><strong>Archivo:</strong>
+<code>ejercicios/02_tasa_actividad_viz.R</code> → copialo a
+<code>src/06_tasa_actividad.R</code></p>
+<p>Seguí el patrón de <code>src/04_desoc.R</code>, y aplicá lo que
+aprendimos:</p>
+<ul>
+<li>La paleta y el tema del proyecto.</li>
+<li><strong>El eje X con fechas reales</strong>, no las 72 etiquetas de
+texto (clase 2).</li>
+<li>El eje Y arrancando en cero.</li>
+<li>Los textos que escribió tu compañero o compañera en el paso 3.</li>
+</ul>
+<p>Guardá el PNG en
+<code>outputs/plots/06_tasa_actividad.png</code>.</p>
+<hr />
+<h2 id="paso-5-el-dashboard-los-dos-10">Paso 5 — El dashboard <em>(los
+dos, 10’)</em></h2>
+<p>Registrá el indicador en <code>INDICADORES</code>, en
+<code>dashboard/R/data.R</code>. Va con <code>shape = "A"</code> (serie
+trimestral regional, una fila por fecha-región), que es la forma que
+tiene tu CSV.</p>
+<p>Después:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>shiny<span class="sc">::</span><span class="fu">runApp</span>(<span class="st">&quot;dashboard&quot;</span>)</span></code></pre></div>
+<p><strong>No hay que tocar ni una línea de la app.</strong> Si el
+registro está bien, el indicador aparece solo en el selector, con sus
+filtros de región y rango temporal, su descarga de PNG y CSV, y su
+versión plotly. También aparece en el sitio estático al renderizar
+<code>dashboard/index.qmd</code>.</p>
+<p><strong>Si no aparece</strong>, revisá en este orden: el nombre del
+CSV, el nombre de <code>y_var</code>, y que el <code>topico</code> sea
+uno de los tres de <code>TOPICOS</code>.</p>
+<hr />
+<h2 id="paso-6-publicar-los-dos-5">Paso 6 — Publicar <em>(los dos,
+5’)</em></h2>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> tasa-actividad</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add src/06_prep_tasa_actividad.R src/06_tasa_actividad.R <span class="dt">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        data/inputs_md/06_tasa_actividad.csv dashboard/R/data.R <span class="dt">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        outputs/plots/06_tasa_actividad.png</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;Agrego indicador de tasa de actividad&quot;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin tasa-actividad</span></code></pre></div>
+<p>Y abrir el Pull Request en GitHub.</p>
+<p><strong>Pregunta:</strong> el workflow
+<code>.github/workflows/dashboard.yml</code> se dispara con cambios en
+<code>data/inputs_md/</code>. ¿Se disparó con este push? ¿Por qué sí o
+por qué no?</p>
+<hr />
+<h2
+id="variante-avanzada-solo-si-tenés-los-microdatos-descargados">Variante
+avanzada <em>(solo si tenés los microdatos descargados)</em></h2>
+<p>Calculá la tasa de actividad <strong>directamente desde el dataset
+canónico</strong>, agregando el bloque a
+<code>src/02_indicadores_eph_individuo.R</code>. Las variables ya están:
+<code>pea</code> y <code>PONDERA</code>. Son seis líneas, copiando el
+patrón del bloque de tasa de empleo.</p>
+<p>Después <strong>contrastá los dos resultados</strong>. Tienen que dar
+exactamente igual.</p>
+<p>Si no dan igual, encontrar por qué es el mejor ejercicio de todo el
+taller: significa que alguno de los dos caminos tiene un filtro, un
+<code>ANO4 &gt;=</code> o un <code>na.rm</code> que el otro no
+tiene.</p>
+<hr />
+<h2 id="cierre">Cierre</h2>
+<p>Traé a la puesta en común:</p>
+<ul>
+<li>El título que escribieron (paso 3). Los vamos a comparar entre
+parejas.</li>
+<li>Una cosa del circuito que les haya resultado más frágil de lo que
+esperaban.</li>
+</ul>
+</main>
+
+<footer class="site-footer">
+  <p>Fundar — grupo factor~data · Monitor Socioeconómico La Rioja</p>
+</footer>
+
+</body>
+</html>

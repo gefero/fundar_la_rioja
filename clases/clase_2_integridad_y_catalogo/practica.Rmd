@@ -1,0 +1,586 @@
+---
+title: "Clase 2 — Práctica: Integridad visual y catálogo de herramientas"
+subtitle: "Taller de visualización de datos — Monitor La Rioja (Fundar)"
+date: "`r format(Sys.Date(), '%d de %B de %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: false
+    theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE, warning = FALSE, message = FALSE)
+```
+
+> **Cómo usar este notebook.** `eval = FALSE` a propósito: hay chunks con `______` que no son R
+> válido. Corré cada chunk interactivamente con **Ctrl+Enter** (Cmd+Enter en Mac), en orden. Las
+> rutas de este notebook llevan `../../` adelante porque R Markdown usa la carpeta del propio
+> `.Rmd` como directorio de trabajo (a diferencia de los `.R` de `ejercicios/`, que asumen la raíz
+> del repo abierta vía `fundar_larioja.Rproj`).
+>
+> **Se hace en parejas de perfiles mezclados.** Quien comunica define la pregunta que el gráfico
+> tiene que responder y redacta el título; quien mantiene escribe el código.
+>
+> **Cómo repartirlo:** cada pareja elige **una** de las secciones 1 a 3 (30'). La sección 4 se
+> hace entre todos al final (10'), porque el resultado es una decisión de proyecto.
+>
+> Si te trabás, las soluciones completas están en `soluciones/`.
+
+```{r libs}
+library(tidyverse)
+source("../../style/fundar_monitor_theme.R")
+```
+
+---
+
+# Ejercicio 1 — De la línea al Cleveland dot plot (NBI)
+
+**Dificultad:** guiado
+
+`src/13a_nbi_hogares.R` grafica hoy **una sola línea por región**, con el NBI **total**. Las cinco
+sub-dimensiones —hacinamiento, vivienda, sanitarias, escolaridad, subsistencia— están calculadas
+en el CSV y **no se muestran en ningún lado**.
+
+La pregunta que el gráfico actual no puede contestar es justamente la más interesante:
+
+> **¿Qué privación explica el NBI de La Rioja, y en qué se diferencia del NOA y del resto del
+> país?**
+
+Eso es una comparación de **brechas entre unidades en un corte transversal**. Según la taxonomía:
+**Cleveland dot plot**.
+
+Lo que hay que hacer:
+
+1. Pasar el CSV a formato largo (una fila por dimensión).
+2. **Promediar las cuatro ondas del último año.** ⚠️ Esto no es un detalle: en un trimestre
+   suelto, La Rioja da **0,00 % en cuatro de las seis dimensiones**. No es que no haya privación —
+   es que la muestra de un dominio chico no alcanza. Promediar el año estabiliza la estimación.
+3. Dimensiones en el eje Y (**ordenadas por valor**, no alfabéticamente), porcentaje en el X, un
+   punto de color por región.
+
+**Preguntas para responder:**
+
+- ¿Por qué las dimensiones van en el eje Y y no en el X?
+- Con el gráfico terminado: ¿qué privación explica casi todo el NBI de La Rioja?
+- Si en vez de puntos usaras barras agrupadas, ¿qué se perdería?
+
+## Datos
+
+```{r ej1-datos, eval=TRUE}
+df <- read_csv("../../data/inputs_md/13a_nbi_hogares.csv", show_col_types = FALSE)
+```
+
+## Formato largo
+
+Las 6 dimensiones están en 6 columnas. Las apilamos.
+
+```{r ej1-largo, eval=TRUE}
+df_largo <- df %>%
+  select(fecha, la_rioja_region, starts_with("pct_hogares_NBI_")) %>%
+  pivot_longer(starts_with("pct_hogares_NBI_"),
+               names_to = "dimension", values_to = "pct") %>%
+  mutate(
+    anio      = as.integer(str_sub(fecha, 1, 4)),
+    dimension = str_remove(dimension, "pct_hogares_NBI_"),
+    dimension = recode(dimension,
+                       TOT = "NBI total",
+                       HAC = "Hacinamiento",
+                       VIV = "Vivienda inconveniente",
+                       SAN = "Condiciones sanitarias",
+                       ESC = "Escolaridad",
+                       SUB = "Capacidad de subsistencia")
+  )
+```
+
+## Promediar las 4 ondas del último año
+
+⚠️ **Esto no es un detalle.** Corré esto para ver por qué:
+
+```{r ej1-por-que-promediar, eval=TRUE}
+df_largo %>%
+  filter(fecha == max(fecha), la_rioja_region == "3. La Rioja") %>%
+  select(dimension, pct)
+```
+
+En un trimestre suelto, La Rioja da 0,00 % en cuatro de las seis dimensiones. No es que no haya
+privación: es que la muestra de un dominio chico no alcanza para estimarla. Promediar las cuatro
+ondas del año estabiliza la estimación.
+
+**TODO:** completá el `group_by()` y el `summarise()` para promediar las 4 ondas del año `ANIO`,
+por región y dimensión.
+
+```{r ej1-promedio}
+ANIO <- max(df_largo$anio)
+
+df_anual <- df_largo %>%
+  filter(anio == ANIO) %>%
+  group_by(______, ______) %>%           # <-- TODO: ¿por qué dos variables agrupan?
+  summarise(pct = mean(pct, na.rm = TRUE), .groups = "drop")
+
+df_anual   # deberían ser 3 regiones × 6 dimensiones = 18 filas
+```
+
+## El Cleveland dot plot
+
+Dimensiones en el eje Y, porcentaje en el X, un punto por región.
+
+**TODO 1:** las dimensiones tienen que quedar ORDENADAS POR VALOR, no alfabéticamente. Pista:
+`fct_reorder(dimension, pct)`.
+
+**TODO 2:** el color mapea a la región, y usamos la escala del proyecto.
+
+```{r ej1-plot}
+df_anual %>%
+  filter(dimension != "NBI total") %>%   # el total no compite con sus partes
+  ggplot(aes(x = pct,
+             y = ______,                 # <-- TODO 1
+             color = ______)) +          # <-- TODO 2
+  # La línea gris conecta los tres puntos de cada dimensión: hace visible la
+  # BRECHA entre regiones sin agregar ningún dato nuevo.
+  geom_line(aes(group = dimension), color = FUNDAR_GRILLA, linewidth = 1.2) +
+  geom_point(size = 3.5) +
+  scale_color_fundar_multi(name = "Región") +
+  scale_x_continuous(limits = c(0, NA)) +   # el eje arranca en cero
+  theme_monitor_barras_h() +                # variante con grilla vertical
+  labs(
+    title    = "TODO: escribilo vos — que AFIRME el hallazgo, no que nombre la variable",
+    subtitle = paste0("% de hogares con cada privación. Promedio de las 4 ondas de ", ANIO, "."),
+    x        = "% de hogares",
+    y        = NULL,
+    caption  = fuente_fundar("Fundar, con base en la EPH (INDEC).")
+  )
+
+# ggsave("../../outputs/plots/clase2_nbi_cleveland.png", width = 10, height = 6)
+```
+
+**Preguntas:**
+
+1. ¿Por qué las dimensiones van en el eje Y y no en el X? (Pista: son etiquetas de texto largas, y
+   hay 5.)
+2. Con el gráfico terminado: ¿qué privación explica casi todo el NBI de La Rioja?
+3. Si en vez de puntos usaras barras agrupadas, ¿qué se perdería? Probalo: cambiá `geom_point()`
+   por `geom_col(position = "dodge")`.
+
+---
+
+# Ejercicio 2 — La brecha implícita (salarios público/privado)
+
+**Dificultad:** medio
+
+`src/03b_salarios_registrados_EPH.R` grafica dos líneas por región (público y privado),
+facetadas. Se ve bien, pero la pregunta que importa es sobre la **distancia entre las dos**:
+
+> **¿Se agrandó o se achicó la brecha salarial entre el sector público y el privado en La Rioja?**
+
+La recomendación del informe de Argendata (págs. 19–20) es **no** graficar la brecha calculada
+como una tercera serie, sino dejar que **el área entre las dos líneas la muestre sola**. Se
+percibe de forma preatentiva y no agrega elementos al gráfico.
+
+Lo que hay que hacer:
+
+1. Filtrar La Rioja y pasar a formato ancho (una columna por sector).
+2. `geom_ribbon()` entre las dos series, con el color según quién está arriba.
+3. Encima, las dos líneas.
+4. Marcar el quiebre metodológico de 2015/2016 con una línea punteada, y **decirlo en el
+   caption**.
+
+## Datos
+
+```{r ej2-datos, eval=TRUE}
+df <- read_csv("../../data/inputs_md/03b_salarios_registrados_EPH.csv",
+               show_col_types = FALSE)
+
+glimpse(df)   # fecha, la_rioja_region, sector ("Público"/"Privado"), salario_promedio
+```
+
+## Paso 1 — La Rioja, en formato ancho
+
+`geom_ribbon()` necesita `ymin` e `ymax` EN LA MISMA FILA. Hoy los dos sectores están en filas
+distintas: hay que pivotear a ancho.
+
+**TODO:** completá el `pivot_wider()`.
+
+```{r ej2-ancho}
+df_lr <- df %>%
+  filter(la_rioja_region == "3. La Rioja") %>%
+  mutate(fecha = lubridate::yq(fecha)) %>%
+  pivot_wider(names_from  = ______,      # <-- TODO: ¿qué columna se abre en columnas?
+              values_from = ______)      # <-- TODO: ¿qué columna llena las celdas?
+
+glimpse(df_lr)   # debería tener: fecha, la_rioja_region, Privado, Público
+```
+
+## Paso 2 — quién está arriba
+
+Coloreamos el área según el signo de la brecha: no siempre gana el mismo sector, y eso es parte
+del hallazgo.
+
+```{r ej2-signo}
+df_lr <- df_lr %>%
+  mutate(
+    brecha = Privado - `Público`,
+    signo  = if_else(brecha >= 0, "Privado por encima", "Público por encima")
+  )
+
+count(df_lr, signo)   # ¿cuántos trimestres de cada lado?
+```
+
+## Paso 3 — el gráfico
+
+Capas, de abajo hacia arriba: (1) el área entre las dos series, (2) las dos líneas, (3) la marca
+del quiebre metodológico.
+
+**TODO:** completá `ymin` e `ymax` con las dos columnas de sector.
+
+```{r ej2-plot}
+df_lr %>%
+  ggplot(aes(x = fecha)) +
+
+  # 1. LA BRECHA IMPLÍCITA
+  geom_ribbon(aes(ymin = pmin(______, ______),      # <-- TODO
+                  ymax = pmax(______, ______),      # <-- TODO
+                  fill = signo),
+              alpha = 0.35) +
+
+  # 2. LAS DOS LÍNEAS
+  geom_line(aes(y = Privado,   color = "Privado"), linewidth = 0.7) +
+  geom_line(aes(y = `Público`, color = "Público"), linewidth = 0.7) +
+
+  # 3. EL QUIEBRE METODOLÓGICO (2015-2016)
+  # La EPH cambió el método de imputación de ingresos y estuvo interrumpida
+  # entre 2015-T3 y 2016-T1. Los niveles a ambos lados NO son comparables.
+  geom_vline(xintercept = as.Date("2016-01-01"),
+             linetype = "dashed", color = FUNDAR_GRIS, linewidth = 0.4) +
+
+  scale_color_manual(values = FUNDAR_SECTOR, name = NULL) +
+  scale_fill_manual(values = c("Privado por encima" = FUNDAR_VERDE,
+                               "Público por encima" = FUNDAR_ROSA),
+                    name = NULL) +
+  scale_y_continuous(
+    limits = c(0, NA),                                  # el eje arranca en cero
+    labels = scales::label_number(big.mark = ".", decimal.mark = ",", prefix = "$")
+  ) +
+  scale_x_date(date_labels = "%Y", date_breaks = "2 years") +
+  theme_monitor() +
+  labs(
+    title    = "TODO: escribilo vos — ¿qué le pasó a la brecha?",
+    subtitle = "Salario promedio de asalariados registrados. Aglomerado La Rioja, pesos corrientes.",
+    x        = NULL,
+    y        = "Pesos corrientes",
+    caption  = fuente_fundar(
+      "Fundar, con base en la EPH (INDEC). Línea punteada: cambio de metodología de ingresos de la EPH (2015-2016); los niveles a ambos lados no son estrictamente comparables."
+    )
+  )
+
+# ggsave("../../outputs/plots/clase2_brecha_salarios.png", width = 11, height = 6)
+```
+
+**Preguntas:**
+
+1. ¿Por qué hay que marcar el quiebre de 2015/2016? (Pista: `README.md`, sección del indicador
+   03b. Antes de ~2016 la EPH no publicaba `PONDIIO` y se usa `PONDERA` como ponderador de
+   fallback.)
+2. Compará con `outputs/plots/03b_salarios_registrados_EPH.png` (el gráfico actual, facetado por
+   región). ¿Qué gana y qué pierde cada versión?
+3. El eje Y está en PESOS CORRIENTES. Mirando la slide 159 del deck ("en las series de tiempo
+   monetarias, casi siempre es mejor usar unidades estandarizadas en lugar de nominales"): ¿qué le
+   agregarías a este gráfico antes de publicarlo?
+4. **Extra:** probá graficar la brecha como una TERCERA LÍNEA (`Privado - Público`) en un gráfico
+   aparte. ¿Se ve mejor o peor que el área? ¿Por qué el informe prefiere el área?
+
+---
+
+# Ejercicio 3 — Spaghetti plot (24 jurisdicciones)
+
+**Dificultad:** abierto
+
+`data/inputs_md/05_puestos_asalariados_privados.csv` tiene los puestos asalariados privados de
+las **24 jurisdicciones**, mensual desde 2009. `src/05_puestos_asalariados_privados.R` lo grafica
+facetado por región.
+
+> **¿Cómo le fue al empleo privado en La Rioja comparado con el resto del país?**
+
+Son 24 categorías y ~200 instancias temporales. Según la taxonomía: **spaghetti plot** — una línea
+por unidad, la protagonista destacada, el resto en gris de contexto.
+
+Hay un problema previo: **los niveles no son comparables**. Buenos Aires tiene 1.750 mil puestos y
+La Rioja unas decenas. En un mismo eje, todas las provincias chicas quedan aplastadas contra el
+cero. La solución del informe (pág. 16): **índice base 100** en el primer período.
+
+## Datos
+
+```{r ej3-datos, eval=TRUE}
+df <- read_csv("../../data/inputs_md/05_puestos_asalariados_privados.csv",
+               show_col_types = FALSE)
+
+glimpse(df)   # jurisdiccion, fecha, puestos_miles
+```
+
+## El problema previo: los niveles no son comparables
+
+Corré esto y mirá la diferencia de escala:
+
+```{r ej3-problema, eval=TRUE}
+df %>%
+  filter(fecha == min(fecha)) %>%
+  arrange(desc(puestos_miles)) %>%
+  slice(c(1:3, 22:24))
+```
+
+Buenos Aires arranca en ~1.750 mil puestos y La Rioja en ~27 mil. En un mismo eje, todas las
+provincias chicas quedan aplastadas contra el cero.
+
+## Paso 1 — índice base 100
+
+**TODO:** completá el `group_by()` y el cálculo del índice. El índice de cada provincia es su
+valor dividido por SU PROPIO primer valor, por 100.
+
+```{r ej3-indice}
+df_idx <- df %>%
+  arrange(jurisdiccion, fecha) %>%
+  group_by(______) %>%                                   # <-- TODO
+  mutate(indice = puestos_miles / ______ * 100) %>%      # <-- TODO (pista: first())
+  ungroup()
+
+# Verificación: todas las provincias deberían valer 100 en el primer mes.
+df_idx %>% filter(fecha == min(fecha)) %>% count(indice)
+```
+
+## Paso 2 — separar la protagonista del contexto
+
+El truco del spaghetti: DOS dataframes, no uno. El de contexto se dibuja primero (queda abajo) y
+el protagonista después (queda encima).
+
+```{r ej3-separar}
+df_resto    <- df_idx %>% filter(jurisdiccion != "La Rioja")
+df_la_rioja <- df_idx %>% filter(jurisdiccion == "La Rioja")
+```
+
+## Paso 3 — el gráfico
+
+**TODO:** completá el orden de las capas. ¿Cuál va primero?
+
+```{r ej3-plot}
+ggplot() +
+
+  # Capa de contexto: las 23 jurisdicciones restantes, en gris claro.
+  # `group` es imprescindible: sin él, ggplot une todas las provincias en una
+  # sola línea (mismo problema que vimos en la clase 1).
+  geom_line(data = ______,                    # <-- TODO
+            aes(x = fecha, y = indice, group = jurisdiccion),
+            color = FUNDAR_GRILLA, linewidth = 0.4) +
+
+  # Capa protagonista: La Rioja, en el color de énfasis.
+  geom_line(data = ______,                    # <-- TODO
+            aes(x = fecha, y = indice),
+            color = unname(FUNDAR_MULTI["serie_3"]), linewidth = 1.1) +
+
+  # Referencia: el nivel de partida.
+  geom_hline(yintercept = 100, linetype = "dotted",
+             color = FUNDAR_GRIS, linewidth = 0.4) +
+
+  # Etiqueta en el extremo derecho, en vez de una leyenda con 24 entradas.
+  geom_text(data = df_la_rioja %>% filter(fecha == max(fecha)),
+            aes(x = fecha, y = indice, label = "La Rioja"),
+            hjust = -0.15, size = 3.2, fontface = "bold",
+            color = unname(FUNDAR_MULTI["serie_3"])) +
+
+  scale_x_date(date_labels = "%Y", date_breaks = "2 years",
+               expand = expansion(mult = c(0.02, 0.10))) +
+  coord_cartesian(clip = "off") +
+  theme_monitor() +
+  labs(
+    title    = "TODO: escribilo vos — ¿le fue mejor o peor que al resto?",
+    subtitle = paste0("Puestos asalariados privados registrados. Índice base 100 = ",
+                      format(min(df$fecha), "%b-%Y"),
+                      ". Cada línea gris es una jurisdicción."),
+    x        = NULL,
+    y        = "Índice (base 100)",
+    caption  = fuente_fundar("Fundar, con base en el SIPA (Ministerio de Capital Humano).")
+  )
+
+# ggsave("../../outputs/plots/clase2_spaghetti_puestos.png", width = 11, height = 6)
+```
+
+**Preguntas:**
+
+1. ¿Por qué La Rioja tiene que dibujarse DESPUÉS de las demás? (Pista: es el mismo problema que
+   resuelven los prefijos `"1."`/`"2."`/`"3."` de `la_rioja_region` en `src/utils_eph.R`.)
+2. Al pasar a índice base 100, ¿qué información PERDISTE? ¿Cómo la recuperarías sin romper el
+   gráfico?
+3. Comparalo con `outputs/plots/05_puestos_asalariados_privados.png` (el actual, facetado por
+   región). ¿Cuál usarías para un informe y cuál para un anexo?
+4. **Extra:** el índice base 100 depende del mes elegido como base. Probá con otro (por ejemplo,
+   enero de 2016) y mirá si la conclusión cambia. ¿Qué te dice eso sobre cómo comunicar este
+   gráfico?
+
+---
+
+# Ejercicio 4 — Auditar nuestra propia paleta (todos juntos, 10')
+
+`FUNDAR_MULTI` (`style/fundar_monitor_theme.R:25`) se eligió por criterio estético, replicando el
+Monitor Mensual de Empresas. **Nunca se auditó** con los criterios que vimos hoy. Vamos a
+hacerlo.
+
+> Nota: `src/test_escalas.R` es un intento a medio hacer de exactamente esto. Carga las paletas de
+> ColorBrewer y ahí queda. Este ejercicio lo completa.
+
+Tres tests: (1) contraste de luminancia, (2) distancia perceptual ΔE2000, (3) simulación de
+daltonismo. **La discusión final es una decisión de proyecto**, no un ejercicio.
+
+```{r ej4-libs}
+library(farver)       # distancias perceptuales entre colores
+library(colorspace)   # simulación de daltonismo
+```
+
+## Setup
+
+Los tres colores regionales que efectivamente usamos en los gráficos.
+
+```{r ej4-paleta, eval=TRUE}
+paleta <- c(
+  "1. Resto país" = unname(FUNDAR_MULTI["serie_1"]),   # #A8DCC8 verde menta claro
+  "2. NOA-Resto"  = unname(FUNDAR_MULTI["serie_2"]),   # #C8C87A amarillo oliva
+  "3. La Rioja"   = unname(FUNDAR_MULTI["serie_3"])    # #2D6E6E teal oscuro
+)
+
+colorspace::swatchplot(paleta)
+```
+
+## Test 1 — Contraste de luminancia
+
+La luminancia (el canal "L" del espacio Lab) es lo que hace que una serie salte a la vista. Va de
+0 (negro) a 100 (blanco).
+
+```{r ej4-test1}
+lab <- farver::convert_colour(farver::decode_colour(paleta),
+                              from = "rgb", to = "lab")
+
+tibble(
+  region     = names(paleta),
+  hex        = unname(paleta),
+  luminancia = round(lab[, 1], 1)
+)
+```
+
+**Pregunta:** ¿cuánta diferencia de luminancia hay entre La Rioja y las otras dos? ¿Y entre "Resto
+país" y "NOA-Resto" entre sí? ¿Es eso deliberado o accidental?
+
+## Test 2 — Distancia perceptual (ΔE 2000)
+
+ΔE mide cuán distintos se PERCIBEN dos colores. Regla práctica: ΔE < 5 → prácticamente
+indistinguibles; ΔE < 10 → riesgoso para series superpuestas; ΔE > 20 → cómodamente distinguibles.
+
+```{r ej4-test2}
+delta <- farver::compare_colour(
+  from       = farver::decode_colour(paleta),
+  to         = farver::decode_colour(paleta),
+  from_space = "rgb",
+  method     = "cie2000"
+)
+dimnames(delta) <- list(names(paleta), names(paleta))
+round(delta, 1)
+```
+
+**Pregunta:** ¿cuál es el par MÁS PARECIDO de la paleta? ¿Supera el umbral de 10?
+
+## Test 3 — Daltonismo
+
+~8% de los varones tiene alguna forma de daltonismo. Si dos series de un gráfico se vuelven el
+mismo color, ese lector no puede leerlo.
+
+```{r ej4-test3, eval=TRUE}
+paleta_deutan <- colorspace::deutan(paleta)   # deuteranopia (la más frecuente)
+paleta_protan <- colorspace::protan(paleta)   # protanopia
+paleta_tritan <- colorspace::tritan(paleta)   # tritanopia (rara)
+
+colorspace::swatchplot(list(
+  "Normal"       = paleta,
+  "Deuteranopia" = paleta_deutan,
+  "Protanopia"   = paleta_protan,
+  "Tritanopia"   = paleta_tritan
+))
+```
+
+**TODO:** calculá el ΔE de la paleta simulada bajo deuteranopia, igual que en el Test 2, y
+compará con la matriz de arriba. ¿Algún par baja del umbral?
+
+```{r ej4-test3-delta}
+delta_deutan <- farver::compare_colour(
+  from       = farver::decode_colour(______),   # <-- TODO
+  to         = farver::decode_colour(______),   # <-- TODO
+  from_space = "rgb",
+  method     = "cie2000"
+)
+dimnames(delta_deutan) <- list(names(paleta), names(paleta))
+round(delta_deutan, 1)
+```
+
+## Test 4 — La prueba definitiva: mirarlo
+
+Los números están bien, pero lo que importa es si el gráfico se lee.
+
+```{r ej4-test4}
+df <- read_csv("../../data/inputs_md/04_tasa_desoc.csv", show_col_types = FALSE) %>%
+  mutate(fecha = lubridate::yq(fecha))
+
+grafico <- function(colores, titulo) {
+  df %>%
+    ggplot(aes(x = fecha, y = tasa_desoc,
+               group = la_rioja_region, color = la_rioja_region)) +
+    geom_line(linewidth = 0.8) +
+    scale_color_manual(values = colores, name = NULL) +
+    ylim(0, 20) +
+    theme_monitor() +
+    labs(title = titulo, x = NULL, y = "% de la PEA")
+}
+
+grafico(paleta,        "Visión tricromática")
+grafico(paleta_deutan, "Simulación de deuteranopia")
+grafico(paleta_protan, "Simulación de protanopia")
+```
+
+**Pregunta:** en las simulaciones, ¿podés seguir distinguiendo las tres series? ¿Y encontrar La
+Rioja?
+
+## La decisión de proyecto
+
+Con los números a la vista, tenemos tres opciones. Discutámoslas:
+
+- **A) Dejarla como está.** El contraste de luminancia de La Rioja sobrevive a cualquier tipo de
+  daltonismo (la luminancia no depende del canal cromático), y La Rioja es lo único que TIENE que
+  destacarse.
+- **B) Ajustar** los dos colores de contexto para separarlos más entre sí. Costo: nos alejamos de
+  la identidad visual del Monitor de Fundar.
+- **C) Agregar un canal redundante:** que La Rioja además tenga la línea más gruesa. Así el
+  énfasis no depende SOLO del color. (El tema viejo, `style/fundar_larioja_theme.R`, ya tiene
+  `scale_linewidth_larioja()` haciendo exactamente esto.)
+
+Probá la opción C:
+
+```{r ej4-opcion-c}
+df %>%
+  ggplot(aes(x = fecha, y = tasa_desoc,
+             group = la_rioja_region,
+             color = la_rioja_region,
+             linewidth = la_rioja_region)) +
+  geom_line() +
+  scale_color_fundar_multi(name = NULL) +
+  scale_linewidth_manual(values = c(0.6, 0.6, 1.2), guide = "none") +
+  ylim(0, 20) +
+  theme_monitor() +
+  labs(title = "Opción C — color + grosor (redundancia)",
+       x = NULL, y = "% de la PEA")
+```
+
+¿Con cuál nos quedamos? La respuesta va al README del proyecto.
+
+---
+
+# Puesta en común (10')
+
+Cada pareja muestra su gráfico en 2 minutos y responde **una** pregunta:
+
+> **¿Qué se ve ahora que no se veía antes?**

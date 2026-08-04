@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clase 1 — Gramática de gráficos y
+percepción · Taller de visualización — Monitor La Rioja</title>
+<style>
+  /* Paleta: la misma de style/fundar_monitor_theme.R (FUNDAR_VERDE, FUNDAR_BEIGE,
+     FUNDAR_OSCURO, FUNDAR_MULTI serie_3), para que esta sección se sienta parte
+     del mismo sitio que el dashboard, no un tema importado de otro lado. */
+  :root {
+    --bg: #FBFAF6;
+    --panel: #FFFFFF;
+    --ink: #1C1C1C;        /* FUNDAR_OSCURO / FUNDAR_TEXTO */
+    --ink-muted: #6b6558;
+    --rule: #E4DFD3;
+    --banner-a: #2D6E6E;   /* FUNDAR_MULTI serie_3 — La Rioja */
+    --banner-b: #1C1C1C;   /* FUNDAR_OSCURO */
+    --accent: #2D6E6E;
+    --code-bg: #EDE8E0;    /* FUNDAR_BEIGE */
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  a { color: var(--accent); }
+  a:hover { text-decoration: none; }
+
+  .site-nav {
+    background: var(--ink);
+    padding: 10px 24px;
+    font-size: 0.82rem;
+  }
+  .site-nav a {
+    color: #EFEAE0;
+    text-decoration: none;
+    margin-right: 18px;
+    letter-spacing: 0.02em;
+  }
+  .site-nav a:hover { text-decoration: underline; }
+
+  header.banner {
+    background: linear-gradient(120deg, var(--banner-a), var(--banner-b));
+    color: #FFFFFF;
+    padding: 48px 24px 40px;
+  }
+  header.banner .inner { max-width: 760px; margin: 0 auto; }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #C9E8DE;
+    margin: 0 0 10px;
+  }
+  header.banner h1 {
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    line-height: 1.2;
+    margin: 0 0 8px;
+  }
+  header.banner .subtitle {
+    font-size: 1.02rem;
+    color: #E4F2ED;
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  main h2 {
+    margin-top: 2.2em;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+  }
+  main h3 {
+    margin-top: 1.8em;
+    color: var(--banner-a);
+  }
+  main ul { padding-left: 1.3em; }
+  main li { margin-bottom: 4px; }
+
+  main blockquote {
+    margin: 1.2em 0;
+    padding: 10px 18px;
+    background: var(--code-bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+  }
+  main blockquote p { margin: 0.4em 0; }
+
+  code {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.88em;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+  pre code { background: none; padding: 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.2em 0;
+    font-size: 0.92rem;
+  }
+  th, td {
+    border-bottom: 1px solid var(--rule);
+    padding: 6px 10px;
+    text-align: left;
+  }
+  th { color: var(--ink-muted); font-weight: 600; }
+
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2.4em 0; }
+
+  footer.site-footer {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+  }
+  footer.site-footer a { color: var(--ink-muted); }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <!-- Rutas absolutas con el prefijo del repo: esta es una GitHub Project Page
+       (usuario.github.io/fundar_la_rioja/), así que un link absoluto funciona
+       igual sin importar la profundidad de la página actual. Si el sitio se
+       muda de URL, actualizar este prefijo acá (único lugar). -->
+  <a href="/fundar_la_rioja/">Monitor La Rioja</a>
+  <a href="/fundar_la_rioja/clases/">Taller de visualización</a>
+  <a href="https://github.com/gefero/fundar_la_rioja">Repositorio ↗</a>
+</nav>
+
+<header class="banner">
+  <div class="inner">
+    <p class="eyebrow">Fundar · grupo factor~data</p>
+    <h1>Clase 1 — Gramática de gráficos y percepción</h1>
+    <p class="subtitle">Guion</p>
+  </div>
+</header>
+
+<main>
+<h1 id="clase-1-gramática-de-gráficos-y-percepción">Clase 1 — Gramática
+de gráficos y percepción</h1>
+<p><strong>Duración:</strong> 120 minutos · <strong>Teoría:</strong> 65’
+· <strong>Práctica:</strong> 45’ · <strong>Cierre:</strong> 10’</p>
+<p><strong>Material de slides:</strong>
+<code>clases/Copia de Pract_Clase_1_introducción.pdf</code>,
+<strong>diapositivas 1 a 57</strong> (el bloque “Algunas nociones
+conceptuales”). El segundo bloque del deck —“Integridad visual”,
+diapositivas 58 a 169— <strong>no se da en esta clase</strong>: abre la
+clase 2.</p>
+<p><strong>Objetivo de la clase:</strong> que al terminar, cualquiera de
+los dos perfiles pueda mirar un gráfico del monitor y descomponerlo en
+<em>qué dato está mapeado a qué propiedad visual</em>, y decir si ese
+mapeo es una buena decisión o no.</p>
+<hr />
+<h2 id="apertura">0–10’ · Apertura</h2>
+<p><strong>Slides:</strong> portada del deck (1). <strong>Slides nuevas
+a hacer: 2.</strong></p>
+<p>Presentar el taller entero antes de entrar en materia:</p>
+<ul>
+<li><p>Tres clases de dos horas: (1) cómo se lee un gráfico, (2) cómo se
+elige, (3) cómo se produce y se publica.</p></li>
+<li><p><strong>El público es mixto y eso es a propósito.</strong> Hay
+gente que va a mantener el repositorio y actualizar los datos, y gente
+que va a comunicar los resultados. Las tres clases tienen teoría común y
+práctica compartida.</p></li>
+<li><p>La idea que ordena todo el taller, y que conviene dejar escrita
+en una slide:</p>
+<blockquote>
+<p>Los CSV de <code>data/inputs_md/</code> son la frontera entre los dos
+equipos. El equipo de datos garantiza que estén bien calculados y
+actualizados; el de comunicación decide cómo se leen.</p>
+</blockquote>
+<p>Mostrar el directorio real: diez archivos, uno por indicador,
+versionados en git. Todo lo que se hace hacia atrás de esa frontera es
+la clase 3; todo lo que se hace hacia adelante es la clase 2.</p></li>
+<li><p>Chequeo rápido: ¿todos corrieron
+<code>clases/materiales/00_setup.R</code> y vieron el gráfico de prueba?
+Resolver ahí los problemas de instalación, no durante la
+práctica.</p></li>
+</ul>
+<hr />
+<h2 id="la-gramática-de-gráficos">10–30’ · La gramática de gráficos</h2>
+<p><strong>Slides:</strong> 2–11 del deck. <strong>Slides nuevas a
+hacer: 2</strong> (el código anotado, ver abajo).</p>
+<h3 id="qué-se-dice-slides-211">Qué se dice (slides 2–11)</h3>
+<p>Arrancar por la pregunta del deck: <strong>¿qué es un
+gráfico?</strong> Y la reformulación que la hace productiva: ¿cómo lo
+describimos sucintamente, de forma que podamos <em>generarlo</em>? De
+ahí la idea de Wilkinson de una <strong>gramática</strong>: “los
+principios fundamentales de un arte o una ciencia” — un conjunto chico
+de reglas que combinadas generan todos los gráficos posibles, igual que
+la gramática de una lengua genera todas las oraciones posibles.</p>
+<p>Las piezas, en el orden en que las presenta el deck:</p>
+<ol type="1">
+<li><strong>Datos</strong> — una tabla: filas (observaciones) y columnas
+(variables).</li>
+<li><strong>Mapeo estético</strong> — cada variable se asigna a una
+propiedad visual: A → x, C → y, D → forma.</li>
+<li><strong>Objetos geométricos</strong> — puntos, barras, líneas,
+superficies.</li>
+<li><strong>Escalas</strong> — la traducción de los valores de los datos
+a coordenadas y colores que la máquina puede dibujar. Las slides 8–11
+muestran la secuencia: datos → escalado → espacio estético → objetos
+producidos → plot final.</li>
+</ol>
+<p>El ejemplo del deck (slides 6–8) es un scatterplot de A y C con la
+forma mapeada a D. Recorrerlo como está: es corto y hace el punto.</p>
+<blockquote>
+<p><strong>Ojo con la errata de la slide 8:</strong> el mapeo dice
+<code>A =&gt; x, B =&gt; y</code> cuando debería decir
+<code>A =&gt; x, C =&gt; y</code> (así aparece bien en la slide 7).
+Corregirlo en el deck.</p>
+</blockquote>
+<h3 id="el-anclaje-en-el-repo-lo-importante-de-este-bloque">El anclaje
+en el repo (lo importante de este bloque)</h3>
+<p>Acá el taller deja de ser abstracto. Abrir
+<strong><code>src/04_desoc.R</code></strong> —tiene 23 líneas— y leerlo
+en voz alta como si fuera la gramática hecha código:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&#39;./data/inputs_md/04_tasa_desoc.csv&#39;</span>)   <span class="co"># 1. DATOS</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df_plot <span class="sc">%&gt;%</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> fecha, <span class="at">y =</span> tasa_desoc,                <span class="co"># 2. MAPEO ESTÉTICO</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">group =</span> la_rioja_region,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> la_rioja_region)) <span class="sc">+</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span>                         <span class="co"># 3. OBJETO GEOMÉTRICO</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_fundar_multi</span>(<span class="at">name =</span> <span class="st">&quot;Región&quot;</span>) <span class="sc">+</span>          <span class="co"># 4. ESCALA (dato → color)</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">20</span>) <span class="sc">+</span>                                        <span class="co"># 4. ESCALA (dato → posición y)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_monitor</span>() <span class="sc">+</span>                                    <span class="co"># 5. </span><span class="al">TODO</span><span class="co"> LO QUE NO ES DATO</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> ..., <span class="at">x =</span> ..., <span class="at">y =</span> ..., <span class="at">caption =</span> ...)   <span class="co"># 6. ANOTACIÓN</span></span></code></pre></div>
+<p>Los puntos a marcar:</p>
+<ul>
+<li><strong><code>ggplot2</code> se llama así por esto</strong>: “gg” es
+<em>grammar of graphics</em>. El <code>+</code> no es decorativo, es el
+operador que compone las capas de la gramática.</li>
+<li><strong>La distinción clave: dentro o fuera de
+<code>aes()</code>.</strong> <code>color = la_rioja_region</code> va
+<em>dentro</em> porque el color depende del dato.
+<code>linewidth = 0.7</code> va <em>fuera</em> porque es una decisión
+constante, no un mapeo. Esta confusión es el error nº 1 de quien arranca
+con ggplot.</li>
+<li><strong><code>theme_monitor()</code> no toca los datos.</strong>
+Todo lo que hace es decidir cómo se ve lo que no es dato: fondo, grilla,
+tipografía, posición de la leyenda. Por eso puede vivir en un archivo
+aparte (<code>style/fundar_monitor_theme.R</code>) y aplicarse igual a
+los diez indicadores.</li>
+<li><strong>Los diez scripts de visualización del repo son variaciones
+de este mismo esqueleto.</strong> Quien entienda estas seis líneas puede
+leer cualquiera de ellos.</li>
+</ul>
+<p>Para el perfil comunicación, la conclusión es: <em>no hace falta
+saber programar para leer esto</em>. Se puede mirar un script y saber
+qué variable está en cada eje y de qué depende cada color.</p>
+<hr />
+<h2 id="marcas-y-canales">30–45’ · Marcas y canales</h2>
+<p><strong>Slides:</strong> 26–32 del deck. <strong>Slides nuevas a
+hacer: 1</strong> (la grilla con los tres PNG del repo).</p>
+<h3 id="qué-se-dice-slides-2632">Qué se dice (slides 26–32)</h3>
+<p>Presentar la nomenclatura de Munzner, que es la misma idea con otro
+vocabulario y más precisión:</p>
+<ul>
+<li>Una <strong>marca</strong> es el elemento geométrico primitivo,
+clasificado por dimensiones espaciales: 0D puntos, 1D líneas, 2D áreas,
+3D volúmenes (raros y desaconsejados). En redes se suman marcas de
+<strong>conexión</strong> (una línea que vincula dos ítems) y de
+<strong>contención</strong> (un área que anida).</li>
+<li>Un <strong>canal</strong> es una propiedad de la marca que puede
+variar para transmitir información: posición espacial, color (con sus
+tres sub-canales: matiz, saturación, luminancia), tamaño (longitud,
+área, volumen), orientación, curvatura, forma, movimiento.</li>
+<li><strong>Los canales son independientes de la marca.</strong> Una
+línea puede variar en color, grosor, punteado; un punto en tamaño,
+forma, color.</li>
+</ul>
+<p>La slide 31 es el ejercicio de lectura: cuatro gráficos, y para cada
+uno, ¿qué atributos se representan?, ¿cuántos son cuantitativos?, ¿qué
+marcas hay?, ¿qué canales se usan? Hacerlo con la sala, en voz alta.</p>
+<h3 id="el-anclaje-en-el-repo">El anclaje en el repo</h3>
+<p>Proyectar tres PNG de <code>outputs/plots/</code> y desarmarlos con
+la misma grilla de preguntas. Sugeridos, porque escalan en
+complejidad:</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Gráfico</th>
+<th>Marca</th>
+<th>Canales</th>
+<th>Atributos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>04_desoc.png</code></td>
+<td>línea (1D)</td>
+<td>pos. x = tiempo · pos. y = tasa · matiz = región</td>
+<td>3 (2 cuantitativos, 1 categórico)</td>
+</tr>
+<tr>
+<td><code>03b_salarios_registrados_EPH.png</code></td>
+<td>línea + punto + texto</td>
+<td>pos. x, pos. y, matiz = sector, <strong>región espacial</strong> =
+facet</td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>13a_nbi_hogares.png</code></td>
+<td>línea</td>
+<td>pos. x, pos. y, matiz = región</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>El caso interesante es el segundo: <strong>el facetado es un
+canal</strong>. La “región espacial” —en qué panel cae la marca—
+codifica la zona, y eso libera el matiz para codificar el sector. Es la
+misma cantidad de información que si hubiéramos puesto seis líneas de
+colores en un solo panel, pero mucho más legible. Es la primera
+aparición de los <em>small multiples</em>, que vuelven en la clase
+2.</p>
+<hr />
+<h2 id="efectividad-de-los-canales">45–70’ · Efectividad de los
+canales</h2>
+<p><strong>Slides:</strong> 33–55 del deck. <strong>Slides nuevas a
+hacer: 1</strong> (la paleta del repo como ejemplo).</p>
+<h3 id="qué-se-dice-slides-3355">Qué se dice (slides 33–55)</h3>
+<p>El punto central de la clase: <strong>no todos los canales transmiten
+igual de bien al sistema perceptivo humano.</strong> Hay cuatro
+criterios (slide 33):</p>
+<ol type="1">
+<li><strong>Precisión / efectividad</strong> — ¿qué tan bien vemos la
+diferencia entre dos valores?</li>
+<li><strong>Discriminabilidad</strong> — ¿cuántos niveles distintos
+podemos separar en ese canal?</li>
+<li><strong>Separabilidad</strong> — ¿los canales interfieren entre
+sí?</li>
+<li><strong>Saliencia (pop-out)</strong> — ¿hay algo que salte a la
+vista sin buscarlo?</li>
+</ol>
+<p><strong>Precisión (slides 34–36).</strong> Somos buenos comparando
+posiciones sobre una escala común; peores sobre escalas no alineadas;
+mucho peores con ángulos (adiós gráficos de torta); pésimos con áreas
+—de hecho <strong>sobreestimamos</strong> las diferencias de área—. Y
+nos cuesta mucho evaluar cambios de pendiente, que además dependen del
+<em>aspect ratio</em> del gráfico.</p>
+<p><strong>Separabilidad (slides 37–38).</strong> El cuadro de la slide
+37 es el que hay que dejar grabado: posición + matiz son separables (2
+grupos limpios en cada canal); tamaño + matiz tienen interferencia leve;
+ancho + altura, media; rojo + verde, alta (uno ya no ve dos canales sino
+cuatro categorías). La moraleja: <strong>agregar canales no es
+gratis.</strong> Cada canal nuevo satura al espectador y puede
+interferir con los que ya estaban.</p>
+<p><strong>Saliencia (slides 39–45).</strong> La secuencia de pop-out es
+la mejor demostración en vivo del deck: buscar el punto azul es
+instantáneo con un solo canal distractor, y se vuelve difícil a partir
+del tercer panel. Detenerse en la slide 45: muchos canales funcionan
+como pop-out (inclinación, grosor, forma), pero <strong>los pares de
+líneas paralelas no</strong>.</p>
+<p><strong>Contexto y relatividad (slides 46–50).</strong> Nuestro
+sistema perceptivo evalúa <strong>diferencias relativas, no
+absolutas</strong>. La percepción de la luminancia depende del entorno;
+los bordes cambian lo que vemos. De ahí la conclusión práctica:
+<strong>el mismo color puede leerse distinto según lo que tenga al
+lado.</strong></p>
+<p><strong>Paletas (slides 51–55).</strong> Presentación breve —el
+desarrollo completo es la clase 2—: hay paletas para variables
+cualitativas, secuenciales y divergentes, y elegir mal la familia es un
+error conceptual, no estético.</p>
+<h3 id="el-anclaje-en-el-repo-1">El anclaje en el repo</h3>
+<p>Mostrar el código de la paleta,
+<code>style/fundar_monitor_theme.R:25-31</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>FUNDAR_MULTI <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;serie_1&quot;</span> <span class="ot">=</span> <span class="st">&quot;#A8DCC8&quot;</span>,   <span class="co"># Verde menta claro    → 1. Resto país</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;serie_2&quot;</span> <span class="ot">=</span> <span class="st">&quot;#C8C87A&quot;</span>,   <span class="co"># Amarillo oliva       → 2. NOA-Resto</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;serie_3&quot;</span> <span class="ot">=</span> <span class="st">&quot;#2D6E6E&quot;</span>,   <span class="co"># Verde azulado oscuro → 3. La Rioja (énfasis)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  ...</span></code></pre></div>
+<p>y la función que asigna la región,
+<code>src/utils_eph.R:97-104</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>la_rioja_region <span class="ot">=</span> <span class="fu">case_when</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  AGLOMERADO <span class="sc">==</span> <span class="st">&quot;La Rioja&quot;</span>                        <span class="sc">~</span> <span class="st">&quot;3. La Rioja&quot;</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  AGLOMERADO <span class="sc">!=</span> <span class="st">&quot;La Rioja&quot;</span> <span class="sc">&amp;</span> REGION <span class="sc">==</span> <span class="st">&quot;Noroeste&quot;</span> <span class="sc">~</span> <span class="st">&quot;2. NOA-Resto&quot;</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="cn">TRUE</span>                                            <span class="sc">~</span> <span class="st">&quot;1. Resto país&quot;</span>)</span></code></pre></div>
+<p>Dos decisiones deliberadas de diseño escondidas en ese código, y
+conviene explicitarlas porque son exactamente la teoría que se acaba de
+dar:</p>
+<ol type="1">
+<li><strong>La Rioja es la única serie oscura.</strong> Las otras dos
+son claras y de baja saturación. No es un capricho de color: es
+<strong>saliencia por contraste de luminancia</strong>. La serie
+protagonista aparece sin que el lector la busque, que es todo el punto
+de la secuencia de pop-out de las slides 39–45.</li>
+<li><strong>Los prefijos numéricos <code>1.</code>, <code>2.</code>,
+<code>3.</code> no son cosméticos.</strong> Fuerzan el orden alfabético
+del factor, y con eso el orden en que ggplot dibuja: La Rioja se dibuja
+última y queda <strong>encima</strong> de las otras dos cuando se
+cruzan. Es una solución de una línea a un problema de oclusión.</li>
+</ol>
+<p>Pregunta para la sala, que abre la práctica: <strong>¿qué pasaría si
+en vez de matiz hubiéramos usado la forma del punto para distinguir
+regiones?</strong> (Respuesta corta: la forma es el peor canal para
+variables categóricas, y ni hablar sobre líneas.) Se comprueba en el
+ejercicio 3.</p>
+<hr />
+<h2 id="pausa">70–75’ · Pausa</h2>
+<hr />
+<h2 id="práctica">75–110’ · Práctica</h2>
+<p>Consignas completas en <a
+href="practica.md"><code>practica.md</code></a>. Los scripts están en
+<code>ejercicios/</code>.</p>
+<p><strong>Slides nuevas a hacer: 3</strong> (una por consigna).</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Ejercicio</th>
+<th>Tiempo</th>
+<th>Qué se hace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>01_gramatica_capas.R</code></td>
+<td>15’</td>
+<td>Reconstruir <code>04_desoc.R</code> una capa por vez</td>
+</tr>
+<tr>
+<td><code>02_mapeos_alternativos.R</code></td>
+<td>15’</td>
+<td>Tres mapeos distintos del mismo dato de NBI</td>
+</tr>
+<tr>
+<td><code>03_romper_canales.R</code></td>
+<td>10’</td>
+<td>Mapear la región a <code>shape</code> y a <code>size</code>, y
+sufrirlo</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cómo conducirla.</strong> Los ejercicios 1 y 3 conviene
+hacerlos guiados, todos a la vez, proyectando y esperando a que la sala
+ejecute cada paso. El 2 es el único de exploración individual: dar los
+diez minutos, recorrer la sala, y guardar los resultados para la puesta
+en común.</p>
+<p>Para el perfil comunicación que no programe: el ejercicio 1 es
+autoexplicativo (se ejecuta línea por línea y se mira el resultado), y
+en el 2 y el 3 conviene sentarlos con alguien del perfil mantenimiento.
+Que <strong>miren y opinen</strong> sobre cuál versión funciona mejor es
+exactamente el trabajo que van a hacer en la clase 2.</p>
+<hr />
+<h2 id="cierre">110–120’ · Cierre</h2>
+<p>Tres ideas para llevarse:</p>
+<ol type="1">
+<li><strong>Todo gráfico es un mapeo de datos a propiedades
+visuales.</strong> Leer un gráfico es reconstruir ese mapeo; hacer un
+gráfico es elegirlo.</li>
+<li><strong>Los canales no son intercambiables.</strong> Posición &gt;
+longitud &gt; área &gt; ángulo &gt; forma. Elegir el canal es una
+decisión sobre qué tan preciso va a ser el lector.</li>
+<li><strong>La saliencia se diseña.</strong> Que La Rioja salte a la
+vista en nuestros gráficos es una decisión que está escrita en dos
+líneas de código.</li>
+</ol>
+<p>Puesta en común del ejercicio 2: proyectar dos o tres versiones
+distintas y discutir <strong>a qué pregunta responde mejor cada
+una</strong>. Sin ganador único: el punto es que la pregunta define el
+gráfico.</p>
+<p><strong>Anticipo de la clase 2:</strong> hasta acá vimos si un
+gráfico <em>se entiende</em>. La próxima vemos si además <em>dice la
+verdad</em> —el caso Challenger, el factor de mentira— y cómo elegir la
+herramienta correcta a partir del catálogo de Argendata.</p>
+</main>
+
+<footer class="site-footer">
+  <p>Fundar — grupo factor~data · Monitor Socioeconómico La Rioja</p>
+</footer>
+
+</body>
+</html>

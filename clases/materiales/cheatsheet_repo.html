@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cheatsheet — mantenimiento del
+repositorio · Taller de visualización — Monitor La Rioja</title>
+<style>
+  /* Paleta: la misma de style/fundar_monitor_theme.R (FUNDAR_VERDE, FUNDAR_BEIGE,
+     FUNDAR_OSCURO, FUNDAR_MULTI serie_3), para que esta sección se sienta parte
+     del mismo sitio que el dashboard, no un tema importado de otro lado. */
+  :root {
+    --bg: #FBFAF6;
+    --panel: #FFFFFF;
+    --ink: #1C1C1C;        /* FUNDAR_OSCURO / FUNDAR_TEXTO */
+    --ink-muted: #6b6558;
+    --rule: #E4DFD3;
+    --banner-a: #2D6E6E;   /* FUNDAR_MULTI serie_3 — La Rioja */
+    --banner-b: #1C1C1C;   /* FUNDAR_OSCURO */
+    --accent: #2D6E6E;
+    --code-bg: #EDE8E0;    /* FUNDAR_BEIGE */
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  a { color: var(--accent); }
+  a:hover { text-decoration: none; }
+
+  .site-nav {
+    background: var(--ink);
+    padding: 10px 24px;
+    font-size: 0.82rem;
+  }
+  .site-nav a {
+    color: #EFEAE0;
+    text-decoration: none;
+    margin-right: 18px;
+    letter-spacing: 0.02em;
+  }
+  .site-nav a:hover { text-decoration: underline; }
+
+  header.banner {
+    background: linear-gradient(120deg, var(--banner-a), var(--banner-b));
+    color: #FFFFFF;
+    padding: 48px 24px 40px;
+  }
+  header.banner .inner { max-width: 760px; margin: 0 auto; }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #C9E8DE;
+    margin: 0 0 10px;
+  }
+  header.banner h1 {
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    line-height: 1.2;
+    margin: 0 0 8px;
+  }
+  header.banner .subtitle {
+    font-size: 1.02rem;
+    color: #E4F2ED;
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  main h2 {
+    margin-top: 2.2em;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+  }
+  main h3 {
+    margin-top: 1.8em;
+    color: var(--banner-a);
+  }
+  main ul { padding-left: 1.3em; }
+  main li { margin-bottom: 4px; }
+
+  main blockquote {
+    margin: 1.2em 0;
+    padding: 10px 18px;
+    background: var(--code-bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+  }
+  main blockquote p { margin: 0.4em 0; }
+
+  code {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.88em;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+  pre code { background: none; padding: 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.2em 0;
+    font-size: 0.92rem;
+  }
+  th, td {
+    border-bottom: 1px solid var(--rule);
+    padding: 6px 10px;
+    text-align: left;
+  }
+  th { color: var(--ink-muted); font-weight: 600; }
+
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2.4em 0; }
+
+  footer.site-footer {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+  }
+  footer.site-footer a { color: var(--ink-muted); }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <!-- Rutas absolutas con el prefijo del repo: esta es una GitHub Project Page
+       (usuario.github.io/fundar_la_rioja/), así que un link absoluto funciona
+       igual sin importar la profundidad de la página actual. Si el sitio se
+       muda de URL, actualizar este prefijo acá (único lugar). -->
+  <a href="/fundar_la_rioja/">Monitor La Rioja</a>
+  <a href="/fundar_la_rioja/clases/">Taller de visualización</a>
+  <a href="https://github.com/gefero/fundar_la_rioja">Repositorio ↗</a>
+</nav>
+
+<header class="banner">
+  <div class="inner">
+    <p class="eyebrow">Fundar · grupo factor~data</p>
+    <h1>Cheatsheet — mantenimiento del repositorio</h1>
+    
+  </div>
+</header>
+
+<main>
+<h1 id="cheatsheet-mantenimiento-del-repositorio">Cheatsheet —
+mantenimiento del repositorio</h1>
+<p>Referencia de una página para el equipo que mantiene el pipeline.
+Detalle completo en el <a href="../../README.md">README</a>.</p>
+<hr />
+<h2 id="mapa-del-repositorio">Mapa del repositorio</h2>
+<pre><code>src/                      El pipeline, en 3 etapas + un script de viz por indicador
+  utils_eph.R             Funciones compartidas (descarga incremental, limpieza, región)
+  00_descarga_eph.R       ETAPA 1 · microdatos crudos     → data/raw_data/eph/**/*.rds
+  01_limpieza_eph.R       ETAPA 2 · datasets canónicos    → data/proc_data/eph_*.rds
+  02_indicadores_eph_*.R  ETAPA 3 · indicadores agregados → data/inputs_md/*.csv
+  03_prep_*, 05_prep_*    Prep de las fuentes SIPA (xlsx) → data/inputs_md/*.csv
+  NN_&lt;indicador&gt;.R        Un script de visualización por indicador → outputs/plots/*.png
+  999_run_pipeline.R      Corre todo de punta a punta
+
+style/fundar_monitor_theme.R   Tema activo (el que usan todos los scripts de viz)
+dashboard/                     App Shiny + sitio estático Quarto
+data/inputs_md/*.csv           ← LO ÚNICO VERSIONADO de data/. La frontera con comunicación.</code></pre>
+<p><strong>Qué está en git y qué no:</strong>
+<code>data/raw_data/</code> y <code>data/proc_data/</code> están en
+<code>.gitignore</code> (pesan mucho y se regeneran).
+<code>data/inputs_md/*.csv</code> <strong>sí</strong> está versionado:
+es lo que consumen los gráficos y el dashboard, y lo que se puede
+revisar en un diff.</p>
+<hr />
+<h2 id="las-3-etapas-y-por-qué-están-separadas">Las 3 etapas, y por qué
+están separadas</h2>
+<p>Cada etapa se puede correr sola. Así se recalcula un indicador sin
+volver a descargar ni relimpiar 23 años de microdatos.</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Etapa</th>
+<th>Script</th>
+<th>Lee</th>
+<th>Escribe</th>
+<th>Cuándo correrla</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>00_descarga_eph.R</code></td>
+<td>INDEC (vía <code>eph::get_microdata()</code>)</td>
+<td><code>data/raw_data/eph/**/*.rds</code></td>
+<td>Salió una onda nueva, o agregaste una variable</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>01_limpieza_eph.R</code></td>
+<td>los <code>.rds</code> crudos</td>
+<td><code>data/proc_data/eph_individuo.rds</code>,
+<code>eph_hogar.rds</code></td>
+<td>Cambió la descarga, o una variable derivada</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>02_indicadores_eph_*.R</code></td>
+<td>los <code>.rds</code> canónicos</td>
+<td><code>data/inputs_md/*.csv</code></td>
+<td>Cambió un cálculo, o hay datos nuevos</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>NN_&lt;indicador&gt;.R</code></td>
+<td>el CSV</td>
+<td><code>outputs/plots/*.png</code></td>
+<td>Cambió el dato o el diseño del gráfico</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="tareas-frecuentes">Tareas frecuentes</h2>
+<p><strong>Actualizar con una onda nueva de la EPH</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;src/00_descarga_eph.R&quot;</span>)   <span class="co"># incremental: saltea lo que ya está en disco</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;src/01_limpieza_eph.R&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;src/02_indicadores_eph_individuo.R&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;src/02_indicadores_eph_hogar.R&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># después, los scripts de viz de los indicadores afectados</span></span></code></pre></div>
+<p><code>descargar_eph_incremental()</code> va hasta el año en curso
+solo, sin editar el rango a mano. Si un trimestre todavía no está
+publicado, avisa por consola y sigue con el resto.</p>
+<p><strong>⚠️ Agregar una variable nueva de la EPH</strong></p>
+<p>Sumarla a <code>vars_individuo</code> / <code>vars_hogar</code> en
+<code>00_descarga_eph.R</code> <strong>no alcanza</strong>: la descarga
+es incremental y saltea los <code>.rds</code> que ya existen, así que
+los archivos viejos se quedan sin la columna nueva.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Agregar la variable a vars_individuo / vars_hogar en src/00_descarga_eph.R</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. BORRAR los .rds afectados:</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">unlink</span>(<span class="fu">list.files</span>(<span class="st">&quot;data/raw_data/eph/individuo&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Volver a correr la etapa 1 y las siguientes</span></span></code></pre></div>
+<p><strong>Recalcular un solo indicador</strong> (sin tocar descarga ni
+limpieza)</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;src/02_indicadores_eph_individuo.R&quot;</span>)   <span class="co"># reescribe todos los CSV de individuo</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;src/04_desoc.R&quot;</span>)                        <span class="co"># regenera el PNG</span></span></code></pre></div>
+<p><strong>Correr todo de punta a punta</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;src/999_run_pipeline.R&quot;</span>)</span></code></pre></div>
+<p><strong>Ver el dashboard</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>shiny<span class="sc">::</span><span class="fu">runApp</span>(<span class="st">&quot;dashboard&quot;</span>)        <span class="co"># app interactiva</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># quarto render dashboard/index.qmd   # sitio estático autocontenido</span></span></code></pre></div>
+<p><strong>Agregar un indicador al dashboard</strong></p>
+<ol type="1">
+<li>Que su CSV esté en <code>data/inputs_md/</code>.</li>
+<li>Sumar una entrada a <code>INDICADORES</code> en
+<code>dashboard/R/data.R</code> (id, título, tópico, CSV, columna de
+valor, etiquetas, <code>shape</code>, <code>ylim</code>).</li>
+<li>Listo: aparece solo en la app Shiny y en el sitio estático.</li>
+</ol>
+<p><strong>Publicar</strong></p>
+<p>Al pushear a <code>main</code> un cambio en <code>dashboard/</code>,
+<code>data/inputs_md/</code>, <code>style/</code> o el propio workflow,
+la GitHub Action <code>.github/workflows/dashboard.yml</code> renderiza
+el sitio y lo publica en <code>gh-pages</code>.</p>
+<hr />
+<h2 id="trampas-conocidas-pisadas-y-documentadas">Trampas conocidas
+(pisadas y documentadas)</h2>
+<ol type="1">
+<li><p><strong>La descarga incremental no re-descarga.</strong> Ver
+arriba: hay que borrar los <code>.rds</code> a mano cuando se agrega una
+variable. Es la causa nº 1 de “agregué la variable y me viene todo
+NA”.</p></li>
+<li><p><strong>El orden de <code>as.character()</code> en
+<code>limpiar_base_eph()</code>.</strong> Primero se castean a texto las
+columnas categóricas (sobre un objeto <code>labelled</code>,
+<code>as.character()</code> devuelve la <em>etiqueta</em>:
+<code>"Casa"</code>), y <strong>recién después</strong> se pela la clase
+<code>labelled</code> del resto. Al revés, <code>as.character()</code>
+devuelve el <em>código</em> (<code>"2"</code>) y todas las comparaciones
+de texto (<code>case_when</code>, <code>%in%</code>, <code>==</code>)
+dejan de matchear <strong>en silencio, sin error</strong>. Es el bug más
+difícil de detectar del pipeline.</p></li>
+<li><p><strong><code>PONDIIO</code> no existe antes de ~2016.</strong>
+La EPH imputaba los ingresos y no publicaba el ponderador de ingreso.
+<code>descargar_eph_incremental()</code> reintenta la descarga sin las
+<code>vars_opcionales</code>, y el cálculo de salarios usa
+<code>PONDERA</code> como fallback. Consecuencia: <strong>los niveles a
+ambos lados de 2015/2016 no son comparables</strong> (además la EPH
+estuvo interrumpida entre 2015-T3 y 2016-T1). Todo gráfico de salarios
+tiene que marcar ese quiebre.</p></li>
+<li><p><strong>La Rioja es un dominio chico.</strong> En un trimestre
+suelto, varias sub-dimensiones de NBI dan 0,00. No es que no haya
+privación: es que la muestra no alcanza. Promediar las cuatro ondas del
+año antes de comunicar un nivel.</p></li>
+</ol>
+<hr />
+<h2 id="funciones-del-tema-stylefundar_monitor_theme.r">Funciones del
+tema (<code>style/fundar_monitor_theme.R</code>)</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Función</th>
+<th>Para qué</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>theme_monitor()</code></td>
+<td>Tema base: fondo beige, grilla horizontal, leyenda arriba</td>
+</tr>
+<tr>
+<td><code>theme_monitor_oscuro()</code></td>
+<td>Variante fondo oscuro (slides de KPIs)</td>
+</tr>
+<tr>
+<td><code>theme_monitor_barras_h()</code></td>
+<td>Variante para barras horizontales</td>
+</tr>
+<tr>
+<td><code>scale_color_fundar_multi()</code> /
+<code>scale_fill_fundar_multi()</code></td>
+<td>Escala para series múltiples</td>
+</tr>
+<tr>
+<td><code>scale_fill_fundar_div()</code></td>
+<td>Escala divergente verde/rosa</td>
+</tr>
+<tr>
+<td><code>fuente_fundar("EPH-INDEC")</code></td>
+<td>Caption con el formato <code>"Fuente: ..."</code></td>
+</tr>
+<tr>
+<td><code>puntos_etiqueta(df, x, y, grupo)</code></td>
+<td>Devuelve máximo, mínimo y último de cada grupo, para etiquetar</td>
+</tr>
+<tr>
+<td><code>grafico_linea_monitor()</code> /
+<code>grafico_barras_div()</code></td>
+<td>Helpers de gráfico completo</td>
+</tr>
+</tbody>
+</table>
+<p>Colores: <code>FUNDAR_VERDE</code>, <code>FUNDAR_ROSA</code>,
+<code>FUNDAR_BEIGE</code>, <code>FUNDAR_GRIS</code>,
+<code>FUNDAR_OSCURO</code>, y la paleta regional
+<code>FUNDAR_MULTI</code> (<code>serie_1</code> Resto país,
+<code>serie_2</code> NOA-Resto, <code>serie_3</code> La Rioja).</p>
+</main>
+
+<footer class="site-footer">
+  <p>Fundar — grupo factor~data · Monitor Socioeconómico La Rioja</p>
+</footer>
+
+</body>
+</html>

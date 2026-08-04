@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clase 1 — Gramática de gráficos y
+percepción · Taller de visualización — Monitor La Rioja</title>
+<style>
+  /* Paleta: la misma de style/fundar_monitor_theme.R (FUNDAR_VERDE, FUNDAR_BEIGE,
+     FUNDAR_OSCURO, FUNDAR_MULTI serie_3), para que esta sección se sienta parte
+     del mismo sitio que el dashboard, no un tema importado de otro lado. */
+  :root {
+    --bg: #FBFAF6;
+    --panel: #FFFFFF;
+    --ink: #1C1C1C;        /* FUNDAR_OSCURO / FUNDAR_TEXTO */
+    --ink-muted: #6b6558;
+    --rule: #E4DFD3;
+    --banner-a: #2D6E6E;   /* FUNDAR_MULTI serie_3 — La Rioja */
+    --banner-b: #1C1C1C;   /* FUNDAR_OSCURO */
+    --accent: #2D6E6E;
+    --code-bg: #EDE8E0;    /* FUNDAR_BEIGE */
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  a { color: var(--accent); }
+  a:hover { text-decoration: none; }
+
+  .site-nav {
+    background: var(--ink);
+    padding: 10px 24px;
+    font-size: 0.82rem;
+  }
+  .site-nav a {
+    color: #EFEAE0;
+    text-decoration: none;
+    margin-right: 18px;
+    letter-spacing: 0.02em;
+  }
+  .site-nav a:hover { text-decoration: underline; }
+
+  header.banner {
+    background: linear-gradient(120deg, var(--banner-a), var(--banner-b));
+    color: #FFFFFF;
+    padding: 48px 24px 40px;
+  }
+  header.banner .inner { max-width: 760px; margin: 0 auto; }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #C9E8DE;
+    margin: 0 0 10px;
+  }
+  header.banner h1 {
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    line-height: 1.2;
+    margin: 0 0 8px;
+  }
+  header.banner .subtitle {
+    font-size: 1.02rem;
+    color: #E4F2ED;
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  main h2 {
+    margin-top: 2.2em;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+  }
+  main h3 {
+    margin-top: 1.8em;
+    color: var(--banner-a);
+  }
+  main ul { padding-left: 1.3em; }
+  main li { margin-bottom: 4px; }
+
+  main blockquote {
+    margin: 1.2em 0;
+    padding: 10px 18px;
+    background: var(--code-bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+  }
+  main blockquote p { margin: 0.4em 0; }
+
+  code {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.88em;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+  pre code { background: none; padding: 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.2em 0;
+    font-size: 0.92rem;
+  }
+  th, td {
+    border-bottom: 1px solid var(--rule);
+    padding: 6px 10px;
+    text-align: left;
+  }
+  th { color: var(--ink-muted); font-weight: 600; }
+
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2.4em 0; }
+
+  footer.site-footer {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+  }
+  footer.site-footer a { color: var(--ink-muted); }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <!-- Rutas absolutas con el prefijo del repo: esta es una GitHub Project Page
+       (usuario.github.io/fundar_la_rioja/), así que un link absoluto funciona
+       igual sin importar la profundidad de la página actual. Si el sitio se
+       muda de URL, actualizar este prefijo acá (único lugar). -->
+  <a href="/fundar_la_rioja/">Monitor La Rioja</a>
+  <a href="/fundar_la_rioja/clases/">Taller de visualización</a>
+  <a href="https://github.com/gefero/fundar_la_rioja">Repositorio ↗</a>
+</nav>
+
+<header class="banner">
+  <div class="inner">
+    <p class="eyebrow">Fundar · grupo factor~data</p>
+    <h1>Clase 1 — Gramática de gráficos y percepción</h1>
+    <p class="subtitle">Práctica</p>
+  </div>
+</header>
+
+<main>
+<h1 id="práctica-clase-1">Práctica — Clase 1</h1>
+<p><strong>Duración:</strong> 40 minutos.</p>
+<p>Antes de empezar: abrí <code>fundar_larioja.Rproj</code> en RStudio.
+Todas las rutas de los scripts son relativas a la raíz del repo, y el
+<code>.Rproj</code> es lo que la fija.</p>
+<p>Los tres ejercicios trabajan sobre los CSV de
+<code>data/inputs_md/</code>, que ya están en el repositorio. <strong>No
+hace falta descargar microdatos.</strong></p>
+<p>Si te trabás, las soluciones completas están en
+<code>soluciones/</code>. Miralas después de intentarlo.</p>
+<hr />
+<h2 id="ejercicio-1-la-gramática-capa-por-capa-15">Ejercicio 1 — La
+gramática, capa por capa (15’)</h2>
+<p><strong>Archivo:</strong>
+<code>ejercicios/01_gramatica_capas.R</code></p>
+<p>Vamos a reconstruir el gráfico de la tasa de desocupación
+(<code>src/04_desoc.R</code>) desde cero, agregando <strong>una capa por
+vez</strong> y ejecutando en cada paso.</p>
+<p>La consigna es simple pero importante: <strong>ejecutá cada bloque y
+mirá el gráfico antes de pasar al siguiente.</strong> El objetivo no es
+llegar al gráfico final —ya existe— sino ver qué aporta exactamente cada
+línea.</p>
+<p>Los pasos:</p>
+<ol type="1">
+<li>Solo los datos y los ejes (<code>ggplot(aes(...))</code>, sin
+geometría). ¿Qué se ve?</li>
+<li>Agregar <code>geom_line()</code>. Va a salir mal. <strong>¿Por
+qué?</strong></li>
+<li>Arreglarlo con <code>group</code>.</li>
+<li>Agregar <code>color</code>. ¿Qué cambió respecto del paso 3?</li>
+<li>Agregar la escala de color del proyecto.</li>
+<li>Agregar el tema.</li>
+<li>Agregar títulos y fuente.</li>
+</ol>
+<p><strong>Preguntas para responder mientras lo hacés:</strong></p>
+<ul>
+<li>En el paso 2, ¿por qué ggplot dibuja una sola línea que va y viene?
+¿Qué le falta saber?</li>
+<li>En el paso 4, <code>color = la_rioja_region</code> va
+<strong>dentro</strong> de <code>aes()</code> y
+<code>linewidth = 0.7</code> va <strong>fuera</strong>. ¿Cuál es la
+regla?</li>
+<li>En el paso 6, ¿el tema cambió algún dato?</li>
+</ul>
+<hr />
+<h2 id="ejercicio-2-tres-mapeos-del-mismo-dato-15">Ejercicio 2 — Tres
+mapeos del mismo dato (15’)</h2>
+<p><strong>Archivo:</strong>
+<code>ejercicios/02_mapeos_alternativos.R</code></p>
+<p><code>data/inputs_md/13a_nbi_hogares.csv</code> tiene, para cada
+trimestre y cada región, el porcentaje de hogares con NBI
+<strong>total</strong> y también las <strong>cinco
+sub-dimensiones</strong>: hacinamiento (<code>HAC</code>), vivienda
+inconveniente (<code>VIV</code>), condiciones sanitarias
+(<code>SAN</code>), escolaridad (<code>ESC</code>) y capacidad de
+subsistencia (<code>SUB</code>).</p>
+<p>Hoy <code>src/13a_nbi_hogares.R</code> grafica <strong>solo el
+total</strong>, con una línea por región. Las cinco sub-dimensiones
+están calculadas y no se muestran en ningún lado.</p>
+<p>Tenés tres versiones del mismo dato para completar:</p>
+<ul>
+<li><strong>Versión A</strong> — color = dimensión, un panel por
+región.</li>
+<li><strong>Versión B</strong> — color = región, un panel por
+dimensión.</li>
+<li><strong>Versión C</strong> — todo superpuesto en un solo panel:
+color = región, tipo de línea = dimensión.</li>
+</ul>
+<p><strong>La consigna no es “cuál es la más linda”, es “a qué pregunta
+responde mejor cada una”.</strong> Anotá, para cada versión, una
+pregunta que se conteste bien mirándola:</p>
+<table>
+<thead>
+<tr>
+<th>Versión</th>
+<th>¿Qué pregunta contesta bien?</th>
+<th>¿Qué pregunta contesta mal?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>B</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>C</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Pistas de discusión:</p>
+<ul>
+<li>¿Cuál sirve para “¿qué privación pesa más en La Rioja?”</li>
+<li>¿Cuál sirve para “¿La Rioja está mejor o peor que el NOA en
+hacinamiento?”</li>
+<li>La versión C usa <strong>dos canales a la vez</strong> (matiz y tipo
+de línea) sobre la misma marca. Mirando la slide 37 del deck, ¿son
+separables? ¿Cuántas series terminás viendo?</li>
+</ul>
+<hr />
+<h2 id="ejercicio-3-romper-el-gráfico-a-propósito-10">Ejercicio 3 —
+Romper el gráfico a propósito (10’)</h2>
+<p><strong>Archivo:</strong>
+<code>ejercicios/03_romper_canales.R</code></p>
+<p>Este ejercicio es para <strong>comprobar en carne propia</strong> la
+jerarquía de canales que vimos en la teoría.</p>
+<p>Tomá el gráfico de la tasa de empleo
+(<code>data/inputs_md/10_tasa_empleo.csv</code>) y hacé tres versiones
+donde la región se codifique con canales distintos:</p>
+<ul>
+<li><strong>A</strong> — con <code>color</code> (el canal que usa el
+repo).</li>
+<li><strong>B</strong> — con <code>shape</code> (forma del punto).</li>
+<li><strong>C</strong> — con <code>size</code> (grosor de línea).</li>
+</ul>
+<p>Después, para cada una, contestá lo más honestamente posible:</p>
+<ol type="1">
+<li>¿Cuánto tardás en encontrar la serie de <strong>La
+Rioja</strong>?</li>
+<li>Si dos series se cruzan, ¿podés seguirlas?</li>
+<li>¿Podrías distinguir seis series en vez de tres con ese canal?</li>
+</ol>
+<p><strong>Bonus (2’):</strong> en la versión A, cambiá la paleta del
+proyecto por una donde las tres regiones tengan la <strong>misma
+luminancia</strong> (el script trae una preparada). La Rioja deja de
+saltar a la vista. Ese es, exactamente, el efecto que la paleta del
+proyecto está diseñada para producir.</p>
+<hr />
+<h2 id="puesta-en-común-10">Puesta en común (10’)</h2>
+<p>Traé a la puesta en común:</p>
+<ul>
+<li>Del ejercicio 2: tu tabla de “qué pregunta contesta cada
+versión”.</li>
+<li>Del ejercicio 3: en cuál de las tres versiones tardaste más en
+encontrar La Rioja.</li>
+</ul>
+</main>
+
+<footer class="site-footer">
+  <p>Fundar — grupo factor~data · Monitor Socioeconómico La Rioja</p>
+</footer>
+
+</body>
+</html>

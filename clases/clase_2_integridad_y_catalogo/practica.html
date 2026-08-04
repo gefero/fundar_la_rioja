@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clase 2 — Integridad visual y catálogo de
+herramientas · Taller de visualización — Monitor La Rioja</title>
+<style>
+  /* Paleta: la misma de style/fundar_monitor_theme.R (FUNDAR_VERDE, FUNDAR_BEIGE,
+     FUNDAR_OSCURO, FUNDAR_MULTI serie_3), para que esta sección se sienta parte
+     del mismo sitio que el dashboard, no un tema importado de otro lado. */
+  :root {
+    --bg: #FBFAF6;
+    --panel: #FFFFFF;
+    --ink: #1C1C1C;        /* FUNDAR_OSCURO / FUNDAR_TEXTO */
+    --ink-muted: #6b6558;
+    --rule: #E4DFD3;
+    --banner-a: #2D6E6E;   /* FUNDAR_MULTI serie_3 — La Rioja */
+    --banner-b: #1C1C1C;   /* FUNDAR_OSCURO */
+    --accent: #2D6E6E;
+    --code-bg: #EDE8E0;    /* FUNDAR_BEIGE */
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  a { color: var(--accent); }
+  a:hover { text-decoration: none; }
+
+  .site-nav {
+    background: var(--ink);
+    padding: 10px 24px;
+    font-size: 0.82rem;
+  }
+  .site-nav a {
+    color: #EFEAE0;
+    text-decoration: none;
+    margin-right: 18px;
+    letter-spacing: 0.02em;
+  }
+  .site-nav a:hover { text-decoration: underline; }
+
+  header.banner {
+    background: linear-gradient(120deg, var(--banner-a), var(--banner-b));
+    color: #FFFFFF;
+    padding: 48px 24px 40px;
+  }
+  header.banner .inner { max-width: 760px; margin: 0 auto; }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #C9E8DE;
+    margin: 0 0 10px;
+  }
+  header.banner h1 {
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    line-height: 1.2;
+    margin: 0 0 8px;
+  }
+  header.banner .subtitle {
+    font-size: 1.02rem;
+    color: #E4F2ED;
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  main h2 {
+    margin-top: 2.2em;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+  }
+  main h3 {
+    margin-top: 1.8em;
+    color: var(--banner-a);
+  }
+  main ul { padding-left: 1.3em; }
+  main li { margin-bottom: 4px; }
+
+  main blockquote {
+    margin: 1.2em 0;
+    padding: 10px 18px;
+    background: var(--code-bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+  }
+  main blockquote p { margin: 0.4em 0; }
+
+  code {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.88em;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+  pre code { background: none; padding: 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.2em 0;
+    font-size: 0.92rem;
+  }
+  th, td {
+    border-bottom: 1px solid var(--rule);
+    padding: 6px 10px;
+    text-align: left;
+  }
+  th { color: var(--ink-muted); font-weight: 600; }
+
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2.4em 0; }
+
+  footer.site-footer {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+  }
+  footer.site-footer a { color: var(--ink-muted); }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <!-- Rutas absolutas con el prefijo del repo: esta es una GitHub Project Page
+       (usuario.github.io/fundar_la_rioja/), así que un link absoluto funciona
+       igual sin importar la profundidad de la página actual. Si el sitio se
+       muda de URL, actualizar este prefijo acá (único lugar). -->
+  <a href="/fundar_la_rioja/">Monitor La Rioja</a>
+  <a href="/fundar_la_rioja/clases/">Taller de visualización</a>
+  <a href="https://github.com/gefero/fundar_la_rioja">Repositorio ↗</a>
+</nav>
+
+<header class="banner">
+  <div class="inner">
+    <p class="eyebrow">Fundar · grupo factor~data</p>
+    <h1>Clase 2 — Integridad visual y catálogo de herramientas</h1>
+    <p class="subtitle">Práctica</p>
+  </div>
+</header>
+
+<main>
+<h1 id="práctica-clase-2">Práctica — Clase 2</h1>
+<p><strong>Duración:</strong> 40 minutos.</p>
+<p><strong>Se hace en parejas de perfiles mezclados.</strong> Quien
+comunica define la pregunta que el gráfico tiene que responder y redacta
+el título; quien mantiene escribe el código. Los dos roles son
+necesarios: un gráfico técnicamente impecable que responde a la pregunta
+equivocada no sirve para nada.</p>
+<p><strong>Cómo repartirlo:</strong> cada pareja elige
+<strong>uno</strong> de los tres primeros ejercicios (30’). El ejercicio
+4 lo hacemos entre todos al final (10’), porque el resultado es una
+decisión de proyecto.</p>
+<p>Todos trabajan sobre <code>data/inputs_md/</code>. Soluciones
+completas en <code>soluciones/</code>.</p>
+<hr />
+<h2 id="ejercicio-1-de-la-línea-al-cleveland-dot-plot-nbi">Ejercicio 1 —
+De la línea al Cleveland dot plot (NBI)</h2>
+<p><strong>Archivo:</strong> <code>ejercicios/01_cleveland_nbi.R</code>
+· <strong>Dificultad:</strong> guiado</p>
+<p><code>src/13a_nbi_hogares.R</code> grafica hoy <strong>una sola línea
+por región</strong>, con el NBI <strong>total</strong>. Las cinco
+sub-dimensiones —hacinamiento, vivienda, sanitarias, escolaridad,
+subsistencia— están calculadas en el CSV y <strong>no se muestran en
+ningún lado</strong>.</p>
+<p>La pregunta que el gráfico actual no puede contestar es justamente la
+más interesante:</p>
+<blockquote>
+<p><strong>¿Qué privación explica el NBI de La Rioja, y en qué se
+diferencia del NOA y del resto del país?</strong></p>
+</blockquote>
+<p>Eso es una comparación de <strong>brechas entre unidades en un corte
+transversal</strong>. Según la taxonomía: <strong>Cleveland dot
+plot</strong>.</p>
+<p>Lo que hay que hacer:</p>
+<ol type="1">
+<li>Pasar el CSV a formato largo (una fila por dimensión).</li>
+<li><strong>Promediar las cuatro ondas del último año.</strong> ⚠️ Esto
+no es un detalle: en un trimestre suelto, La Rioja da <strong>0,00 % en
+cuatro de las seis dimensiones</strong>. No es que no haya privación —
+es que la muestra de un dominio chico no alcanza. Promediar el año
+estabiliza la estimación.</li>
+<li>Dimensiones en el eje Y (<strong>ordenadas por valor</strong>, no
+alfabéticamente), porcentaje en el X, un punto de color por región.</li>
+</ol>
+<p><strong>Preguntas para responder:</strong></p>
+<ul>
+<li>¿Por qué las dimensiones van en el eje Y y no en el X?</li>
+<li>Con el gráfico terminado: ¿qué privación explica casi todo el NBI de
+La Rioja?</li>
+<li>Si en vez de puntos usaras barras agrupadas, ¿qué se perdería?</li>
+</ul>
+<hr />
+<h2
+id="ejercicio-2-la-brecha-implícita-salarios-públicoprivado">Ejercicio 2
+— La brecha implícita (salarios público/privado)</h2>
+<p><strong>Archivo:</strong>
+<code>ejercicios/02_brecha_salarios.R</code> ·
+<strong>Dificultad:</strong> medio</p>
+<p><code>src/03b_salarios_registrados_EPH.R</code> grafica dos líneas
+por región (público y privado), facetadas. Se ve bien, pero la pregunta
+que importa es sobre la <strong>distancia entre las dos</strong>:</p>
+<blockquote>
+<p><strong>¿Se agrandó o se achicó la brecha salarial entre el sector
+público y el privado en La Rioja?</strong></p>
+</blockquote>
+<p>La recomendación del informe de Argendata (págs. 19–20) es
+<strong>no</strong> graficar la brecha calculada como una tercera serie,
+sino dejar que <strong>el área entre las dos líneas la muestre
+sola</strong>. Se percibe de forma preatentiva y no agrega elementos al
+gráfico.</p>
+<p>Lo que hay que hacer:</p>
+<ol type="1">
+<li>Filtrar La Rioja y pasar a formato ancho (una columna por
+sector).</li>
+<li><code>geom_ribbon()</code> entre las dos series, con el color según
+quién está arriba.</li>
+<li>Encima, las dos líneas.</li>
+<li>Marcar el quiebre metodológico de 2015/2016 con una línea punteada,
+y <strong>decirlo en el caption</strong>.</li>
+</ol>
+<p><strong>Preguntas:</strong></p>
+<ul>
+<li>¿Por qué hay que marcar el quiebre? (Pista: <code>README.md</code>,
+sección del indicador 03b.)</li>
+<li>Compará tu gráfico con
+<code>outputs/plots/03b_salarios_registrados_EPH.png</code>. ¿Qué gana y
+qué pierde cada versión?</li>
+<li>El eje Y está en <strong>pesos corrientes</strong>. Mirando la slide
+159 del deck: ¿qué le agregarías al gráfico antes de publicarlo?</li>
+</ul>
+<hr />
+<h2 id="ejercicio-3-spaghetti-plot-24-jurisdicciones">Ejercicio 3 —
+Spaghetti plot (24 jurisdicciones)</h2>
+<p><strong>Archivo:</strong>
+<code>ejercicios/03_spaghetti_puestos.R</code> ·
+<strong>Dificultad:</strong> abierto</p>
+<p><code>data/inputs_md/05_puestos_asalariados_privados.csv</code> tiene
+los puestos asalariados privados de las <strong>24
+jurisdicciones</strong>, mensual desde 2009.
+<code>src/05_puestos_asalariados_privados.R</code> lo grafica facetado
+por región.</p>
+<blockquote>
+<p><strong>¿Cómo le fue al empleo privado en La Rioja comparado con el
+resto del país?</strong></p>
+</blockquote>
+<p>Son 24 categorías y ~200 instancias temporales. Según la taxonomía:
+<strong>spaghetti plot</strong> — una línea por unidad, la protagonista
+destacada, el resto en gris de contexto.</p>
+<p>Hay un problema previo: <strong>los niveles no son
+comparables</strong>. Buenos Aires tiene 1.750 mil puestos y La Rioja
+unas decenas. En un mismo eje, todas las provincias chicas quedan
+aplastadas contra el cero. La solución del informe (pág. 16):
+<strong>índice base 100</strong> en el primer período.</p>
+<p>Lo que hay que hacer:</p>
+<ol type="1">
+<li>Convertir cada serie a índice base 100 en su primer valor.</li>
+<li>Dibujar las 24 en gris claro, y <strong>La Rioja encima</strong> en
+el color de énfasis.</li>
+<li>Etiquetar La Rioja en el extremo derecho (nada de leyenda con 24
+entradas).</li>
+</ol>
+<p><strong>Preguntas:</strong></p>
+<ul>
+<li>¿Por qué La Rioja tiene que dibujarse <strong>después</strong> de
+las demás? (Pista: es el mismo problema que resuelven los prefijos
+<code>1.</code>/<code>2.</code>/<code>3.</code> de
+<code>la_rioja_region</code>.)</li>
+<li>Al pasar a índice base 100, ¿qué información
+<strong>perdiste</strong>?</li>
+<li>Comparalo con el gráfico actual. ¿Cuál usarías para un informe y
+cuál para un anexo?</li>
+</ul>
+<hr />
+<h2
+id="ejercicio-4-auditar-nuestra-propia-paleta-todos-juntos-10">Ejercicio
+4 — Auditar nuestra propia paleta (todos juntos, 10’)</h2>
+<p><strong>Archivo:</strong>
+<code>ejercicios/04_test_paleta.R</code></p>
+<p><code>FUNDAR_MULTI</code>
+(<code>style/fundar_monitor_theme.R:25</code>) se eligió por criterio
+estético, replicando el Monitor Mensual de Empresas. <strong>Nunca se
+auditó</strong> con los criterios que vimos hoy. Vamos a hacerlo.</p>
+<blockquote>
+<p>Nota: <code>src/test_escalas.R</code> es un intento a medio hacer de
+exactamente esto. Carga las paletas de ColorBrewer y ahí queda. Este
+ejercicio lo completa.</p>
+</blockquote>
+<p>Tres tests:</p>
+<ol type="1">
+<li><strong>Contraste de luminancia</strong> — ¿La Rioja se distingue de
+las otras dos series?</li>
+<li><strong>Distancia perceptual (ΔE2000)</strong> — ¿los tres colores
+son suficientemente distintos entre sí? Regla práctica: ΔE &lt; 10 es
+riesgoso para series superpuestas.</li>
+<li><strong>Daltonismo</strong> — simular deuteranopia y protanopia con
+<code>colorspace</code> y volver a mirar.</li>
+</ol>
+<p><strong>La discusión final es una decisión de proyecto</strong>, no
+un ejercicio: con los números a la vista, ¿mantenemos la paleta, la
+ajustamos, o agregamos un canal redundante (grosor de línea) para no
+depender solo del color?</p>
+<hr />
+<h2 id="puesta-en-común-10">Puesta en común (10’)</h2>
+<p>Cada pareja muestra su gráfico en 2 minutos y responde
+<strong>una</strong> pregunta:</p>
+<blockquote>
+<p><strong>¿Qué se ve ahora que no se veía antes?</strong></p>
+</blockquote>
+</main>
+
+<footer class="site-footer">
+  <p>Fundar — grupo factor~data · Monitor Socioeconómico La Rioja</p>
+</footer>
+
+</body>
+</html>
