@@ -194,8 +194,8 @@ El proyecto cuenta con dos archivos de estilo en `style/`:
 
 - **`scale_color_larioja()`** / **`scale_fill_larioja()`**: paleta regional (gris para Resto país, azul para NOA-Resto, naranja para La Rioja).
 - **`scale_linewidth_larioja()`**: grosor de línea diferenciado por región.
-- **`theme_larioja()`**: tema minimalista con tipografía y márgenes estandarizados.
-- **`theme_larioja_mapa()`**: variante sin ejes ni grilla para cartografía.
+- **`theme_la_rioja()`**: tema minimalista con tipografía y márgenes estandarizados.
+- **`theme_la_rioja_mapa()`**: variante sin ejes ni grilla para cartografía.
 - **`grafico_lineas_regional()`**: helper para gráficos de líneas regionales.
 - **`PALETA_CONTINUA`**: gradiente azul → blanco → naranja para variables continuas.
 
@@ -222,13 +222,15 @@ Replica el estilo visual del [Monitor Mensual de Empresas](https://fund.ar/publi
 
 **Componentes:**
 
-- **`theme_fundar()`**: tema base con fondo beige, grilla horizontal suave, leyenda arriba, etiquetas del eje X a 45°.
-- **`theme_fundar_oscuro()`**: variante con fondo oscuro.
-- **`theme_fundar_barras_h()`**: variante para gráficos de barras horizontales.
+- **`theme_monitor()`**: tema base con fondo beige, grilla horizontal suave, leyenda arriba, etiquetas del eje X a 45°. Se activa como tema por defecto de la sesión al sourcear el archivo.
+- **`theme_monitor_oscuro()`**: variante con fondo oscuro.
+- **`theme_monitor_barras_h()`**: variante para gráficos de barras horizontales.
 - **`scale_color_fundar_multi()`** / **`scale_fill_fundar_multi()`**: escala de color para series múltiples.
+- **`scale_color_fundar()`**: escala para una sola serie (verde institucional).
 - **`scale_fill_fundar_div()`**: escala verde/rosa para gráficos divergentes.
 - **`fuente_fundar()`**: helper para el caption en formato `"Fuente: ..."`.
-- **`grafico_lineas_monitor()`**: helper para gráfico de línea única estilo Monitor.
+- **`puntos_etiqueta()`**: devuelve las filas de máximo, mínimo y último valor de cada grupo, para pasar a `geom_text()`.
+- **`grafico_linea_monitor()`**: helper para gráfico de línea única estilo Monitor.
 - **`grafico_barras_div()`**: helper para barras horizontales divergentes con etiquetas.
 
 Los prefijos numéricos en la clasificación regional garantizan que ggplot dibuje La Rioja por encima del resto sin transformaciones adicionales.
@@ -321,4 +323,25 @@ Este repositorio corresponde al **Componente 3** de un proyecto más amplio con 
 
 1. **Coordinación y definición de indicadores**: alineación con los demás componentes del proyecto.
 2. **Diseño de maquetas**: definición del tipo de gráfico, paleta de colores y jerarquía visual para cada indicador. El código se desarrolla en R con `ggplot2` como base, incorporando `plotly` cuando se requieren versiones interactivas.
-3. **Materiales para talleres de visualización de datos**.
+3. **Materiales para talleres de visualización de datos**: ver [`clases/`](clases/).
+
+## Taller de visualización de datos
+
+El directorio [`clases/`](clases/) contiene los materiales del taller de tres clases de dos horas
+para el equipo de La Rioja (Etapa 3), con público mixto: quienes mantienen el repositorio y quienes
+comunican los resultados.
+
+| # | Clase | Contenido |
+|---|---|---|
+| 1 | [Gramática de gráficos y percepción](clases/clase_1_gramatica_y_percepcion/) | Gramática de gráficos, marcas y canales, efectividad perceptual |
+| 2 | [Integridad visual y catálogo de herramientas](clases/clase_2_integridad_y_catalogo/) | Tufte y el caso Challenger, factor de mentira, catálogo de Argendata, paletas |
+| 3 | [Del microdato al producto](clases/clase_3_pipeline_y_narrativa/) | Pipeline, actualización de datos, narrativa y circuito de publicación |
+
+Cada clase tiene un guion minutado (`guion.md`), una guía de práctica (`practica.md`) y scripts de
+ejercicios con sus soluciones. La práctica trabaja sobre los CSV versionados de `data/inputs_md/`,
+sin necesidad de descargar microdatos.
+
+Materiales de referencia en [`clases/materiales/`](clases/materiales/):
+[checklist de visualización](clases/materiales/checklist_visualizacion.md),
+[cheatsheet de mantenimiento](clases/materiales/cheatsheet_repo.md) y
+`00_setup.R` (verificación del entorno, para correr antes de la primera clase).
