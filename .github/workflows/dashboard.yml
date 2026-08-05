@@ -88,7 +88,7 @@ jobs:
           cp clases/materiales/00_setup.R "$OUT/materiales/"
           cp clases/materiales/paleta_regional_swatch.R "$OUT/materiales/"
           cp "clases/materiales/Informe_final_argendata.pdf" "$OUT/materiales/"
-          cp "clases/materiales/Copia de Pract_Clase_1_introducción.pdf" \
+          cp "clases/Copia de Pract_Clase_1_introducción.pdf" \
              "$OUT/materiales/deck_clase_1_introduccion.pdf"
 
           # ---- Una clase a la vez ------------------------------------------
