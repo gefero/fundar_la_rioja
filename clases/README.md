@@ -80,8 +80,9 @@ En [`materiales/`](materiales/):
 - **[`paleta_regional_swatch.R`](materiales/paleta_regional_swatch.R)** — genera un swatch de los
   3 colores regionales, leyendo `FUNDAR_MULTI` desde `style/fundar_monitor_theme.R` (no repite los
   hex), en `outputs/plots/paleta_regional_la_rioja.png`.
-- **`../Copia de Pract_Clase_1_introducción.pdf`** — el deck de 169 diapositivas del que salen los
-  bloques teóricos de las clases 1 y 2. Los guiones indican qué diapositivas usa cada bloque.
+- **[`materiales/Copia de Pract_Clase_1_introducción.pdf`](materiales/Copia%20de%20Pract_Clase_1_introducci%C3%B3n.pdf)**
+  — el deck de 169 diapositivas del que salen los bloques teóricos de las clases 1 y 2. Los guiones
+  indican qué diapositivas usa cada bloque.
 
 ## Bibliografía
 

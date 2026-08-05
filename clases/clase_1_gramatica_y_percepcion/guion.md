@@ -2,7 +2,7 @@
 
 **Duración:** 120 minutos · **Teoría:** 65' · **Práctica:** 45' · **Cierre:** 10'
 
-**Material de slides:** `clases/Copia de Pract_Clase_1_introducción.pdf`, **diapositivas 1 a 57**
+**Material de slides:** `clases/materiales/Copia de Pract_Clase_1_introducción.pdf`, **diapositivas 1 a 57**
 (el bloque "Algunas nociones conceptuales"). El segundo bloque del deck —"Integridad visual",
 diapositivas 58 a 169— **no se da en esta clase**: abre la clase 2.
 

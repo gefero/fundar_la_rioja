@@ -3,7 +3,7 @@
 **Duración:** 120 minutos · **Teoría:** 65' · **Práctica:** 45' · **Cierre:** 10'
 
 **Material de slides:**
-- Primera mitad: `clases/Copia de Pract_Clase_1_introducción.pdf`, **diapositivas 58 a 169**
+- Primera mitad: `clases/materiales/Copia de Pract_Clase_1_introducción.pdf`, **diapositivas 58 a 169**
   (el bloque "Integridad Visual"), recortado —ver abajo qué se saca—.
 - Segunda mitad: **slides nuevas**, a partir de
   [`clases/materiales/Informe_final_argendata.pdf`](../materiales/Informe_final_argendata.pdf).
