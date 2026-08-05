@@ -104,7 +104,14 @@ jobs:
             dst="$OUT/$dir"
             mkdir -p "$dst/ejercicios" "$dst/soluciones"
 
-            render_md "$src/practica.md" "$dst/practica.html" "$titulo" "Práctica"
+            if [ -f "$src/practica.md" ]; then
+              render_md "$src/practica.md" "$dst/practica.html" "$titulo" "Práctica"
+            else
+              # Sin consigna aparte (practica.md): se publica directamente el
+              # notebook ya renderizado (practica.html, generado localmente
+              # con rmarkdown::render sobre practica.Rmd).
+              cp "$src/practica.html" "$dst/practica.html"
+            fi
 
             cp "$src/practica.Rmd" "$dst/"
             cp "$src"/ejercicios/*.R "$dst/ejercicios/" 2>/dev/null || true
