@@ -209,6 +209,17 @@ exactamente la teoría que se acaba de dar:
    factor, y con eso el orden en que ggplot dibuja: La Rioja se dibuja última y queda **encima** de
    las otras dos cuando se cruzan. Es una solución de una línea a un problema de oclusión.
 
+**De dónde sale el tema, si preguntan.** `theme_monitor()` y `FUNDAR_MULTI` no se diseñaron desde
+cero para este proyecto: replican la identidad visual del [Monitor Mensual de
+Empresas](https://fund.ar/publicacion/monitor-mensual-de-empresas/) de Fundar (mismos colores
+institucionales, mismo fondo, misma tipografía), y la paleta de 5 tonos se acotó a los 3 colores
+regionales con el criterio de saliencia recién explicado. Existe un tema anterior,
+`style/fundar_larioja_theme.R`, que fue el primer diseño antes de esa decisión de alinear el
+monitor con la identidad del Monitor de Empresas; quedó en el repo como referencia histórica, no
+se usa en `src/`. El desarrollo completo de esta historia —con el código anotado— está ahora en
+`practica.Rmd`, sección "Cómo se generó el tema de La Rioja" (después del paso 6 del ejercicio 1);
+vale la pena abrirla en pantalla si sobra tiempo antes de la práctica.
+
 Pregunta para la sala, que abre la práctica: **¿qué pasaría si en vez de matiz hubiéramos usado la
 forma del punto para distinguir regiones?** (Respuesta corta: la forma es el peor canal para
 variables categóricas, y ni hablar sobre líneas.) Se comprueba en el ejercicio 3.
