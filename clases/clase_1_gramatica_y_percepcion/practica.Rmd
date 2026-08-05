@@ -11,26 +11,9 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(eval = FALSE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(eval = TRUE, warning = FALSE, message = FALSE)
 ```
 
-> **Cómo usar este notebook.** Los chunks tienen `eval = FALSE` a propósito: varios contienen
-> `______` (blancos a completar) que no son R válido y romperían un `Knit`. Para la práctica no
-> hace falta tejer el documento — corré cada chunk de forma interactiva con **Ctrl+Enter**
-> (Cmd+Enter en Mac), en orden, igual que harías con los `.R` de `ejercicios/`. El texto de cada
-> sección es la misma consigna de `practica.md`.
->
-> Antes de empezar: abrí `fundar_larioja.Rproj` en RStudio. Los tres ejercicios trabajan sobre
-> los CSV de `data/inputs_md/`, ya versionados — **no hace falta descargar microdatos**.
->
-> **Ojo con las rutas.** Los `.R` de `ejercicios/` asumen la raíz del repo como directorio de
-> trabajo (lo fija el `.Rproj`). R Markdown funciona distinto: tanto al tejer como al correr
-> chunks de forma interactiva, usa **la carpeta donde vive el propio `.Rmd`** como directorio de
-> trabajo por defecto. Por eso las rutas de este notebook llevan `../../` adelante — para volver
-> a la raíz del repo desde `clases/clase_1_gramatica_y_percepcion/` — mientras que los `.R`
-> originales las usan sin prefijo.
->
-> Si te trabás, la solución completa está en `soluciones/`. Miralas después de intentarlo.
 
 ```{r libs}
 library(tidyverse)
@@ -41,14 +24,11 @@ source("../../style/fundar_monitor_theme.R")
 
 # Ejercicio 1 — La gramática, capa por capa (15')
 
-Vamos a reconstruir el gráfico de la tasa de desocupación (`src/04_desoc.R`) desde cero, agregando
-**una capa por vez** y ejecutando en cada paso.
+Vamos a reconstruir el gráfico de la tasa de desocupación (`src/04_desoc.R`) desde cero, agregando **una capa por vez** y ejecutando en cada paso.
 
-La consigna es simple pero importante: **ejecutá cada chunk y mirá el gráfico antes de pasar al
-siguiente.** El objetivo no es llegar al gráfico final —ya existe— sino ver qué aporta exactamente
-cada línea.
+La consigna es simple pero importante: **ejecutar cada chunk y mirar el gráfico antes de pasar al siguiente.** El objetivo no es llegar al gráfico final —ya existe— sino ver qué aporta exactamente cada línea.
 
-**Preguntas para responder mientras lo hacés** (las vas a necesitar para la puesta en común):
+**Preguntas para tener en cuenta**
 
 - En el paso 2, ¿por qué ggplot dibuja una sola línea que va y viene? ¿Qué le falta saber?
 - En el paso 4, `color = la_rioja_region` va **dentro** de `aes()` y `linewidth = 0.7` va
@@ -72,8 +52,7 @@ glimpse(df)
 
 ## Paso 1 — datos y mapeo estético, sin geometría
 
-`ggplot() + aes()` declara QUÉ variable va a QUÉ propiedad visual. Todavía no dijimos con qué
-dibujarlo.
+`ggplot() + aes()` declara qué **variable** se asocia a qué **propiedad visual**. Todavía no dijimos con qué dibujarlo.
 
 **Pregunta:** ¿qué se ve? ¿Por qué el eje x está tan cargado?
 
@@ -85,10 +64,9 @@ ggplot(df, aes(x = fecha, y = tasa_desoc))
 
 `geom_line()` = la marca. Una línea (1D).
 
-¡Esto va a salir mal! Mirá el resultado antes de seguir.
+Mirá el resultado antes de seguir.
 
-**Pregunta:** ¿por qué dibuja una sola línea que sube y baja en zigzag? ¿Qué información le falta
-a ggplot?
+**Pregunta:** ¿por qué dibuja una sola línea que sube y baja en zigzag? ¿Qué información le falta a ggplot?
 
 ```{r ej1-paso2}
 ggplot(df, aes(x = fecha, y = tasa_desoc)) +
@@ -97,8 +75,7 @@ ggplot(df, aes(x = fecha, y = tasa_desoc)) +
 
 ## Paso 3 — le decimos dónde cortar la línea
 
-`group` le dice a ggplot que hay TRES series, no una. Sin esto, une todos los puntos en el orden
-del eje x, saltando de una región a otra.
+`group` le dice a ggplot que hay TRES series, no una. Sin esto, une todos los puntos en el orden del eje x, saltando de una región a otra.
 
 ```{r ej1-paso3}
 ggplot(df, aes(x = fecha, y = tasa_desoc,
@@ -110,9 +87,7 @@ ggplot(df, aes(x = fecha, y = tasa_desoc,
 
 Ahora la región está codificada en DOS canales: agrupamiento y matiz.
 
-**Atención** a la diferencia: `color = la_rioja_region` va **dentro** de `aes()` (depende del
-dato); `linewidth = 0.7` va **fuera** (es una constante). Confundir esto es el error nº 1 de quien
-arranca con ggplot. Probá poner `linewidth` adentro de `aes()` y mirá qué pasa con la leyenda.
+**Atención** a la diferencia: `color = la_rioja_region` va **dentro** de `aes()` (depende del dato); `linewidth = 0.7` va **fuera** (es una constante). Confundir esto es el error nº1 de quien arranca con ggplot. Probá poner `linewidth` adentro de `aes()` y mirá qué pasa con la leyenda.
 
 ```{r ej1-paso4}
 ggplot(df, aes(x = fecha, y = tasa_desoc,
@@ -138,9 +113,7 @@ ggplot(df, aes(x = fecha, y = tasa_desoc,
 
 ## Paso 6 — el tema
 
-`theme_monitor()` no toca NINGÚN dato: solo decide cómo se ve lo que no es dato (fondo, grilla,
-tipografía, posición de la leyenda). Por eso vive en un archivo aparte y se aplica igual a los
-diez indicadores del monitor.
+`theme_monitor()` no toca NINGÚN dato: solo decide cómo se ve lo que no es dato (fondo, grilla, tipografía, posición de la leyenda). Por eso vive en un archivo aparte y se aplica igual a los diez indicadores del monitor.
 
 `ylim(0, 20)` sí es una escala: fuerza que el eje y arranque en cero.
 
@@ -271,22 +244,13 @@ glimpse(df_largo)
 
 ## Versión A — color = dimensión, un panel por región
 
-**TODO:** completá el `aes()` y el `facet_wrap()`.
+**Completá el `aes()` y el `facet_wrap()`**
 
 - `color` debe mapear a `dimension`
 - el facetado debe partir por `la_rioja_region`
 
-```{r ej2-version-a}
-df_largo %>%
-  ggplot(aes(x = fecha, y = pct,
-             group = dimension,
-             color = ______)) +          # <-- TODO
-  geom_line(linewidth = 0.6) +
-  facet_wrap(~ ______) +                  # <-- TODO
-  theme_monitor() +
-  labs(title = "Versión A — una dimensión por color, un panel por región",
-       x = NULL, y = "% de hogares",
-       caption = fuente_fundar("EPH-INDEC"))
+```{r ej2-version-a, eval=FALSE}
+###
 ```
 
 **Pregunta:** mirando el panel de La Rioja, ¿podés decir qué privación pesa más?
@@ -297,17 +261,7 @@ df_largo %>%
 `scale_color_fundar_multi()` para que La Rioja se destaque.
 
 ```{r ej2-version-b}
-df_largo %>%
-  ggplot(aes(x = fecha, y = pct,
-             group = ______,             # <-- TODO
-             color = ______)) +          # <-- TODO
-  geom_line(linewidth = 0.6) +
-  scale_color_fundar_multi(name = "Región") +
-  facet_wrap(~ ______, scales = "free_y") +   # <-- TODO
-  theme_monitor() +
-  labs(title = "Versión B — una región por color, un panel por dimensión",
-       x = NULL, y = "% de hogares",
-       caption = fuente_fundar("EPH-INDEC"))
+###
 ```
 
 **Preguntas:**
