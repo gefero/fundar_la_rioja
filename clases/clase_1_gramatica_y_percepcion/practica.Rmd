@@ -153,17 +153,61 @@ Llegamos exactamente a `src/04_desoc.R`. Abrilo y comparalo.
 `theme_monitor()` y `scale_color_fundar_multi()` no salieron de la nada. Vale la pena abrir
 `style/fundar_monitor_theme.R` una vez y ver de dónde sale cada decisión.
 
-**1. El punto de partida fue replicar una identidad ya publicada.** El tema no se diseñó desde
-cero: reproduce el estilo del [Monitor Mensual de Empresas](https://fund.ar/publicacion/monitor-mensual-de-empresas/)
-de Fundar (`style/fundar_monitor_theme.R:1-5`) — mismos colores institucionales
-(`FUNDAR_VERDE`, `FUNDAR_ROSA`, `FUNDAR_BEIGE`), mismo fondo, misma tipografía de ejes y leyenda.
-Adoptar una identidad existente en vez de inventar una nueva es lo que permite que el Monitor de
-La Rioja se lea como parte de la misma familia de publicaciones.
+### Dónde vive y cómo se carga
 
-**2. La paleta regional (`FUNDAR_MULTI`) se extendió a partir de esos colores institucionales**,
-agregando tonos para poder distinguir series (`style/fundar_monitor_theme.R:25-31`). De esos
-cinco tonos, el monitor de La Rioja usa tres — uno por región — y ahí aparece la decisión de
-diseño central de la clase de hoy:
+El tema es **un único archivo R**, `style/fundar_monitor_theme.R` (312 líneas), en la raíz del
+repo, fuera de `src/` y de `clases/`. No es un paquete ni se instala: es texto plano que se trae
+con `source()`. Así lo hicimos arriba, en el chunk de setup de este mismo documento:
+
+```r
+source("../../style/fundar_monitor_theme.R")
+```
+
+Cualquier script de `src/` empieza igual (con la ruta relativa a la raíz del repo, porque corren
+desde `fundar_larioja.Rproj`). `source()` ejecuta el archivo entero, lo que define las paletas, las
+funciones `scale_*` y `theme_monitor()` en el entorno global, y además hace una cosa más: la última
+línea antes del mensaje de confirmación es
+
+```r
+theme_set(theme_monitor())
+```
+
+Eso vuelve `theme_monitor()` el tema **por defecto de la sesión**: todo `ggplot()` que se dibuje de
+ahí en adelante lo usa aunque no se agregue `+ theme_monitor()` explícitamente. En los ejercicios
+igual lo escribimos explícito, por claridad — pero si un gráfico del repo se ve "temeado" sin que el
+script lo diga, es por esto.
+
+**El archivo no se genera solo: se escribe y edita a mano.** No hay ningún script que lo produzca
+ni lo regenere — es la fuente de verdad, versionada en git como cualquier otro `.R`. Lo único que
+se *deriva* de él es un artefacto de documentación,
+`clases/materiales/paleta_regional_swatch.R`, que lee los tres hex de `FUNDAR_MULTI` (sin
+copiarlos) y arma un PNG de referencia en `outputs/plots/paleta_regional_la_rioja.png`. Si alguien
+cambia un color en el tema, ese swatch se actualiza solo la próxima vez que se corre — no hay que
+tocar dos archivos a mano.
+
+### Qué replica: la identidad del Monitor de Empresas
+
+El tema no se diseñó desde cero: reproduce el estilo del [Monitor Mensual de
+Empresas](https://fund.ar/publicacion/monitor-mensual-de-empresas/) de Fundar
+(`style/fundar_monitor_theme.R:1-5`). Adoptar una identidad existente en vez de inventar una nueva
+es lo que permite que el Monitor de La Rioja se lea como parte de la misma familia de
+publicaciones. De ahí salen los colores institucionales base (`style/fundar_monitor_theme.R:16-22`):
+
+| Constante | Hex | Uso |
+|---|---|---|
+| `FUNDAR_VERDE` | `#52C8A0` | color principal / valores positivos |
+| `FUNDAR_ROSA` | `#F4877A` | valores negativos / caídas |
+| `FUNDAR_BEIGE` | `#EDE8E0` | fondo del área de gráfico |
+| `FUNDAR_OSCURO` | `#1C1C1C` | fondo oscuro (slides de KPIs) |
+| `FUNDAR_GRIS` | `#888888` | texto secundario, subtítulos |
+| `FUNDAR_GRILLA` | `#D5D0C8` | líneas de grilla horizontales |
+| `FUNDAR_TEXTO` | `#1C1C1C` | texto principal |
+
+### La paleta regional: dos decisiones deliberadas
+
+`FUNDAR_MULTI` (`style/fundar_monitor_theme.R:25-31`) extiende esos colores institucionales a
+cinco tonos para poder distinguir series. El monitor de La Rioja usa tres — uno por región — y ahí
+aparece la decisión de diseño central de la clase de hoy:
 
 ```r
 FUNDAR_MULTI <- c(
@@ -187,14 +231,64 @@ Esto no es una elección estética libre, son dos decisiones deliberadas:
   que ggplot dibuja las capas: La Rioja se dibuja última y queda por encima de las otras dos
   regiones cuando las líneas se cruzan.
 
-**3. Existe un tema anterior, `style/fundar_larioja_theme.R`**, con su propia paleta
-(`COLORES_REGION`) y su propio `theme_la_rioja()`. Fue un primer diseño, previo a la decisión de
-alinear todo el monitor con la identidad visual del Monitor Mensual de Empresas. El tema vigente
-—el que usamos en toda esta práctica— es `style/fundar_monitor_theme.R`; el archivo viejo queda en
-el repo como referencia histórica, no se usa en los scripts de `src/`.
+`FUNDAR_SECTOR` (`style/fundar_monitor_theme.R:33-39`) hace algo parecido a menor escala: para el
+indicador de salarios EPH público/privado, reutiliza dos colores ya definidos —"Resto país" para
+Privado, "NOA-Resto" para Público— en vez de inventar un par nuevo. Menos colores distintos
+circulando en el monitor, más fácil de recordar qué significa cada uno.
+
+### El tema base: qué decide `theme_monitor()`
+
+Además de la paleta, `theme_monitor()` (`style/fundar_monitor_theme.R:72-135`) toma una serie de
+decisiones sobre "todo lo que no es dato", partiendo de `theme_minimal()` y sobreescribiendo:
+
+- **Fondo:** el área del gráfico tiene fondo beige (`FUNDAR_BEIGE`) por defecto —parámetro
+  `fondo_beige = TRUE`—, para separarla visualmente del fondo blanco de la página.
+- **Grilla:** solo horizontal (`panel.grid.major.y`), muy suave, y **nada de grilla vertical ni
+  menor**. La grilla ayuda a leer valores en el eje y; en el eje x alcanza con los ticks.
+- **Ejes:** sin marcas de tick (`axis.ticks = element_blank()`) ni línea de eje; las etiquetas del
+  eje x van a 45° para no solaparse.
+- **Leyenda:** arriba (`legend.position = "top"`) y horizontal, sin título ni caja — a diferencia
+  de una leyenda lateral clásica, prioriza que el lector la vea antes de mirar el gráfico.
+- **Títulos:** título en negrita alineado a la izquierda, subtítulo gris debajo, y fuente
+  (`plot.caption`) chica y gris abajo a la izquierda —`fuente_fundar()`, ver más abajo—.
+
+Todos estos son parámetros de la función (`base_size`, `legend_position`, `fondo_beige`): se puede
+ajustar el tamaño de fuente o mover la leyenda sin tocar el archivo, pasando argumentos.
+
+### No es un solo tema: hay variantes
+
+El archivo define tres funciones de tema, todas construidas **encima** de `theme_monitor()` con
+`%+replace%` (no la reescriben desde cero):
+
+- `theme_monitor()` — la default, fondo beige claro.
+- `theme_monitor_oscuro()` (`:138-157`) — fondo `FUNDAR_OSCURO`, texto claro. Pensado para slides
+  de KPIs o portada, no para el cuerpo del informe.
+- `theme_monitor_barras_h()` (`:161-170`) — para barras horizontales: invierte la grilla (vertical
+  en vez de horizontal, para poder leer los valores de las barras) y ajusta el tamaño de las
+  etiquetas del eje y.
+
+### Funciones helper que vienen con el archivo
+
+El archivo no es solo un tema visual, también trae funciones de conveniencia para no repetir
+código en los diez scripts de `src/`:
+
+- `fuente_fundar(texto)` — antepone `"Fuente: "` al texto de la cita, para no tipearlo cada vez.
+- `puntos_etiqueta(data, var_x, var_y, var_grupo)` — devuelve las filas de máximo, mínimo y último
+  valor por grupo, listas para pasarle a `geom_text()`/`geom_label()`.
+- `grafico_linea_monitor(...)` y `grafico_barras_div(...)` — arman de punta a punta el gráfico de
+  línea simple o de barras divergentes en el estilo del Monitor, para los casos más comunes.
+
+### La relación con el tema anterior
+
+Existe un tema previo, `style/fundar_larioja_theme.R`, con su propia paleta (`COLORES_REGION`) y su
+propio `theme_la_rioja()`. Fue el primer diseño, anterior a la decisión de alinear todo el monitor
+con la identidad visual del Monitor Mensual de Empresas. El tema vigente —el que usamos en toda
+esta práctica— es `style/fundar_monitor_theme.R`; el archivo viejo queda en el repo como referencia
+histórica, no se usa en los scripts de `src/`.
 
 En síntesis: el tema no fija solo "qué colores se ven lindos", fija **qué serie tiene que ganar la
-atención del lector primero**. Eso es exactamente lo que vamos a poner a prueba en el ejercicio 3.
+atención del lector primero**, y lo hace desde un único archivo fuente que se carga con `source()`
+al principio de cada script. Eso es exactamente lo que vamos a poner a prueba en el ejercicio 3.
 
 ## Extra (si te sobra tiempo)
 
