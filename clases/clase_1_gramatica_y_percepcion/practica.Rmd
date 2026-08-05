@@ -1,6 +1,6 @@
 ---
-title: "Clase 1 — Práctica: Gramática de gráficos y percepción"
-subtitle: "Taller de visualización de datos — Monitor La Rioja (Fundar)"
+title: "Clase 1 - Práctica: Gramática de gráficos y percepción"
+subtitle: "Taller de visualización de datos - Monitor La Rioja (Fundar)"
 date: "`r format(Sys.Date(), '%d de %B de %Y')`"
 output:
   html_document:
@@ -22,11 +22,11 @@ source("../../style/fundar_monitor_theme.R")
 
 ---
 
-# Ejercicio 1 — La gramática, capa por capa (15')
+# Ejercicio 1 - La gramática, capa por capa (15')
 
 Vamos a reconstruir el gráfico de la tasa de desocupación (`src/04_desoc.R`) desde cero, agregando **una capa por vez** y ejecutando en cada paso.
 
-La consigna es simple pero importante: **ejecutar cada chunk y mirar el gráfico antes de pasar al siguiente.** El objetivo no es llegar al gráfico final —ya existe— sino ver qué aporta exactamente cada línea.
+La consigna es simple pero importante: **ejecutar cada chunk y mirar el gráfico antes de pasar al siguiente.** El objetivo no es llegar al gráfico final -ya existe- sino ver qué aporta exactamente cada línea.
 
 **Preguntas para tener en cuenta**
 
@@ -50,7 +50,7 @@ glimpse(df)
 # tasa_desoc       : el indicador
 ```
 
-## Paso 1 — datos y mapeo estético, sin geometría
+## Paso 1 - datos y mapeo estético, sin geometría
 
 `ggplot() + aes()` declara qué **variable** se asocia a qué **propiedad visual**. Todavía no dijimos con qué dibujarlo.
 
@@ -60,7 +60,7 @@ glimpse(df)
 ggplot(df, aes(x = fecha, y = tasa_desoc))
 ```
 
-## Paso 2 — agregamos la geometría
+## Paso 2 - agregamos la geometría
 
 `geom_line()` = la marca. Una línea (1D).
 
@@ -73,7 +73,7 @@ ggplot(df, aes(x = fecha, y = tasa_desoc)) +
   geom_line()
 ```
 
-## Paso 3 — le decimos dónde cortar la línea
+## Paso 3 - le decimos dónde cortar la línea
 
 `group` le dice a ggplot que hay TRES series, no una. Sin esto, une todos los puntos en el orden del eje x, saltando de una región a otra.
 
@@ -83,7 +83,7 @@ ggplot(df, aes(x = fecha, y = tasa_desoc,
   geom_line()
 ```
 
-## Paso 4 — mapeamos la región al color
+## Paso 4 - mapeamos la región al color
 
 Ahora la región está codificada en DOS canales: agrupamiento y matiz.
 
@@ -96,7 +96,7 @@ ggplot(df, aes(x = fecha, y = tasa_desoc,
   geom_line(linewidth = 0.7)
 ```
 
-## Paso 5 — la escala del proyecto
+## Paso 5 - la escala del proyecto
 
 Hasta acá ggplot eligió los colores solo. `scale_color_fundar_multi()` impone la paleta
 institucional: dos tonos claros para el resto y el teal oscuro para La Rioja.
@@ -111,7 +111,7 @@ ggplot(df, aes(x = fecha, y = tasa_desoc,
   scale_color_fundar_multi(name = "Región")
 ```
 
-## Paso 6 — el tema
+## Paso 6 - el tema
 
 `theme_monitor()` no toca NINGÚN dato: solo decide cómo se ve lo que no es dato (fondo, grilla, tipografía, posición de la leyenda). Por eso vive en un archivo aparte y se aplica igual a los diez indicadores del monitor.
 
@@ -127,7 +127,7 @@ ggplot(df, aes(x = fecha, y = tasa_desoc,
   theme_monitor()
 ```
 
-## Paso 7 — la anotación
+## Paso 7 - la anotación
 
 Título, ejes y fuente. Esto es lo que separa un gráfico de exploración de un gráfico publicable.
 Volvemos sobre cómo redactarlos en la clase 3.
@@ -174,15 +174,15 @@ theme_set(theme_monitor())
 
 Eso vuelve `theme_monitor()` el tema **por defecto de la sesión**: todo `ggplot()` que se dibuje de
 ahí en adelante lo usa aunque no se agregue `+ theme_monitor()` explícitamente. En los ejercicios
-igual lo escribimos explícito, por claridad — pero si un gráfico del repo se ve "temeado" sin que el
+igual lo escribimos explícito, por claridad - pero si un gráfico del repo se ve "temeado" sin que el
 script lo diga, es por esto.
 
 **El archivo no se genera solo: se escribe y edita a mano.** No hay ningún script que lo produzca
-ni lo regenere — es la fuente de verdad, versionada en git como cualquier otro `.R`. Lo único que
+ni lo regenere - es la fuente de verdad, versionada en git como cualquier otro `.R`. Lo único que
 se *deriva* de él es un artefacto de documentación,
 `clases/materiales/paleta_regional_swatch.R`, que lee los tres hex de `FUNDAR_MULTI` (sin
 copiarlos) y arma un PNG de referencia en `outputs/plots/paleta_regional_la_rioja.png`. Si alguien
-cambia un color en el tema, ese swatch se actualiza solo la próxima vez que se corre — no hay que
+cambia un color en el tema, ese swatch se actualiza solo la próxima vez que se corre - no hay que
 tocar dos archivos a mano.
 
 ### Qué replica: la identidad del Monitor de Empresas
@@ -206,7 +206,7 @@ publicaciones. De ahí salen los colores institucionales base (`style/fundar_mon
 ### La paleta regional: dos decisiones deliberadas
 
 `FUNDAR_MULTI` (`style/fundar_monitor_theme.R:25-31`) extiende esos colores institucionales a
-cinco tonos para poder distinguir series. El monitor de La Rioja usa tres — uno por región — y ahí
+cinco tonos para poder distinguir series. El monitor de La Rioja usa tres - uno por región - y ahí
 aparece la decisión de diseño central de la clase de hoy:
 
 ```r
@@ -223,8 +223,8 @@ Esto no es una elección estética libre, son dos decisiones deliberadas:
   saturación; La Rioja es el único color oscuro y saturado de los tres. Es la misma idea de
   *pop-out* que vimos en la teoría: la serie protagonista salta a la vista sin que el lector tenga
   que buscarla. En la clase 2 (`clases/clase_2_integridad_y_catalogo/ejercicios/04_test_paleta.R`)
-  auditamos esto con números —diferencia de luminancia en espacio Lab, distancia perceptual ΔE, y
-  simulación de daltonismo con `colorspace`— para confirmar que el contraste sobrevive incluso a
+  auditamos esto con números -diferencia de luminancia en espacio Lab, distancia perceptual ΔE, y
+  simulación de daltonismo con `colorspace`- para confirmar que el contraste sobrevive incluso a
   visión con deuteranopia o protanopia, porque la luminancia no depende del canal cromático.
 - **El orden de los niveles no es cosmético.** Los prefijos `"1."`, `"2."`, `"3."` fuerzan el orden
   alfabético del factor `la_rioja_region` (definido en `src/utils_eph.R`), y con eso el orden en
@@ -232,8 +232,8 @@ Esto no es una elección estética libre, son dos decisiones deliberadas:
   regiones cuando las líneas se cruzan.
 
 `FUNDAR_SECTOR` (`style/fundar_monitor_theme.R:33-39`) hace algo parecido a menor escala: para el
-indicador de salarios EPH público/privado, reutiliza dos colores ya definidos —"Resto país" para
-Privado, "NOA-Resto" para Público— en vez de inventar un par nuevo. Menos colores distintos
+indicador de salarios EPH público/privado, reutiliza dos colores ya definidos -"Resto país" para
+Privado, "NOA-Resto" para Público- en vez de inventar un par nuevo. Menos colores distintos
 circulando en el monitor, más fácil de recordar qué significa cada uno.
 
 ### El tema base: qué decide `theme_monitor()`
@@ -241,16 +241,16 @@ circulando en el monitor, más fácil de recordar qué significa cada uno.
 Además de la paleta, `theme_monitor()` (`style/fundar_monitor_theme.R:72-135`) toma una serie de
 decisiones sobre "todo lo que no es dato", partiendo de `theme_minimal()` y sobreescribiendo:
 
-- **Fondo:** el área del gráfico tiene fondo beige (`FUNDAR_BEIGE`) por defecto —parámetro
-  `fondo_beige = TRUE`—, para separarla visualmente del fondo blanco de la página.
+- **Fondo:** el área del gráfico tiene fondo beige (`FUNDAR_BEIGE`) por defecto -parámetro
+  `fondo_beige = TRUE`-, para separarla visualmente del fondo blanco de la página.
 - **Grilla:** solo horizontal (`panel.grid.major.y`), muy suave, y **nada de grilla vertical ni
   menor**. La grilla ayuda a leer valores en el eje y; en el eje x alcanza con los ticks.
 - **Ejes:** sin marcas de tick (`axis.ticks = element_blank()`) ni línea de eje; las etiquetas del
   eje x van a 45° para no solaparse.
-- **Leyenda:** arriba (`legend.position = "top"`) y horizontal, sin título ni caja — a diferencia
+- **Leyenda:** arriba (`legend.position = "top"`) y horizontal, sin título ni caja - a diferencia
   de una leyenda lateral clásica, prioriza que el lector la vea antes de mirar el gráfico.
 - **Títulos:** título en negrita alineado a la izquierda, subtítulo gris debajo, y fuente
-  (`plot.caption`) chica y gris abajo a la izquierda —`fuente_fundar()`, ver más abajo—.
+  (`plot.caption`) chica y gris abajo a la izquierda -`fuente_fundar()`, ver más abajo-.
 
 Todos estos son parámetros de la función (`base_size`, `legend_position`, `fondo_beige`): se puede
 ajustar el tamaño de fuente o mover la leyenda sin tocar el archivo, pasando argumentos.
@@ -260,10 +260,10 @@ ajustar el tamaño de fuente o mover la leyenda sin tocar el archivo, pasando ar
 El archivo define tres funciones de tema, todas construidas **encima** de `theme_monitor()` con
 `%+replace%` (no la reescriben desde cero):
 
-- `theme_monitor()` — la default, fondo beige claro.
-- `theme_monitor_oscuro()` (`:138-157`) — fondo `FUNDAR_OSCURO`, texto claro. Pensado para slides
+- `theme_monitor()` - la default, fondo beige claro.
+- `theme_monitor_oscuro()` (`:138-157`) - fondo `FUNDAR_OSCURO`, texto claro. Pensado para slides
   de KPIs o portada, no para el cuerpo del informe.
-- `theme_monitor_barras_h()` (`:161-170`) — para barras horizontales: invierte la grilla (vertical
+- `theme_monitor_barras_h()` (`:161-170`) - para barras horizontales: invierte la grilla (vertical
   en vez de horizontal, para poder leer los valores de las barras) y ajusta el tamaño de las
   etiquetas del eje y.
 
@@ -272,25 +272,25 @@ El archivo define tres funciones de tema, todas construidas **encima** de `theme
 El archivo no es solo un tema visual, también trae funciones de conveniencia para no repetir
 código en los diez scripts de `src/`:
 
-- `fuente_fundar(texto)` — antepone `"Fuente: "` al texto de la cita, para no tipearlo cada vez.
-- `puntos_etiqueta(data, var_x, var_y, var_grupo)` — devuelve las filas de máximo, mínimo y último
+- `fuente_fundar(texto)` - antepone `"Fuente: "` al texto de la cita, para no tipearlo cada vez.
+- `puntos_etiqueta(data, var_x, var_y, var_grupo)` - devuelve las filas de máximo, mínimo y último
   valor por grupo, listas para pasarle a `geom_text()`/`geom_label()`.
-- `grafico_linea_monitor(...)` y `grafico_barras_div(...)` — arman de punta a punta el gráfico de
+- `grafico_linea_monitor(...)` y `grafico_barras_div(...)` - arman de punta a punta el gráfico de
   línea simple o de barras divergentes en el estilo del Monitor, para los casos más comunes.
 
 ### La relación con el tema anterior
 
 Existe un tema previo, `style/fundar_larioja_theme.R`, con su propia paleta (`COLORES_REGION`) y su
 propio `theme_la_rioja()`. Fue el primer diseño, anterior a la decisión de alinear todo el monitor
-con la identidad visual del Monitor Mensual de Empresas. El tema vigente —el que usamos en toda
-esta práctica— es `style/fundar_monitor_theme.R`; el archivo viejo queda en el repo como referencia
+con la identidad visual del Monitor Mensual de Empresas. El tema vigente -el que usamos en toda
+esta práctica- es `style/fundar_monitor_theme.R`; el archivo viejo queda en el repo como referencia
 histórica, no se usa en los scripts de `src/`.
 
 En síntesis: el tema no fija solo "qué colores se ven lindos", fija **qué serie tiene que ganar la
 atención del lector primero**, y lo hace desde un único archivo fuente que se carga con `source()`
 al principio de cada script. Eso es exactamente lo que vamos a poner a prueba en el ejercicio 3.
 
-## Extra (si te sobra tiempo)
+## Extra
 
 El eje x tiene 72 etiquetas de texto a 45°: es ilegible. Pasa porque `fecha` es un string
 (`"2007-Q1"`) y ggplot trata cada valor como una categoría. Convirtiéndolo a fecha real, ggplot
@@ -313,7 +313,7 @@ df %>%
 
 ---
 
-# Ejercicio 2 — Tres mapeos del mismo dato (15')
+# Ejercicio 2 - Tres mapeos del mismo dato (15')
 
 `data/inputs_md/13a_nbi_hogares.csv` tiene, para cada trimestre y cada región, el porcentaje de
 hogares con NBI **total** y también las **cinco sub-dimensiones**: hacinamiento (`HAC`), vivienda
@@ -325,9 +325,9 @@ sub-dimensiones están calculadas y no se muestran en ningún lado.
 
 Tenés tres versiones del mismo dato para completar:
 
-- **Versión A** — color = dimensión, un panel por región.
-- **Versión B** — color = región, un panel por dimensión.
-- **Versión C** — todo superpuesto en un solo panel: color = región, tipo de línea = dimensión.
+- **Versión A** - color = dimensión, un panel por región.
+- **Versión B** - color = región, un panel por dimensión.
+- **Versión C** - todo superpuesto en un solo panel: color = región, tipo de línea = dimensión.
 
 **La consigna no es "cuál es la más linda", es "a qué pregunta responde mejor cada una".** Anotá,
 para cada versión, una pregunta que se conteste bien mirándola:
@@ -357,7 +357,7 @@ glimpse(df)
 ## Preparación: de formato ancho a formato largo
 
 ggplot necesita UNA fila por (trimestre, región, dimensión). Hoy las dimensiones son 6 columnas
-distintas: hay que apilarlas. (Este paso —`pivot_longer`— es el 80% del trabajo de preparar datos
+distintas: hay que apilarlas. (Este paso -`pivot_longer`- es el 80% del trabajo de preparar datos
 para graficar. Vale la pena leerlo con calma.)
 
 ```{r ej2-largo, eval=TRUE}
@@ -384,7 +384,7 @@ df_largo <- df %>%
 glimpse(df_largo)
 ```
 
-## Versión A — color = dimensión, un panel por región
+## Versión A - color = dimensión, un panel por región
 
 **Completá el `aes()` y el `facet_wrap()`**
 
@@ -397,7 +397,7 @@ glimpse(df_largo)
 
 **Pregunta:** mirando el panel de La Rioja, ¿podés decir qué privación pesa más?
 
-## Versión B — color = región, un panel por dimensión
+## Versión B - color = región, un panel por dimensión
 
 **TODO:** es la versión A dada vuelta. Cambiá qué va al color y qué al facet. Usá
 `scale_color_fundar_multi()` para que La Rioja se destaque.
@@ -412,7 +412,7 @@ glimpse(df_largo)
 - `scales = "free_y"` hace que cada panel tenga su propia escala. ¿Qué se gana y qué se pierde con
   eso?
 
-## Versión C — todo superpuesto: color = región, linetype = dimensión
+## Versión C - todo superpuesto: color = región, linetype = dimensión
 
 Sin facetado: dos canales sobre la misma marca, en un solo panel.
 
@@ -425,7 +425,7 @@ df_largo %>%
   geom_line(linewidth = 0.6) +
   scale_color_fundar_multi(name = "Región") +
   theme_monitor() +
-  labs(title = "Versión C — todo en un panel",
+  labs(title = "Versión C - todo en un panel",
        x = NULL, y = "% de hogares",
        caption = fuente_fundar("EPH-INDEC"))
 ```
@@ -448,7 +448,7 @@ Completá:
 
 ---
 
-# Ejercicio 3 — Romper el gráfico a propósito (10')
+# Ejercicio 3 - Romper el gráfico a propósito (10')
 
 Este ejercicio es para **comprobar en carne propia** la jerarquía de canales que vimos en la
 teoría.
@@ -456,9 +456,9 @@ teoría.
 Tomá el gráfico de la tasa de empleo (`data/inputs_md/10_tasa_empleo.csv`) y hacé tres versiones
 donde la región se codifique con canales distintos:
 
-- **A** — con `color` (el canal que usa el repo).
-- **B** — con `shape` (forma del punto).
-- **C** — con `size` (grosor de línea).
+- **A** - con `color` (el canal que usa el repo).
+- **B** - con `shape` (forma del punto).
+- **C** - con `size` (grosor de línea).
 
 Después, para cada una, contestá lo más honestamente posible:
 
@@ -477,7 +477,7 @@ df <- read_csv("../../data/inputs_md/10_tasa_empleo.csv", show_col_types = FALSE
   mutate(fecha = lubridate::yq(fecha))
 ```
 
-## Versión A — región mapeada a COLOR (matiz + luminancia)
+## Versión A - región mapeada a COLOR (matiz + luminancia)
 
 Es lo que hace el repo.
 
@@ -489,12 +489,12 @@ df %>%
   geom_line(linewidth = 0.7) +
   scale_color_fundar_multi(name = "Región") +
   theme_monitor() +
-  labs(title = "A — región por COLOR", x = NULL, y = "Tasa de empleo (%)")
+  labs(title = "A - región por COLOR", x = NULL, y = "Tasa de empleo (%)")
 ```
 
 **Cronometrate:** ¿cuánto tardás en encontrar la serie de La Rioja?
 
-## Versión B — región mapeada a FORMA del punto
+## Versión B - región mapeada a FORMA del punto
 
 La forma es, según Munzner, el PEOR canal para variables categóricas. Necesitamos puntos (la
 forma no se puede aplicar a una línea).
@@ -507,7 +507,7 @@ df %>%
   geom_line(linewidth = 0.4, color = "grey40") +
   geom_point(size = 1.6, color = "grey20") +
   theme_monitor() +
-  labs(title = "B — región por FORMA", x = NULL, y = "Tasa de empleo (%)")
+  labs(title = "B - región por FORMA", x = NULL, y = "Tasa de empleo (%)")
 ```
 
 **Preguntas:**
@@ -516,7 +516,7 @@ df %>%
 - Donde dos series se cruzan, ¿podés seguirlas?
 - ¿Distinguirías SEIS regiones con este canal?
 
-## Versión C — región mapeada a TAMAÑO (grosor de línea)
+## Versión C - región mapeada a TAMAÑO (grosor de línea)
 
 El tamaño tiene ordinalidad implícita: sugiere que una categoría es "más" que otra. Para una
 variable puramente categórica, eso es información falsa.
@@ -529,13 +529,13 @@ df %>%
   geom_line(color = "grey25") +
   scale_linewidth_manual(values = c(0.4, 0.9, 1.6), name = "Región") +
   theme_monitor() +
-  labs(title = "C — región por TAMAÑO", x = NULL, y = "Tasa de empleo (%)")
+  labs(title = "C - región por TAMAÑO", x = NULL, y = "Tasa de empleo (%)")
 ```
 
 **Pregunta:** ¿qué te sugiere que "3. La Rioja" sea la línea más gruesa? ¿Es información que está
 en los datos o la agregó el gráfico?
 
-## Bonus — la misma paleta, sin contraste de luminancia
+## Bonus - la misma paleta, sin contraste de luminancia
 
 Volvemos a la versión A, pero con tres colores de LUMINANCIA PAREJA. El matiz sigue distinguiendo
 las regiones... pero La Rioja deja de saltar a la vista.
@@ -553,7 +553,7 @@ df %>%
   geom_line(linewidth = 0.7) +
   scale_color_manual(values = PALETA_PLANA, name = "Región") +
   theme_monitor() +
-  labs(title = "BONUS — misma paleta, sin contraste de luminancia",
+  labs(title = "BONUS - misma paleta, sin contraste de luminancia",
        x = NULL, y = "Tasa de empleo (%)")
 ```
 
