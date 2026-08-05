@@ -148,6 +148,54 @@ ggplot(df, aes(x = fecha, y = tasa_desoc,
 
 Llegamos exactamente a `src/04_desoc.R`. Abrilo y comparalo.
 
+## Cómo se generó el tema de La Rioja
+
+`theme_monitor()` y `scale_color_fundar_multi()` no salieron de la nada. Vale la pena abrir
+`style/fundar_monitor_theme.R` una vez y ver de dónde sale cada decisión.
+
+**1. El punto de partida fue replicar una identidad ya publicada.** El tema no se diseñó desde
+cero: reproduce el estilo del [Monitor Mensual de Empresas](https://fund.ar/publicacion/monitor-mensual-de-empresas/)
+de Fundar (`style/fundar_monitor_theme.R:1-5`) — mismos colores institucionales
+(`FUNDAR_VERDE`, `FUNDAR_ROSA`, `FUNDAR_BEIGE`), mismo fondo, misma tipografía de ejes y leyenda.
+Adoptar una identidad existente en vez de inventar una nueva es lo que permite que el Monitor de
+La Rioja se lea como parte de la misma familia de publicaciones.
+
+**2. La paleta regional (`FUNDAR_MULTI`) se extendió a partir de esos colores institucionales**,
+agregando tonos para poder distinguir series (`style/fundar_monitor_theme.R:25-31`). De esos
+cinco tonos, el monitor de La Rioja usa tres — uno por región — y ahí aparece la decisión de
+diseño central de la clase de hoy:
+
+```r
+FUNDAR_MULTI <- c(
+  "serie_1" = "#A8DCC8",   # Verde menta claro    → 1. Resto país
+  "serie_2" = "#C8C87A",   # Amarillo oliva       → 2. NOA-Resto
+  "serie_3" = "#2D6E6E",   # Verde azulado oscuro → 3. La Rioja (énfasis)
+  ...
+```
+
+Esto no es una elección estética libre, son dos decisiones deliberadas:
+
+- **Saliencia por contraste de luminancia.** "Resto país" y "NOA-Resto" son tonos claros y de baja
+  saturación; La Rioja es el único color oscuro y saturado de los tres. Es la misma idea de
+  *pop-out* que vimos en la teoría: la serie protagonista salta a la vista sin que el lector tenga
+  que buscarla. En la clase 2 (`clases/clase_2_integridad_y_catalogo/ejercicios/04_test_paleta.R`)
+  auditamos esto con números —diferencia de luminancia en espacio Lab, distancia perceptual ΔE, y
+  simulación de daltonismo con `colorspace`— para confirmar que el contraste sobrevive incluso a
+  visión con deuteranopia o protanopia, porque la luminancia no depende del canal cromático.
+- **El orden de los niveles no es cosmético.** Los prefijos `"1."`, `"2."`, `"3."` fuerzan el orden
+  alfabético del factor `la_rioja_region` (definido en `src/utils_eph.R`), y con eso el orden en
+  que ggplot dibuja las capas: La Rioja se dibuja última y queda por encima de las otras dos
+  regiones cuando las líneas se cruzan.
+
+**3. Existe un tema anterior, `style/fundar_larioja_theme.R`**, con su propia paleta
+(`COLORES_REGION`) y su propio `theme_la_rioja()`. Fue un primer diseño, previo a la decisión de
+alinear todo el monitor con la identidad visual del Monitor Mensual de Empresas. El tema vigente
+—el que usamos en toda esta práctica— es `style/fundar_monitor_theme.R`; el archivo viejo queda en
+el repo como referencia histórica, no se usa en los scripts de `src/`.
+
+En síntesis: el tema no fija solo "qué colores se ven lindos", fija **qué serie tiene que ganar la
+atención del lector primero**. Eso es exactamente lo que vamos a poner a prueba en el ejercicio 3.
+
 ## Extra (si te sobra tiempo)
 
 El eje x tiene 72 etiquetas de texto a 45°: es ilegible. Pasa porque `fecha` es un string
