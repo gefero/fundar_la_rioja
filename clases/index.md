@@ -29,6 +29,7 @@ descargar microdatos** para hacer el taller.
 Cómo está construido un script de visualización del repo, capa por capa. Marcas, canales y
 jerarquía perceptual: por qué un gráfico se entiende o no.
 
+- [Diapositivas — teórica](./clase_1_gramatica_y_percepcion/Clase_1_GoG_percepción.pdf)
 - [Práctica — consigna](./clase_1_gramatica_y_percepcion/practica.html)
 - [Práctica — notebook (.Rmd)](./clase_1_gramatica_y_percepcion/practica.Rmd)
 - Ejercicios sueltos:
