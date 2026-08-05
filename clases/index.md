@@ -32,10 +32,6 @@ jerarquía perceptual: por qué un gráfico se entiende o no.
 - [Diapositivas — teórica](./clase_1_gramatica_y_percepcion/Clase_1_GoG_percepción.pdf)
 - [Práctica — consigna](./clase_1_gramatica_y_percepcion/practica.html)
 - [Práctica — notebook (.Rmd)](./clase_1_gramatica_y_percepcion/practica.Rmd)
-- Ejercicios sueltos:
-  [1. La gramática, capa por capa](./clase_1_gramatica_y_percepcion/ejercicios/01_gramatica_capas.R) ·
-  [2. Mapeos alternativos](./clase_1_gramatica_y_percepcion/ejercicios/02_mapeos_alternativos.R) ·
-  [3. Romper canales](./clase_1_gramatica_y_percepcion/ejercicios/03_romper_canales.R)
 - Soluciones:
   [Ej. 1 y 3 — respuestas](./clase_1_gramatica_y_percepcion/soluciones/01_y_03_respuestas.md) ·
   [Ej. 2 — mapeos alternativos](./clase_1_gramatica_y_percepcion/soluciones/02_mapeos_alternativos.R)
@@ -49,11 +45,6 @@ cómo elegir la correcta según la pregunta que se busca responder.
 
 - [Práctica — consigna](./clase_2_integridad_y_catalogo/practica.html)
 - [Práctica — notebook (.Rmd)](./clase_2_integridad_y_catalogo/practica.Rmd)
-- Ejercicios sueltos:
-  [1. Cleveland dot plot (NBI)](./clase_2_integridad_y_catalogo/ejercicios/01_cleveland_nbi.R) ·
-  [2. Brecha implícita (salarios)](./clase_2_integridad_y_catalogo/ejercicios/02_brecha_salarios.R) ·
-  [3. Spaghetti plot (puestos)](./clase_2_integridad_y_catalogo/ejercicios/03_spaghetti_puestos.R) ·
-  [4. Test de paleta](./clase_2_integridad_y_catalogo/ejercicios/04_test_paleta.R)
 - Soluciones:
   [Ej. 1](./clase_2_integridad_y_catalogo/soluciones/01_cleveland_nbi.R) ·
   [Ej. 2](./clase_2_integridad_y_catalogo/soluciones/02_brecha_salarios.R) ·
@@ -69,9 +60,6 @@ visualización, y una práctica integradora: agregar un indicador nuevo al monit
 
 - [Práctica — consigna](./clase_3_pipeline_y_narrativa/practica.html)
 - [Práctica — notebook (.Rmd)](./clase_3_pipeline_y_narrativa/practica.Rmd)
-- Ejercicios sueltos:
-  [1. Cálculo (tasa de actividad)](./clase_3_pipeline_y_narrativa/ejercicios/01_tasa_actividad_calculo.R) ·
-  [2. Visualización](./clase_3_pipeline_y_narrativa/ejercicios/02_tasa_actividad_viz.R)
 - Soluciones:
   [Ej. 1 — cálculo](./clase_3_pipeline_y_narrativa/soluciones/01_tasa_actividad_calculo.R) ·
   [Ej. 2 — visualización](./clase_3_pipeline_y_narrativa/soluciones/02_tasa_actividad_viz.R) ·
