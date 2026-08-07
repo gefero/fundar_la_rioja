@@ -64,6 +64,11 @@ jobs:
           OUT="_site/clases"
           mkdir -p "$OUT/materiales"
 
+          # CSS del sitio (fuente única, la referencia $TEMPLATE con ruta
+          # absoluta y también la usa practica.Rmd de la clase 1 vía css: en
+          # su YAML de salida).
+          cp clases/_site_style.css "$OUT/"
+
           render_md () {
             # render_md <origen.md> <destino.html> <título> [subtítulo]
             local titulo_arg=(--metadata "title=$3")

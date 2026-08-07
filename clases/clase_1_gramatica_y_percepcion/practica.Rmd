@@ -4,10 +4,15 @@ subtitle: "Taller de visualización de datos — Monitor La Rioja (Fundar)"
 date: "`r format(Sys.Date(), '%d de %B de %Y')`"
 output:
   html_document:
+    theme: null
+    css: ../_site_style.css
     toc: true
-    toc_float: true
+    toc_float: false
     number_sections: false
-    theme: flatly
+    self_contained: true
+    includes:
+      before_body: _banner.html
+      after_body: _footer.html
 ---
 
 ```{r setup, include=FALSE}
