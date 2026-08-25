@@ -92,7 +92,8 @@ ggplot() +
             color = unname(destacadas["Buenos Aires"]), linewidth = 1.1) +
   geom_point(data = df_buenos_aires,
              aes(x = anio, y = rank),
-             color = unname(destacadas["Buenos Aires"]), size = 2.4) +
+             shape = 21, fill = unname(destacadas["Buenos Aires"]),
+             color = "white", stroke = 0.9, size = 3.2) +
   geom_text(data = df_buenos_aires %>% filter(anio == max(anio)),
             aes(x = anio, y = rank, label = paste0("Buenos Aires (", rank, "°)")),
             hjust = -0.12, size = 3.2, fontface = "bold",
@@ -103,7 +104,8 @@ ggplot() +
             color = unname(destacadas["Salta"]), linewidth = 1.1) +
   geom_point(data = df_salta,
              aes(x = anio, y = rank),
-             color = unname(destacadas["Salta"]), size = 2.4) +
+             shape = 21, fill = unname(destacadas["Salta"]),
+             color = "white", stroke = 0.9, size = 3.2) +
   geom_text(data = df_salta %>% filter(anio == max(anio)),
             aes(x = anio, y = rank, label = paste0("Salta (", rank, "°)")),
             hjust = -0.12, size = 3.2, fontface = "bold",
@@ -114,7 +116,8 @@ ggplot() +
             color = unname(destacadas["La Rioja"]), linewidth = 1.3) +
   geom_point(data = df_la_rioja,
              aes(x = anio, y = rank),
-             color = unname(destacadas["La Rioja"]), size = 2.8) +
+             shape = 21, fill = unname(destacadas["La Rioja"]),
+             color = "white", stroke = 1, size = 3.6) +
   geom_text(data = df_la_rioja %>% filter(anio == max(anio)),
             aes(x = anio, y = rank, label = paste0("La Rioja (", rank, "°)")),
             hjust = -0.12, size = 3.4, fontface = "bold",
