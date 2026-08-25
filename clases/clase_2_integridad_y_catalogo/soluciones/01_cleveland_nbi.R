@@ -67,9 +67,15 @@ df_ancho     <- df_ancho     %>% mutate(la_rioja_region = factor(la_rioja_region
 # final; el color codifica el AÑO, no la región (acá solo hay 3 categorías en
 # el eje Y, ya identificadas por la etiqueta — no hace falta un color por
 # región además).
+#
+# Paleta: mismo criterio que el bump chart de salarios (05_bump_salarios.R) —
+# un solo matiz (el verde/teal del proyecto) variando en LUMINANCIA en vez de
+# dos matices distintos, y los mismos dos tonos extremos de esa rampa para
+# que ambos gráficos de la clase compartan un lenguaje visual. Para que
+# aparezca la leyenda, el año va mapeado por aes(color = ...) en una sola
+# capa de puntos, no fijado "a mano" por fuera de aes() en dos capas.
 
-COLOR_INI <- FUNDAR_GRIS
-COLOR_FIN <- unname(FUNDAR_MULTI["serie_3"])
+colores_anio <- setNames(c("#73BDBD", "#006666"), c(ANIO_INI, ANIO_FIN))
 
 ggplot() +
   geom_segment(data = df_ancho,
@@ -77,18 +83,16 @@ ggplot() +
                    xend = !!sym(paste0("pct_", ANIO_FIN)),
                    y = la_rioja_region, yend = la_rioja_region),
                color = FUNDAR_GRILLA, linewidth = 2) +
-  geom_point(data = df_dos_anios %>% filter(anio == ANIO_INI),
-             aes(x = pct, y = la_rioja_region),
-             color = COLOR_INI, size = 4) +
-  geom_point(data = df_dos_anios %>% filter(anio == ANIO_FIN),
-             aes(x = pct, y = la_rioja_region),
-             color = COLOR_FIN, size = 4) +
+  geom_point(data = df_dos_anios,
+             aes(x = pct, y = la_rioja_region, color = factor(anio)),
+             size = 4) +
+  scale_color_manual(values = colores_anio, name = NULL) +
   scale_x_continuous(limits = c(0, NA)) +
   theme_monitor_barras_h() +
   labs(
     title    = "La Rioja tenía el peor NBI de las tres regiones en 2007 y hoy tiene el más bajo",
     subtitle = paste0("% de hogares con Necesidades Básicas Insatisfechas (NBI total). ",
-                      "Promedio de las 4 ondas de ", ANIO_INI, " (gris) y de ", ANIO_FIN, " (verde)."),
+                      "Promedio de las 4 ondas de ", ANIO_INI, " y de ", ANIO_FIN, "."),
     x        = "% de hogares con NBI",
     y        = NULL,
     caption  = fuente_fundar("Fundar, con base en la EPH (INDEC).")
