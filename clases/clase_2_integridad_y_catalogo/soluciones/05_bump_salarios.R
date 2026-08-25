@@ -56,10 +56,18 @@ df_rank <- df_anual %>%
 # comparar "cerca de casa").
 
 destacadas <- c(
-  "La Rioja"     = unname(FUNDAR_MULTI["serie_3"]),   # teal oscuro (énfasis del proyecto)
-  "Buenos Aires" = unname(FUNDAR_MULTI["serie_4"]),   # rosa salmón
-  "Salta"        = unname(FUNDAR_MULTI["serie_5"])    # violeta
+  "La Rioja"     = "#006666",   # verde más oscuro (máximo énfasis)
+  "Buenos Aires" = "#3C9090",   # verde medio
+  "Salta"        = "#73BDBD"    # verde más claro
 )
+# La paleta regional del proyecto (serie_1/2/3) usa un matiz distinto por
+# región, pero acá "Buenos Aires" (parte de "1. Resto país") queda con
+# serie_1 —el verde menta claro— que tiene casi la misma luminancia que el
+# gris de contexto (FUNDAR_GRILLA) y se pierde contra el fondo. Para
+# mantener el espíritu de "un solo lenguaje visual, sin matices sueltos"
+# pero con buen contraste, usamos UN matiz (el verde/teal del proyecto) en
+# tres luminancias bien separadas entre sí y del gris de contexto — mismo
+# criterio que el dumbbell de NBI (01_cleveland_nbi.R).
 
 df_resto <- df_rank %>% filter(!jurisdiccion %in% names(destacadas))
 
