@@ -209,8 +209,8 @@ Del informe, págs. 25–34:
   un golpe: *jet* fabrica bordes que no existen.
 - **Daltonismo**: viridis y plasma cumplen; muchas paletas institucionales no.
 
-**El anclaje en el repo:** nuestra paleta `FUNDAR_MULTI` nunca se auditó con estos criterios. Eso es
-el ejercicio 4 de la práctica, y `src/test_escalas.R` es un intento a medio hacer de exactamente
+**El anclaje en el repo:** nuestra paleta `FUNDAR_MULTI` nunca se auditó con estos criterios. Queda
+pendiente para una futura instancia: `src/test_escalas.R` es un intento a medio hacer de exactamente
 esto (carga las paletas de ColorBrewer y ahí queda).
 
 ---
@@ -227,13 +227,10 @@ mantiene escribe el código. **Slides nuevas: 1** (consignas).
 | `01_cleveland_nbi.R` | NBI: de una línea de total a un Cleveland dot plot de las 6 dimensiones |
 | `02_brecha_salarios.R` | Salarios público/privado: brecha implícita con `geom_ribbon()` |
 | `03_spaghetti_puestos.R` | 24 jurisdicciones: spaghetti en índice base 100 |
-| `04_test_paleta.R` | Auditar `FUNDAR_MULTI`: ΔE y simulación de daltonismo |
 
-**Cómo repartirlo.** No alcanza el tiempo para hacer los cuatro. Sugerencia: **cada pareja elige uno
-de los tres primeros** (30') y **el 4 se hace en conjunto al final** (10'), proyectado, porque el
-resultado es una decisión de proyecto y conviene discutirla entre todos.
+**Cómo repartirlo.** Sugerencia: **cada pareja elige uno de los tres ejercicios** (30').
 
-Los tres primeros ejercicios están graduados: el 1 es el más guiado, el 3 el más abierto.
+Los ejercicios están graduados: el 1 es el más guiado, el 3 el más abierto.
 
 ---
 

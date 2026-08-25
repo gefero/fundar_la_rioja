@@ -48,8 +48,7 @@ cómo elegir la correcta según la pregunta que se busca responder.
 - Soluciones:
   [Ej. 1](./clase_2_integridad_y_catalogo/soluciones/01_cleveland_nbi.R) ·
   [Ej. 2](./clase_2_integridad_y_catalogo/soluciones/02_brecha_salarios.R) ·
-  [Ej. 3](./clase_2_integridad_y_catalogo/soluciones/03_spaghetti_puestos.R) ·
-  [Ej. 4](./clase_2_integridad_y_catalogo/soluciones/04_test_paleta.R)
+  [Ej. 3](./clase_2_integridad_y_catalogo/soluciones/03_spaghetti_puestos.R)
 
 [⬇ Descargar todo (clase 2, .zip)](./clase_2_integridad_y_catalogo/clase_2_integridad_y_catalogo.zip)
 

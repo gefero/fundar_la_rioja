@@ -227,10 +227,10 @@ Esto no es una elección estética libre, son dos decisiones deliberadas:
 - **Saliencia por contraste de luminancia.** "Resto país" y "NOA-Resto" son tonos claros y de baja
   saturación; La Rioja es el único color oscuro y saturado de los tres. Es la misma idea de
   *pop-out* que vimos en la teoría: la serie protagonista salta a la vista sin que el lector tenga
-  que buscarla. En la clase 2 (`clases/clase_2_integridad_y_catalogo/ejercicios/04_test_paleta.R`)
-  auditamos esto con números -diferencia de luminancia en espacio Lab, distancia perceptual ΔE, y
-  simulación de daltonismo con `colorspace`- para confirmar que el contraste sobrevive incluso a
-  visión con deuteranopia o protanopia, porque la luminancia no depende del canal cromático.
+  que buscarla. Ese contraste se podría auditar con números -diferencia de luminancia en espacio
+  Lab, distancia perceptual ΔE, y simulación de daltonismo con `colorspace`- para confirmar que
+  sobrevive incluso a visión con deuteranopia o protanopia, porque la luminancia no depende del
+  canal cromático (`src/test_escalas.R` es un intento a medio hacer de esa auditoría).
 - **El orden de los niveles no es cosmético.** Los prefijos `"1."`, `"2."`, `"3."` fuerzan el orden
   alfabético del factor `la_rioja_region` (definido en `src/utils_eph.R`), y con eso el orden en
   que ggplot dibuja las capas: La Rioja se dibuja última y queda por encima de las otras dos

@@ -6,8 +6,7 @@
 que responder y redacta el título; quien mantiene escribe el código. Los dos roles son necesarios:
 un gráfico técnicamente impecable que responde a la pregunta equivocada no sirve para nada.
 
-**Cómo repartirlo:** cada pareja elige **uno** de los tres primeros ejercicios (30'). El ejercicio 4
-lo hacemos entre todos al final (10'), porque el resultado es una decisión de proyecto.
+**Cómo repartirlo:** cada pareja elige **uno** de los tres ejercicios (30').
 
 Todos trabajan sobre `data/inputs_md/`. Soluciones completas en `soluciones/`.
 
@@ -104,29 +103,6 @@ Lo que hay que hacer:
   resuelven los prefijos `1.`/`2.`/`3.` de `la_rioja_region`.)
 - Al pasar a índice base 100, ¿qué información **perdiste**?
 - Comparalo con el gráfico actual. ¿Cuál usarías para un informe y cuál para un anexo?
-
----
-
-## Ejercicio 4 — Auditar nuestra propia paleta (todos juntos, 10')
-
-**Archivo:** `ejercicios/04_test_paleta.R`
-
-`FUNDAR_MULTI` (`style/fundar_monitor_theme.R:25`) se eligió por criterio estético, replicando el
-Monitor Mensual de Empresas. **Nunca se auditó** con los criterios que vimos hoy. Vamos a hacerlo.
-
-> Nota: `src/test_escalas.R` es un intento a medio hacer de exactamente esto. Carga las paletas de
-> ColorBrewer y ahí queda. Este ejercicio lo completa.
-
-Tres tests:
-
-1. **Contraste de luminancia** — ¿La Rioja se distingue de las otras dos series?
-2. **Distancia perceptual (ΔE2000)** — ¿los tres colores son suficientemente distintos entre sí?
-   Regla práctica: ΔE < 10 es riesgoso para series superpuestas.
-3. **Daltonismo** — simular deuteranopia y protanopia con `colorspace` y volver a mirar.
-
-**La discusión final es una decisión de proyecto**, no un ejercicio: con los números a la vista,
-¿mantenemos la paleta, la ajustamos, o agregamos un canal redundante (grosor de línea) para no
-depender solo del color?
 
 ---
 

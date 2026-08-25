@@ -61,7 +61,7 @@ Además:
       en el color). Si no, el gráfico inventa cortes que no están en los datos. Viridis y plasma
       cumplen; jet es el contraejemplo clásico.
 - [ ] Se distingue con **daltonismo**. Verificá con `colorspace::deutan()` (ver
-      `clases/clase_2_integridad_y_catalogo/ejercicios/04_test_paleta.R`).
+      `src/test_escalas.R`).
 - [ ] El color destaca lo que querés destacar. En este proyecto, La Rioja va en el teal oscuro
       (`#2D6E6E`) y el resto en tonos claros: el contraste de luminancia hace que salte a la vista.
 
