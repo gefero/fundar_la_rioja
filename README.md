@@ -335,7 +335,7 @@ comunican los resultados. También están publicados en
 | # | Clase | Contenido |
 |---|---|---|
 | 1 | [Gramática de gráficos y percepción](clases/clase_1_gramatica_y_percepcion/) | Gramática de gráficos, marcas y canales, efectividad perceptual |
-| 2 | [Integridad visual y catálogo de herramientas](clases/clase_2_integridad_y_catalogo/) | Tufte y el caso Challenger, factor de mentira, catálogo de Argendata, paletas |
+| 2 | [Integridad visual y catálogo de herramientas](clases/clase_2_integridad_y_catalogo/) | Tufte y el caso Challenger, factor de mentira, catálogo de Argendata (Cleveland dot plot, brecha implícita, spaghetti, bump chart), paletas |
 | 3 | [Del microdato al producto](clases/clase_3_pipeline_y_narrativa/) | Pipeline, actualización de datos, narrativa y circuito de publicación |
 
 Cada clase tiene un guion minutado (`guion.md`), una guía de práctica (`practica.md`) y scripts de
