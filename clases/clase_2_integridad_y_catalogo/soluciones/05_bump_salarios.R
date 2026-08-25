@@ -54,33 +54,20 @@ df_rank <- df_anual %>%
 # comparación con trayectorias bien distintas entre sí — Buenos Aires (la
 # provincia de referencia por tamaño) y Salta (otra provincia del NOA, para
 # comparar "cerca de casa").
-#
-# Paleta: en vez de tres matices distintos (que es lo que corresponde para
-# una variable CUALITATIVA sin orden), usamos UN solo matiz —el verde/teal
-# del proyecto— variando en LUMINANCIA. Tiene sentido acá porque, a
-# diferencia de "elegí 3 colores para 3 categorías cualquiera", las tres
-# provincias SÍ comparten algo ordenable (son las tres "destacadas" sobre un
-# fondo de contexto) y un solo matiz con distinta luminancia queda más
-# prolijo sobre el fondo beige que mezclar matices. La regla de la clase
-# ("matiz para cualitativas, luminancia para todo lo demás") es una guía, no
-# un dogma — acá se prioriza la cohesión visual.
-# Chequeado con farver::compare_colour (ΔE ~15-16 entre pasos, todos por
-# encima del umbral de 10; y bien lejos de FUNDAR_GRILLA, el gris de
-# contexto, así que no se confunden con las líneas de fondo).
 
 destacadas <- c(
-  "La Rioja"     = "#006666",   # verde más oscuro (máximo énfasis)
-  "Buenos Aires" = "#3C9090",   # verde medio
-  "Salta"        = "#73BDBD"    # verde más claro
+  "La Rioja"     = unname(FUNDAR_MULTI["serie_3"]),   # teal oscuro (énfasis del proyecto)
+  "Buenos Aires" = unname(FUNDAR_MULTI["serie_4"]),   # rosa salmón
+  "Salta"        = unname(FUNDAR_MULTI["serie_5"])    # violeta
 )
 
 df_resto <- df_rank %>% filter(!jurisdiccion %in% names(destacadas))
 
-df_destacadas <- df_rank %>%
-  filter(jurisdiccion %in% names(destacadas)) %>%
-  mutate(jurisdiccion = factor(jurisdiccion, levels = names(destacadas)))
+df_la_rioja     <- df_rank %>% filter(jurisdiccion == "La Rioja")
+df_buenos_aires <- df_rank %>% filter(jurisdiccion == "Buenos Aires")
+df_salta        <- df_rank %>% filter(jurisdiccion == "Salta")
 
-df_destacadas %>%
+df_rank %>% filter(jurisdiccion %in% names(destacadas)) %>%
   arrange(jurisdiccion, anio) %>% select(jurisdiccion, anio, rank, salario_promedio)
 # Tres trayectorias distintas en el mismo ranking:
 # - Buenos Aires: estable en el puesto 6-7 durante toda la serie. Ni entre
@@ -91,9 +78,6 @@ df_destacadas %>%
 
 
 # ---- El gráfico --------------------------------------------------------------
-# Las tres series destacadas van en UNA sola capa con color mapeado por
-# aes() (no fijado "a mano" fuera de aes()): es lo que hace falta para que
-# ggplot arme la leyenda automáticamente.
 
 ggplot() +
   geom_line(data = df_resto,
@@ -103,24 +87,41 @@ ggplot() +
              aes(x = anio, y = rank, group = jurisdiccion),
              color = FUNDAR_GRILLA, size = 1.3) +
 
-  geom_line(data = df_destacadas,
-            aes(x = anio, y = rank, color = jurisdiccion,
-                linewidth = jurisdiccion, group = jurisdiccion)) +
-  geom_point(data = df_destacadas,
-             aes(x = anio, y = rank, fill = jurisdiccion, size = jurisdiccion),
-             shape = 21, color = "white", stroke = 0.9) +
+  geom_line(data = df_buenos_aires,
+            aes(x = anio, y = rank),
+            color = unname(destacadas["Buenos Aires"]), linewidth = 1.1) +
+  geom_point(data = df_buenos_aires,
+             aes(x = anio, y = rank),
+             shape = 21, fill = unname(destacadas["Buenos Aires"]),
+             color = "white", stroke = 0.9, size = 3.2) +
+  geom_text(data = df_buenos_aires %>% filter(anio == max(anio)),
+            aes(x = anio, y = rank, label = paste0("Buenos Aires (", rank, "°)")),
+            hjust = -0.12, size = 3.2, fontface = "bold",
+            color = unname(destacadas["Buenos Aires"])) +
 
-  geom_text(data = df_destacadas %>% filter(anio == max(anio)),
-            aes(x = anio, y = rank, label = paste0(jurisdiccion, " (", rank, "°)"),
-                color = jurisdiccion),
-            hjust = -0.12, size = 3.3, fontface = "bold", show.legend = FALSE) +
+  geom_line(data = df_salta,
+            aes(x = anio, y = rank),
+            color = unname(destacadas["Salta"]), linewidth = 1.1) +
+  geom_point(data = df_salta,
+             aes(x = anio, y = rank),
+             shape = 21, fill = unname(destacadas["Salta"]),
+             color = "white", stroke = 0.9, size = 3.2) +
+  geom_text(data = df_salta %>% filter(anio == max(anio)),
+            aes(x = anio, y = rank, label = paste0("Salta (", rank, "°)")),
+            hjust = -0.12, size = 3.2, fontface = "bold",
+            color = unname(destacadas["Salta"])) +
 
-  scale_color_manual(values = destacadas, name = "Jurisdicción destacada") +
-  scale_fill_manual(values = destacadas, guide = "none") +
-  scale_linewidth_manual(values = c("La Rioja" = 1.3, "Buenos Aires" = 1.1, "Salta" = 1.1),
-                         guide = "none") +
-  scale_size_manual(values = c("La Rioja" = 3.6, "Buenos Aires" = 3.2, "Salta" = 3.2),
-                    guide = "none") +
+  geom_line(data = df_la_rioja,
+            aes(x = anio, y = rank),
+            color = unname(destacadas["La Rioja"]), linewidth = 1.3) +
+  geom_point(data = df_la_rioja,
+             aes(x = anio, y = rank),
+             shape = 21, fill = unname(destacadas["La Rioja"]),
+             color = "white", stroke = 1, size = 3.6) +
+  geom_text(data = df_la_rioja %>% filter(anio == max(anio)),
+            aes(x = anio, y = rank, label = paste0("La Rioja (", rank, "°)")),
+            hjust = -0.12, size = 3.4, fontface = "bold",
+            color = unname(destacadas["La Rioja"])) +
 
   scale_y_reverse(breaks = seq(1, 24, by = 2),
                   expand = expansion(mult = c(0.04, 0.04))) +
