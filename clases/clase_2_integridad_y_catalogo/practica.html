@@ -40,9 +40,7 @@ el título; quien mantiene escribe el código. Los dos roles son
 necesarios: un gráfico técnicamente impecable que responde a la pregunta
 equivocada no sirve para nada.</p>
 <p><strong>Cómo repartirlo:</strong> cada pareja elige
-<strong>uno</strong> de los tres primeros ejercicios (30’). El ejercicio
-4 lo hacemos entre todos al final (10’), porque el resultado es una
-decisión de proyecto.</p>
+<strong>uno</strong> de los tres ejercicios (30’).</p>
 <p>Todos trabajan sobre <code>data/inputs_md/</code>. Soluciones
 completas en <code>soluciones/</code>.</p>
 <hr />
@@ -163,35 +161,6 @@ las demás? (Pista: es el mismo problema que resuelven los prefijos
 <li>Comparalo con el gráfico actual. ¿Cuál usarías para un informe y
 cuál para un anexo?</li>
 </ul>
-<hr />
-<h2
-id="ejercicio-4-auditar-nuestra-propia-paleta-todos-juntos-10">Ejercicio
-4 — Auditar nuestra propia paleta (todos juntos, 10’)</h2>
-<p><strong>Archivo:</strong>
-<code>ejercicios/04_test_paleta.R</code></p>
-<p><code>FUNDAR_MULTI</code>
-(<code>style/fundar_monitor_theme.R:25</code>) se eligió por criterio
-estético, replicando el Monitor Mensual de Empresas. <strong>Nunca se
-auditó</strong> con los criterios que vimos hoy. Vamos a hacerlo.</p>
-<blockquote>
-<p>Nota: <code>src/test_escalas.R</code> es un intento a medio hacer de
-exactamente esto. Carga las paletas de ColorBrewer y ahí queda. Este
-ejercicio lo completa.</p>
-</blockquote>
-<p>Tres tests:</p>
-<ol type="1">
-<li><strong>Contraste de luminancia</strong> — ¿La Rioja se distingue de
-las otras dos series?</li>
-<li><strong>Distancia perceptual (ΔE2000)</strong> — ¿los tres colores
-son suficientemente distintos entre sí? Regla práctica: ΔE &lt; 10 es
-riesgoso para series superpuestas.</li>
-<li><strong>Daltonismo</strong> — simular deuteranopia y protanopia con
-<code>colorspace</code> y volver a mirar.</li>
-</ol>
-<p><strong>La discusión final es una decisión de proyecto</strong>, no
-un ejercicio: con los números a la vista, ¿mantenemos la paleta, la
-ajustamos, o agregamos un canal redundante (grosor de línea) para no
-depender solo del color?</p>
 <hr />
 <h2 id="puesta-en-común-10">Puesta en común (10’)</h2>
 <p>Cada pareja muestra su gráfico en 2 minutos y responde
