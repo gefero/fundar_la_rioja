@@ -94,7 +94,7 @@ df_lr %>%
     )
   )
 
-# ggsave("outputs/plots/clase2_brecha_salarios.png", width = 11, height = 6)
+# ggsave("clases/clase_2_integridad_y_catalogo/plots/clase2_brecha_salarios.png", width = 11, height = 6)
 
 
 # =============================================================================

@@ -1,5 +1,15 @@
 # =============================================================================
 # CLASE 2 — EJERCICIO 1: SOLUCIÓN
+# -----------------------------------------------------------------------------
+# Versión actualizada: en vez de comparar las 6 sub-dimensiones del NBI en un
+# único corte transversal, comparamos el NBI AGREGADO (total, todas las
+# privaciones juntas) en dos momentos del tiempo — el primer y el último año
+# completo disponibles en la EPH — para las 3 regiones.
+#
+# No se puede hacer por PROVINCIA: la EPH no tiene cobertura representativa a
+# nivel provincial (es una encuesta por aglomerados urbanos), por eso el
+# pipeline solo agrega a 3 regiones. Un NBI por provincia requeriría datos de
+# Censo, que hoy no están en este repo.
 # =============================================================================
 
 library(tidyverse)
@@ -7,126 +17,123 @@ source("style/fundar_monitor_theme.R")
 
 df <- read_csv("data/inputs_md/13a_nbi_hogares.csv", show_col_types = FALSE)
 
-df_largo <- df %>%
-  select(fecha, la_rioja_region, starts_with("pct_hogares_NBI_")) %>%
-  pivot_longer(starts_with("pct_hogares_NBI_"),
-               names_to = "dimension", values_to = "pct") %>%
-  mutate(
-    anio      = as.integer(str_sub(fecha, 1, 4)),
-    dimension = str_remove(dimension, "pct_hogares_NBI_"),
-    dimension = recode(dimension,
-                       TOT = "NBI total",
-                       HAC = "Hacinamiento",
-                       VIV = "Vivienda inconveniente",
-                       SAN = "Condiciones sanitarias",
-                       ESC = "Escolaridad",
-                       SUB = "Capacidad de subsistencia")
-  )
 
-ANIO <- max(df_largo$anio)
+# ---- Paso 1: primer y último año completo de la EPH -------------------------
+# La serie va de 2007-Q1 a 2025-Q4: 2007 es el primer año con las 4 ondas, 2025
+# el último. Igual que en la versión anterior, promediamos las 4 ondas de cada
+# año para estabilizar la estimación (dominio chico, ver nota metodológica).
 
-# Se agrupa por región Y dimensión: queremos un promedio por cada combinación,
-# colapsando solo los 4 trimestres del año.
-df_anual <- df_largo %>%
-  filter(anio == ANIO) %>%
-  group_by(la_rioja_region, dimension) %>%
-  summarise(pct = mean(pct, na.rm = TRUE), .groups = "drop")
+df <- df %>% mutate(anio = as.integer(str_sub(fecha, 1, 4)))
 
-df_anual   # 3 regiones × 6 dimensiones = 18 filas
+ANIO_INI <- min(df$anio)
+ANIO_FIN <- max(df$anio)
+
+df_dos_anios <- df %>%
+  filter(anio %in% c(ANIO_INI, ANIO_FIN)) %>%
+  group_by(la_rioja_region, anio) %>%
+  summarise(pct = mean(pct_hogares_NBI_TOT, na.rm = TRUE), .groups = "drop")
+
+df_dos_anios   # 3 regiones × 2 años = 6 filas
 
 
-# ---- El Cleveland dot plot --------------------------------------------------
+# ---- Paso 2: a formato ancho para el segmento -------------------------------
+# geom_segment necesita el punto de inicio y de fin EN LA MISMA FILA.
 
-df_anual %>%
-  filter(dimension != "NBI total") %>%
-  ggplot(aes(x = pct,
-             y = fct_reorder(dimension, pct),
-             color = la_rioja_region)) +
-  geom_line(aes(group = dimension), color = FUNDAR_GRILLA, linewidth = 1.2) +
-  geom_point(size = 3.5) +
-  scale_color_fundar_multi(name = "Región") +
+df_ancho <- df_dos_anios %>%
+  pivot_wider(names_from = anio, values_from = pct, names_prefix = "pct_")
+
+df_ancho
+
+
+# ---- Paso 3: fijar el orden del eje Y UNA sola vez ---------------------------
+# ⚠️ Ojo con este error común: si llamamos fct_reorder() por separado en cada
+# capa (una vez con los datos de ANIO_INI, otra con los de ANIO_FIN), cada
+# llamada puede devolver un orden distinto —2007 y 2025 no rankean igual las
+# regiones— y el eje queda inconsistente entre capas. Por eso fijamos el
+# orden una sola vez, sobre el valor más reciente, y lo aplicamos como factor
+# a los dos data frames antes de graficar.
+
+orden_regiones <- df_ancho %>%
+  arrange(.data[[paste0("pct_", ANIO_FIN)]]) %>%
+  pull(la_rioja_region)
+
+df_dos_anios <- df_dos_anios %>% mutate(la_rioja_region = factor(la_rioja_region, levels = orden_regiones))
+df_ancho     <- df_ancho     %>% mutate(la_rioja_region = factor(la_rioja_region, levels = orden_regiones))
+
+
+# ---- El dumbbell (Cleveland con dos puntos en el tiempo) --------------------
+# Región en el eje Y (ordenada por el valor más reciente), % de hogares con
+# NBI en el eje X. Un segmento por región conecta el valor inicial con el
+# final; el color codifica el AÑO, no la región (acá solo hay 3 categorías en
+# el eje Y, ya identificadas por la etiqueta — no hace falta un color por
+# región además).
+
+COLOR_INI <- FUNDAR_GRIS
+COLOR_FIN <- unname(FUNDAR_MULTI["serie_3"])
+
+ggplot() +
+  geom_segment(data = df_ancho,
+               aes(x = !!sym(paste0("pct_", ANIO_INI)),
+                   xend = !!sym(paste0("pct_", ANIO_FIN)),
+                   y = la_rioja_region, yend = la_rioja_region),
+               color = FUNDAR_GRILLA, linewidth = 2) +
+  geom_point(data = df_dos_anios %>% filter(anio == ANIO_INI),
+             aes(x = pct, y = la_rioja_region),
+             color = COLOR_INI, size = 4) +
+  geom_point(data = df_dos_anios %>% filter(anio == ANIO_FIN),
+             aes(x = pct, y = la_rioja_region),
+             color = COLOR_FIN, size = 4) +
   scale_x_continuous(limits = c(0, NA)) +
   theme_monitor_barras_h() +
   labs(
-    title    = "En La Rioja, el hacinamiento explica casi toda la privación",
-    subtitle = paste0("% de hogares con cada privación. Promedio de las 4 ondas de ", ANIO, "."),
-    x        = "% de hogares",
+    title    = "La Rioja tenía el peor NBI de las tres regiones en 2007 y hoy tiene el más bajo",
+    subtitle = paste0("% de hogares con Necesidades Básicas Insatisfechas (NBI total). ",
+                      "Promedio de las 4 ondas de ", ANIO_INI, " (gris) y de ", ANIO_FIN, " (verde)."),
+    x        = "% de hogares con NBI",
     y        = NULL,
     caption  = fuente_fundar("Fundar, con base en la EPH (INDEC).")
   )
 
-ggsave("outputs/plots/clase2_nbi_cleveland.png", width = 10, height = 6)
+ggsave("clases/clase_2_integridad_y_catalogo/plots/clase2_nbi_cleveland.png", width = 13, height = 6)
 
 
 # =============================================================================
 # RESPUESTAS
 # =============================================================================
 #
-# 1. ¿Por qué las dimensiones van en el eje Y?
-#    Porque son etiquetas de texto largas ("Capacidad de subsistencia"). En el
-#    eje X habría que rotarlas 45° o 90° y se vuelven difíciles de leer. Es la
-#    recomendación explícita del informe de Argendata (pág. 24): con muchas
-#    categorías, o con etiquetas largas, la variable cualitativa va en el eje Y
-#    y la magnitud en el X.
+# 1. ¿Por qué las regiones van en el eje Y?
+#    Mismo argumento que en la versión anterior: son pocas categorías (3) pero
+#    con etiquetas de texto, y el orden del eje codifica información (acá, el
+#    nivel de NBI en el año más reciente) en vez de ser alfabético.
 #
-#    Además, así el ORDEN del eje Y puede codificar información (ordenamos por
-#    valor con fct_reorder), que es otra decisión de diseño: el eje deja de ser
-#    una lista alfabética arbitraria y pasa a ser un ranking.
+# 2. ¿Qué muestra el gráfico que la serie de tiempo (una línea por región)
+#    no muestra tan bien?
+#    El CAMBIO DE ORDEN. En 2007 La Rioja tenía el NBI más alto de las tres
+#    regiones (10,2%, por encima incluso del NOA-Resto). Para 2025 tiene el
+#    más bajo (2,1%, por debajo del Resto país). Una serie de tiempo con las
+#    tres líneas también mostraría esto, pero el dumbbell lo hace de un
+#    vistazo: no hace falta seguir 19 años de trimestres para ver que las
+#    posiciones relativas se invirtieron.
 #
-# 2. ¿Qué privación explica casi todo el NBI de La Rioja?
-#    El hacinamiento. Los promedios de 2025 dan:
+#    Los números:
+#                      2007    2025   var. (p.p.)
+#      Resto país       7,3     3,0      -4,3
+#      NOA-Resto       12,5     4,0      -8,5
+#      La Rioja        10,2     2,1      -8,1
 #
-#                        TOT    HAC    VIV    SAN    ESC    SUB
-#      Resto país       2,95   1,89   0,13   0,08   0,24   0,66
-#      NOA-Resto        3,98   2,26   0,55   0,24   0,20   0,90
-#      La Rioja         2,08   1,90   0,13   0,00   0,00   0,05
+#    Las tres regiones bajaron su NBI en el período, pero La Rioja y el NOA
+#    bajaron mucho más (en puntos porcentuales) que el Resto país — que ya
+#    arrancaba más bajo y tenía menos margen para caer.
 #
-#    El gráfico muestra algo que la serie del total escondía por completo:
-#    La Rioja tiene el NBI total MÁS BAJO de las tres, pero su composición es
-#    muy distinta. El hacinamiento es prácticamente idéntico al del resto del
-#    país (1,90 vs 1,89) — la diferencia en el total viene de que La Rioja casi
-#    no registra las otras cuatro privaciones. Dicho de otro modo: el NBI de
-#    La Rioja ES hacinamiento (91% del total, contra 64% en el resto del país y
-#    57% en el NOA).
+# 3. ¿Por qué no partir el NBI en sus 6 sub-dimensiones acá también?
+#    Se podría (es lo que hacía la versión anterior de este ejercicio, para UN
+#    solo año), pero cruzar 6 dimensiones × 3 regiones × 2 años en el mismo
+#    panel satura el gráfico. Con dos preguntas distintas conviene separar en
+#    dos gráficos: éste (el agregado cambió, ¿cuánto y en qué orden?) y uno
+#    de composición para un año dado (¿qué privación explica el total?, que
+#    es la pregunta de la versión anterior — queda como variante posible).
 #
-#    Ese es el hallazgo, y es exactamente el tipo de cosa que aparece cuando se
-#    elige la herramienta según la pregunta. La línea de la serie total no podía
-#    mostrarlo.
-#
-# 3. Si en vez de puntos usaras barras agrupadas, ¿qué se perdería?
-#    Probalo:
-#
-#      geom_col(aes(fill = la_rioja_region), position = "dodge")
-#
-#    Se pierden tres cosas:
-#    - La línea gris que conecta los tres puntos de cada dimensión, que es lo
-#      que hace VISIBLE la brecha entre regiones sin agregar ningún dato.
-#    - Densidad: 18 barras ocupan mucho más espacio que 18 puntos y generan
-#      visual cluttering (es el argumento original de Cleveland).
-#    - Precisión de lectura: la barra codifica en LONGITUD (desde el cero); el
-#      punto, en POSICIÓN sobre una escala común, que es el canal más preciso
-#      según Cleveland & McGill. Para comparar valores entre sí —que es lo que
-#      queremos acá— el punto gana.
-#
-#    Contrapunto honesto: la barra tiene una ventaja, y es que su longitud desde
-#    el cero es proporcional al valor, cosa que el punto no comunica. Si lo que
-#    importara fuera la magnitud absoluta de cada privación y no la comparación
-#    entre regiones, la barra sería defendible.
-#
-# NOTA METODOLÓGICA — por qué promediamos el año:
-#    En el último trimestre suelto, La Rioja da 0,00 % en cuatro de las seis
-#    dimensiones. La EPH es una muestra, y el aglomerado La Rioja es un dominio
-#    chico: para eventos poco frecuentes (viviendas sin baño, chicos de 6 a 12
-#    que no asisten), un trimestre no tiene casos suficientes. Promediar las
-#    cuatro ondas cuadruplica la muestra efectiva.
-#
-#    Esto vale para CUALQUIER comunicación de estos indicadores: nunca reportar
-#    un nivel de La Rioja a partir de un solo trimestre.
-#
-#    Y una advertencia honesta: promediar el año MEJORA la estimación pero no la
-#    arregla. Aun con las cuatro ondas, "Condiciones sanitarias" y "Escolaridad"
-#    siguen dando 0,00 en La Rioja. Eso NO significa que el fenómeno no exista:
-#    significa que la EPH no puede medirlo a este nivel de desagregación. Si el
-#    gráfico se publica, el caption tiene que decirlo — un 0,00 sin aclaración se
-#    lee como "no hay privación", que es una afirmación que estos datos no
-#    sostienen. Para esas dimensiones, la fuente adecuada es el Censo.
+# NOTA METODOLÓGICA — por qué promediamos cada año:
+#    Igual que antes: un trimestre suelto tiene poca muestra efectiva en un
+#    dominio chico como La Rioja. Promediar las 4 ondas de 2007 y las 4 de
+#    2025 estabiliza ambas puntas de la comparación.

@@ -49,18 +49,32 @@ df_rank <- df_anual %>%
   ungroup()
 
 
-# ---- Paso 3: separar protagonista de contexto -------------------------------
+# ---- Paso 3: separar protagonistas de contexto ------------------------------
+# Tres provincias destacadas, no solo una: La Rioja, y dos puntos de
+# comparación con trayectorias bien distintas entre sí — Buenos Aires (la
+# provincia de referencia por tamaño) y Salta (otra provincia del NOA, para
+# comparar "cerca de casa").
 
-df_resto    <- df_rank %>% filter(jurisdiccion != "La Rioja")
-df_la_rioja <- df_rank %>% filter(jurisdiccion == "La Rioja")
+destacadas <- c(
+  "La Rioja"     = unname(FUNDAR_MULTI["serie_3"]),   # teal oscuro (énfasis del proyecto)
+  "Buenos Aires" = unname(FUNDAR_MULTI["serie_4"]),   # rosa salmón
+  "Salta"        = unname(FUNDAR_MULTI["serie_5"])    # violeta
+)
 
-df_la_rioja %>% arrange(anio) %>% select(anio, rank, salario_promedio)
-# La Rioja se mueve entre el puesto 19 y el 22 de 24 a lo largo de la serie:
-# consistentemente entre las de menor salario privado promedio, con algo más
-# de movimiento que en el ranking por participación en el empleo (que era
-# casi plano). Las provincias con salarios más altos y más volátiles en el
-# ranking son las petroleras/mineras (Neuquén, Santa Cruz, Chubut, Tierra del
-# Fuego), que suben y bajan con el ciclo de esos sectores.
+df_resto <- df_rank %>% filter(!jurisdiccion %in% names(destacadas))
+
+df_la_rioja     <- df_rank %>% filter(jurisdiccion == "La Rioja")
+df_buenos_aires <- df_rank %>% filter(jurisdiccion == "Buenos Aires")
+df_salta        <- df_rank %>% filter(jurisdiccion == "Salta")
+
+df_rank %>% filter(jurisdiccion %in% names(destacadas)) %>%
+  arrange(jurisdiccion, anio) %>% select(jurisdiccion, anio, rank, salario_promedio)
+# Tres trayectorias distintas en el mismo ranking:
+# - Buenos Aires: estable en el puesto 6-7 durante toda la serie. Ni entre
+#   las mejores (las petroleras la superan) ni cerca de las peores.
+# - Salta: escala de forma sostenida, del puesto 18 (2015) al 12-13 (2024-25).
+# - La Rioja: se mueve entre el 19 y el 22, sin mejorar ni empeorar de forma
+#   sostenida — a diferencia de su vecina Salta, que sí gana posiciones.
 
 
 # ---- El gráfico --------------------------------------------------------------
@@ -73,34 +87,55 @@ ggplot() +
              aes(x = anio, y = rank, group = jurisdiccion),
              color = FUNDAR_GRILLA, size = 1.3) +
 
+  geom_line(data = df_buenos_aires,
+            aes(x = anio, y = rank),
+            color = unname(destacadas["Buenos Aires"]), linewidth = 1.1) +
+  geom_point(data = df_buenos_aires,
+             aes(x = anio, y = rank),
+             color = unname(destacadas["Buenos Aires"]), size = 2.4) +
+  geom_text(data = df_buenos_aires %>% filter(anio == max(anio)),
+            aes(x = anio, y = rank, label = paste0("Buenos Aires (", rank, "°)")),
+            hjust = -0.12, size = 3.2, fontface = "bold",
+            color = unname(destacadas["Buenos Aires"])) +
+
+  geom_line(data = df_salta,
+            aes(x = anio, y = rank),
+            color = unname(destacadas["Salta"]), linewidth = 1.1) +
+  geom_point(data = df_salta,
+             aes(x = anio, y = rank),
+             color = unname(destacadas["Salta"]), size = 2.4) +
+  geom_text(data = df_salta %>% filter(anio == max(anio)),
+            aes(x = anio, y = rank, label = paste0("Salta (", rank, "°)")),
+            hjust = -0.12, size = 3.2, fontface = "bold",
+            color = unname(destacadas["Salta"])) +
+
   geom_line(data = df_la_rioja,
             aes(x = anio, y = rank),
-            color = unname(FUNDAR_MULTI["serie_3"]), linewidth = 1.3) +
+            color = unname(destacadas["La Rioja"]), linewidth = 1.3) +
   geom_point(data = df_la_rioja,
              aes(x = anio, y = rank),
-             color = unname(FUNDAR_MULTI["serie_3"]), size = 2.8) +
-
+             color = unname(destacadas["La Rioja"]), size = 2.8) +
   geom_text(data = df_la_rioja %>% filter(anio == max(anio)),
             aes(x = anio, y = rank, label = paste0("La Rioja (", rank, "°)")),
             hjust = -0.12, size = 3.4, fontface = "bold",
-            color = unname(FUNDAR_MULTI["serie_3"])) +
+            color = unname(destacadas["La Rioja"])) +
 
   scale_y_reverse(breaks = seq(1, 24, by = 2),
                   expand = expansion(mult = c(0.04, 0.04))) +
   scale_x_continuous(breaks = seq(2015, 2025, by = 1),
-                     expand = expansion(mult = c(0.02, 0.16))) +
+                     expand = expansion(mult = c(0.02, 0.18))) +
   coord_cartesian(clip = "off") +
   theme_monitor() +
   theme(panel.grid.major.y = element_line(color = FUNDAR_GRILLA, linewidth = 0.3)) +
   labs(
-    title    = "El salario privado de La Rioja está sistemáticamente entre los más bajos del país",
-    subtitle = "Ranking de las 24 jurisdicciones por salario promedio del sector privado registrado (SIPA, promedio anual). 1° = salario más alto ese año.",
+    title    = "Salta escaló en el ranking salarial privado; La Rioja se quedó atrás",
+    subtitle = "Ranking de las 24 jurisdicciones por salario promedio del sector privado registrado (SIPA, promedio anual). 1° = salario más alto ese año. Buenos Aires como referencia de escala.",
     x        = NULL,
     y        = "Posición en el ranking (1° = salario más alto)",
     caption  = fuente_fundar("Fundar, con base en el SIPA (Ministerio de Capital Humano). Salarios en pesos corrientes: el nivel de cada año no es comparable entre sí, pero el ranking dentro de cada año sí.")
   )
 
-ggsave("outputs/plots/clase2_bump_salarios.png", width = 15, height = 7)
+ggsave("clases/clase_2_integridad_y_catalogo/plots/clase2_bump_salarios.png", width = 15, height = 7)
 
 
 # =============================================================================

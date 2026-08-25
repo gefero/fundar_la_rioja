@@ -47,7 +47,7 @@ df_lr %>%
     caption  = fuente_fundar("Fundar, con base en la EPH (INDEC).")
   )
 
-ggsave("outputs/plots/clase2_brecha_salarios.png", width = 11, height = 6)
+ggsave("clases/clase_2_integridad_y_catalogo/plots/clase2_brecha_salarios.png", width = 11, height = 6)
 
 
 # ---- Variante recomendada para publicar: la brecha en % ---------------------

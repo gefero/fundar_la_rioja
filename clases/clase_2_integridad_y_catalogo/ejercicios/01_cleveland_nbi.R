@@ -86,7 +86,7 @@ df_anual %>%
     caption  = fuente_fundar("Fundar, con base en la EPH (INDEC).")
   )
 
-# ggsave("outputs/plots/clase2_nbi_cleveland.png", width = 10, height = 6)
+# ggsave("clases/clase_2_integridad_y_catalogo/plots/clase2_nbi_cleveland.png", width = 10, height = 6)
 
 
 # =============================================================================
