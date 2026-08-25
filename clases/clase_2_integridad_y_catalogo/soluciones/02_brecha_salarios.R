@@ -21,6 +21,7 @@ count(df_lr, signo)   # 57 trimestres con el privado arriba, 15 con el público
 
 
 df_lr %>%
+  filter(fecha >= as.Date("2022-01-01"), fecha <= as.Date("2026-12-31")) %>%
   ggplot(aes(x = fecha)) +
   geom_ribbon(aes(ymin = pmin(Privado, `Público`),
                   ymax = pmax(Privado, `Público`),
@@ -28,8 +29,6 @@ df_lr %>%
               alpha = 0.35) +
   geom_line(aes(y = Privado,   color = "Privado"), linewidth = 0.7) +
   geom_line(aes(y = `Público`, color = "Público"), linewidth = 0.7) +
-  geom_vline(xintercept = as.Date("2016-01-01"),
-             linetype = "dashed", color = FUNDAR_GRIS, linewidth = 0.4) +
   scale_color_manual(values = FUNDAR_SECTOR, name = NULL) +
   scale_fill_manual(values = c("Privado por encima" = FUNDAR_VERDE,
                                "Público por encima" = FUNDAR_ROSA),
@@ -38,16 +37,14 @@ df_lr %>%
     limits = c(0, NA),
     labels = scales::label_number(big.mark = ".", decimal.mark = ",", prefix = "$")
   ) +
-  scale_x_date(date_labels = "%Y", date_breaks = "2 years") +
+  scale_x_date(date_labels = "%Y", date_breaks = "1 year") +
   theme_monitor() +
   labs(
     title    = "La brecha a favor del sector privado se ensanchó desde 2021",
-    subtitle = "Salario promedio de asalariados registrados. Aglomerado La Rioja, pesos corrientes.",
+    subtitle = "Salario promedio de asalariados registrados. Aglomerado La Rioja, pesos corrientes. 2022-2026.",
     x        = NULL,
     y        = "Pesos corrientes",
-    caption  = fuente_fundar(
-      "Fundar, con base en la EPH (INDEC). Línea punteada: cambio de metodología de ingresos de la EPH (2015-2016); los niveles a ambos lados no son estrictamente comparables."
-    )
+    caption  = fuente_fundar("Fundar, con base en la EPH (INDEC).")
   )
 
 ggsave("outputs/plots/clase2_brecha_salarios.png", width = 11, height = 6)
