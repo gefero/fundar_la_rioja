@@ -90,7 +90,7 @@ ggplot() +
   scale_x_continuous(limits = c(0, NA)) +
   theme_monitor_barras_h() +
   labs(
-    title    = "La Rioja tenía el peor NBI de las tres regiones en 2007 y hoy tiene el más bajo",
+    title    = "La Rioja tenía un NBI intermedio en 2007 y hoy es el más bajo de las tres regiones",
     subtitle = paste0("% de hogares con Necesidades Básicas Insatisfechas (NBI total). ",
                       "Promedio de las 4 ondas de ", ANIO_INI, " y de ", ANIO_FIN, "."),
     x        = "% de hogares con NBI",
@@ -112,12 +112,12 @@ ggsave("clases/clase_2_integridad_y_catalogo/plots/clase2_nbi_cleveland.png", wi
 #
 # 2. ¿Qué muestra el gráfico que la serie de tiempo (una línea por región)
 #    no muestra tan bien?
-#    El CAMBIO DE ORDEN. En 2007 La Rioja tenía el NBI más alto de las tres
-#    regiones (10,2%, por encima incluso del NOA-Resto). Para 2025 tiene el
-#    más bajo (2,1%, por debajo del Resto país). Una serie de tiempo con las
-#    tres líneas también mostraría esto, pero el dumbbell lo hace de un
-#    vistazo: no hace falta seguir 19 años de trimestres para ver que las
-#    posiciones relativas se invirtieron.
+#    El CAMBIO DE ORDEN. En 2007 La Rioja tenía un NBI INTERMEDIO (10,2%):
+#    por encima de Resto país (7,3%) pero por debajo de NOA-Resto (12,5%).
+#    Para 2025 pasó a tener el NBI más bajo de las tres (2,1%, por debajo
+#    incluso de Resto país). Una serie de tiempo con las tres líneas también
+#    mostraría esto, pero el dumbbell lo hace de un vistazo: no hace falta
+#    seguir 19 años de trimestres para ver que el orden cambió.
 #
 #    Los números:
 #                      2007    2025   var. (p.p.)
