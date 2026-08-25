@@ -55,7 +55,7 @@ ggplot() +
     caption  = fuente_fundar("Fundar, con base en el SIPA (Ministerio de Capital Humano).")
   )
 
-ggsave("outputs/plots/clase2_spaghetti_puestos.png", width = 13, height = 6)
+ggsave("clases/clase_2_integridad_y_catalogo/plots/clase2_spaghetti_puestos.png", width = 13, height = 6)
 
 
 # ---- Verificación del hallazgo ----------------------------------------------
