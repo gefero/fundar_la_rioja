@@ -1,5 +1,5 @@
 # =============================================================================
-# TALLER DE VISUALIZACIÓN — VERIFICACIÓN DEL ENTORNO
+# TALLER DE VISUALIZACIÓN - VERIFICACIÓN DEL ENTORNO
 # -----------------------------------------------------------------------------
 # Correr ESTE script ANTES de la primera clase.
 #
@@ -120,7 +120,7 @@ p <- df %>%
   geom_line(linewidth = 0.7) +
   scale_color_fundar_multi(name = "Región") +
   theme_monitor() +
-  labs(title = "Prueba de entorno — tasa de desocupación",
+  labs(title = "Prueba de entorno - tasa de desocupación",
        x = "Año-Trimestre", y = "%",
        caption = fuente_fundar("EPH-INDEC"))
 

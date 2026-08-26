@@ -1,10 +1,10 @@
 # =============================================================================
-# CLASE 2 — EJERCICIO 3: spaghetti plot
+# CLASE 2 - EJERCICIO 3: spaghetti plot
 # -----------------------------------------------------------------------------
 # PREGUNTA: ¿cómo le fue al empleo privado en La Rioja comparado con el resto
 #           del país?
 #
-# 24 jurisdicciones × ~205 meses. Según la taxonomía: SPAGHETTI PLOT — una línea
+# 24 jurisdicciones × ~205 meses. Según la taxonomía: SPAGHETTI PLOT - una línea
 # por unidad, la protagonista destacada, el resto en gris de contexto.
 # =============================================================================
 
@@ -87,7 +87,7 @@ ggplot() +
   coord_cartesian(clip = "off") +
   theme_monitor() +
   labs(
-    title    = "TODO: escribilo vos — ¿le fue mejor o peor que al resto?",
+    title    = "TODO: escribilo vos - ¿le fue mejor o peor que al resto?",
     subtitle = paste0("Puestos asalariados privados registrados. Índice base 100 = ",
                       format(min(df$fecha), "%b-%Y"),
                       ". Cada línea gris es una jurisdicción."),

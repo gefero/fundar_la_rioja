@@ -1,5 +1,5 @@
 # =============================================================================
-# CLASE 1 — EJERCICIO 2: SOLUCIÓN
+# CLASE 1 - EJERCICIO 2: SOLUCIÓN
 # =============================================================================
 
 library(tidyverse)
@@ -37,7 +37,7 @@ df_largo %>%
   geom_line(linewidth = 0.6) +
   facet_wrap(~ la_rioja_region) +
   theme_monitor() +
-  labs(title = "Versión A — una dimensión por color, un panel por región",
+  labs(title = "Versión A - una dimensión por color, un panel por región",
        x = NULL, y = "% de hogares",
        caption = fuente_fundar("EPH-INDEC"))
 
@@ -52,7 +52,7 @@ df_largo %>%
   scale_color_fundar_multi(name = "Región") +
   facet_wrap(~ dimension, scales = "free_y") +
   theme_monitor() +
-  labs(title = "Versión B — una región por color, un panel por dimensión",
+  labs(title = "Versión B - una región por color, un panel por dimensión",
        x = NULL, y = "% de hogares",
        caption = fuente_fundar("EPH-INDEC"))
 
@@ -67,7 +67,7 @@ df_largo %>%
   geom_line(linewidth = 0.6) +
   scale_color_fundar_multi(name = "Región") +
   theme_monitor() +
-  labs(title = "Versión C — todo en un panel",
+  labs(title = "Versión C - todo en un panel",
        x = NULL, y = "% de hogares",
        caption = fuente_fundar("EPH-INDEC"))
 
@@ -79,10 +79,10 @@ df_largo %>%
 # | Versión | Contesta BIEN                          | Contesta MAL                        |
 # |---------|----------------------------------------|-------------------------------------|
 # | A       | "Dentro de La Rioja, ¿qué privación     | "¿La Rioja está mejor o peor que el |
-# |         | pesa más?" — las 5 dimensiones          | NOA en hacinamiento?" — hay que     |
+# |         | pesa más?" - las 5 dimensiones          | NOA en hacinamiento?" - hay que     |
 # |         | comparten eje dentro de cada panel      | saltar entre paneles                |
 # | B       | "¿Cómo se compara La Rioja con el NOA   | "¿Qué privación pesa más en La      |
-# |         | en cada privación?" — las 3 regiones    | Rioja?" — con free_y cada panel     |
+# |         | en cada privación?" - las 3 regiones    | Rioja?" - con free_y cada panel     |
 # |         | comparten eje dentro de cada panel      | tiene su propia escala              |
 # | C       | Casi nada: 15 series en un panel        | Todo                                |
 #
@@ -92,7 +92,7 @@ df_largo %>%
 # depende de la pregunta.
 #
 # Sobre `scales = "free_y"` en la versión B: se gana resolución (las dimensiones
-# chicas —Vivienda, Sanitarias— tienen valores mucho menores que Hacinamiento y
+# chicas (Vivienda, Sanitarias) tienen valores mucho menores que Hacinamiento y
 # con escala común quedarían aplastadas contra el cero), y se pierde la
 # comparación ENTRE paneles: dos líneas que se ven igual de altas pueden estar
 # en órdenes de magnitud distintos. Si se usa free_y hay que decirlo en el

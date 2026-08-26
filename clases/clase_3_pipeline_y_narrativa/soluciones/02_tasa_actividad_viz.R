@@ -1,5 +1,5 @@
 # =============================================================================
-# CLASE 3 — PASO 4: SOLUCIÓN
+# CLASE 3 - PASO 4: SOLUCIÓN
 # Destino final: src/06_tasa_actividad.R
 # =============================================================================
 
@@ -35,7 +35,7 @@ ggsave("./outputs/plots/06_tasa_actividad.png", width = 12, height = 7)
 
 
 # =============================================================================
-# SOBRE EL TÍTULO — la discusión de la puesta en común
+# SOBRE EL TÍTULO - la discusión de la puesta en común
 # =============================================================================
 #
 # Los datos, para poder discutirlo con números:
@@ -60,7 +60,7 @@ ggsave("./outputs/plots/06_tasa_actividad.png", width = 12, height = 7)
 #     Es TENTADOR y es lo que dice el último dato: en 2025-Q4 La Rioja marcó
 #     48,9 % contra 48,8 % del resto del país. Pero descansa en UN SOLO
 #     TRIMESTRE de un dominio muestral chico, y es además el máximo histórico
-#     de la serie — o sea, exactamente el punto donde más probable es que sea
+#     de la serie - o sea, exactamente el punto donde más probable es que sea
 #     ruido. Los tres trimestres previos daban 45,6 / 45,6 / 46,3.
 #     Es el error que la advertencia muestral de la clase 2 busca evitar, y
 #     conviene mostrarlo en clase porque es el titular que todos querríamos
@@ -71,7 +71,7 @@ ggsave("./outputs/plots/06_tasa_actividad.png", width = 12, height = 7)
 #     participación laboral (cuánta gente trabaja o busca trabajo), no
 #     actividad económica. Un error de traducción, no de dato.
 #
-# SOBRE EL CAPTION — las tres preguntas del paso 3:
+# SOBRE EL CAPTION - las tres preguntas del paso 3:
 #
 #   ¿Hay que advertir sobre el quiebre 2015/2016?
 #     El quiebre de PONDIIO/PONDERA es un problema de INGRESOS: este indicador
@@ -92,7 +92,7 @@ ggsave("./outputs/plots/06_tasa_actividad.png", width = 12, height = 7)
 
 
 # =============================================================================
-# EXTRA — actividad, empleo y desocupación juntas
+# EXTRA - actividad, empleo y desocupación juntas
 # =============================================================================
 
 desoc  <- read_csv("./data/inputs_md/04_tasa_desoc.csv",  show_col_types = FALSE)

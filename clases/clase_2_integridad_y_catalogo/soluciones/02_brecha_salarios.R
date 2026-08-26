@@ -1,5 +1,5 @@
 # =============================================================================
-# CLASE 2 — EJERCICIO 2: SOLUCIÓN
+# CLASE 2 - EJERCICIO 2: SOLUCIÓN
 # =============================================================================
 
 library(tidyverse)
@@ -91,9 +91,9 @@ df_lr %>%
 #    si el patrón de La Rioja es propio o es el patrón de todo el país. Pierde
 #    precisión sobre la brecha: con los paneles en `scales = "free_y"`, las
 #    distancias verticales no son comparables entre paneles.
-#    La versión de hoy gana la brecha —el área la muestra sola, de forma
+#    La versión de hoy gana la brecha (el área la muestra sola, de forma
 #    preatentiva, y los cambios de signo saltan a la vista con el cambio de
-#    color— y pierde el contexto de las otras dos regiones.
+#    color) y pierde el contexto de las otras dos regiones.
 #    No hay ganador: responden a preguntas distintas. La del informe de
 #    Argendata es que si la pregunta ES la brecha, hay que usar el área.
 #
@@ -119,7 +119,7 @@ df_lr %>%
 #
 #    Los números: la brecha era ~8% en 2007-2009, se achicó hasta darse vuelta
 #    en 2020 (el público pasó a ganar más), y en 2025-Q4 llegó a ~35% a favor
-#    del privado. Esa es la historia — y en el gráfico en pesos corrientes es
+#    del privado. Esa es la historia - y en el gráfico en pesos corrientes es
 #    casi imposible de leer.
 #
 # 4. EXTRA: ¿por qué el informe prefiere el área a una tercera línea?

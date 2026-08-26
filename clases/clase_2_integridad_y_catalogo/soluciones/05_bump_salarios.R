@@ -1,5 +1,5 @@
 # =============================================================================
-# CLASE 2 — MATERIAL EXTRA: bump chart (salario promedio SIPA, 24 jurisdicciones)
+# CLASE 2 - MATERIAL EXTRA: bump chart (salario promedio SIPA, 24 jurisdicciones)
 # -----------------------------------------------------------------------------
 # PREGUNTA: en el RANKING de salario promedio del sector privado registrado
 #           entre provincias, ¿dónde se ubica La Rioja y cómo cambió esa
@@ -11,8 +11,8 @@
 #
 # Un punto que vale la pena decir en voz alta: el indicador 03 está en PESOS
 # CORRIENTES (ver README, nota del indicador 03) y por eso una serie de
-# tiempo de ese salario es engañosa —la inflación aplasta la historia previa,
-# como se discutió en el bloque de integridad visual—. Pero un RANKING
+# tiempo de ese salario es engañosa (la inflación aplasta la historia previa,
+# como se discutió en el bloque de integridad visual). Pero un RANKING
 # CRUZADO ENTRE PROVINCIAS EN EL MISMO MES no tiene ese problema: la
 # inflación afecta a las 24 jurisdicciones por igual dentro de un mismo mes,
 # así que el orden relativo es inmune a la distorsión nominal. Es un buen
@@ -51,7 +51,7 @@ df_rank <- df_anual %>%
 
 # ---- Paso 3: separar protagonistas de contexto ------------------------------
 # Tres provincias destacadas, no solo una: La Rioja, y dos puntos de
-# comparación con trayectorias bien distintas entre sí — Buenos Aires (la
+# comparación con trayectorias bien distintas entre sí - Buenos Aires (la
 # provincia de referencia por tamaño) y Salta (otra provincia del NOA, para
 # comparar "cerca de casa").
 
@@ -62,11 +62,11 @@ destacadas <- c(
 )
 # La paleta regional del proyecto (serie_1/2/3) usa un matiz distinto por
 # región, pero acá "Buenos Aires" (parte de "1. Resto país") queda con
-# serie_1 —el verde menta claro— que tiene casi la misma luminancia que el
+# serie_1 (el verde menta claro) que tiene casi la misma luminancia que el
 # gris de contexto (FUNDAR_GRILLA) y se pierde contra el fondo. Para
 # mantener el espíritu de "un solo lenguaje visual, sin matices sueltos"
 # pero con buen contraste, usamos UN matiz (el verde/teal del proyecto) en
-# tres luminancias bien separadas entre sí y del gris de contexto — mismo
+# tres luminancias bien separadas entre sí y del gris de contexto - mismo
 # criterio que el dumbbell de NBI (01_cleveland_nbi.R).
 
 df_resto <- df_rank %>% filter(!jurisdiccion %in% names(destacadas))
@@ -82,7 +82,7 @@ df_rank %>% filter(jurisdiccion %in% names(destacadas)) %>%
 #   las mejores (las petroleras la superan) ni cerca de las peores.
 # - Salta: escala de forma sostenida, del puesto 18 (2015) al 12-13 (2024-25).
 # - La Rioja: se mueve entre el 19 y el 22, sin mejorar ni empeorar de forma
-#   sostenida — a diferencia de su vecina Salta, que sí gana posiciones.
+#   sostenida - a diferencia de su vecina Salta, que sí gana posiciones.
 
 
 # ---- El gráfico --------------------------------------------------------------
@@ -156,7 +156,7 @@ ggsave("clases/clase_2_integridad_y_catalogo/plots/clase2_bump_salarios.png", wi
 # de empleo, nivel de salario) cuentan historias distintas de La Rioja:
 #   - Por CRECIMIENTO de empleo: volátil, arrancó bien y perdió posiciones.
 #   - Por NIVEL de empleo (% del total nacional): casi plano, siempre entre
-#     las últimas — la escala económica de una provincia cambia despacio.
+#     las últimas - la escala económica de una provincia cambia despacio.
 #   - Por NIVEL de salario: también predominantemente en las últimas
 #     posiciones, pero con más movimiento año a año que el de empleo, porque
 #     el salario privado es más sensible a shocks sectoriales (en este caso,

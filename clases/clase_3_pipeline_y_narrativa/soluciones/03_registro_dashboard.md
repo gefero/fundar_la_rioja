@@ -1,4 +1,4 @@
-# Paso 5 — SOLUCIÓN: registrar el indicador en el dashboard
+# Paso 5 - SOLUCIÓN: registrar el indicador en el dashboard
 
 ## La entrada a agregar
 
@@ -19,7 +19,7 @@ Y listo. **No hay que tocar `app.R` ni `index.qmd`.**
 
 ## Por qué alcanza con eso
 
-Los dos front-ends —la app Shiny y el sitio estático de Quarto— leen el mismo registro y llaman a la
+Los dos front-ends (la app Shiny y el sitio estático de Quarto) leen el mismo registro y llaman a la
 misma función de graficado, `plot_indicador()` en `dashboard/R/plots.R`. El registro es la única
 fuente de verdad:
 
@@ -55,11 +55,11 @@ indicador, hay un registro de metadatos y una función genérica.
 
 Es lo que le dice a `cargar_indicador()` cómo normalizar el CSV:
 
-- **`"A"`** — serie trimestral regional de la EPH: columnas `fecha` (`"2007-Q1"`),
+- **`"A"`** - serie trimestral regional de la EPH: columnas `fecha` (`"2007-Q1"`),
   `la_rioja_region` y la columna de valor. **Es nuestro caso.**
-- **`"B"`** — serie mensual provincial (SIPA/SRT): columnas `jurisdiccion`, `fecha` (Date) y valor.
+- **`"B"`** - serie mensual provincial (SIPA/SRT): columnas `jurisdiccion`, `fecha` (Date) y valor.
   El loader clasifica cada provincia en región y promedia.
-- **`"C"`** — trimestral regional con dos series por sector (público/privado). Se facetea por región.
+- **`"C"`** - trimestral regional con dos series por sector (público/privado). Se facetea por región.
 
 Si el `shape` está mal, el gráfico sale vacío o el loader falla al no encontrar las columnas que
 espera.

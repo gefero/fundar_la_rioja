@@ -1,15 +1,10 @@
 # =============================================================================
-# CLASE 2 — EJERCICIO 1: SOLUCIÓN
+# CLASE 2 - EJERCICIO 1: SOLUCIÓN
 # -----------------------------------------------------------------------------
-# Versión actualizada: en vez de comparar las 6 sub-dimensiones del NBI en un
-# único corte transversal, comparamos el NBI AGREGADO (total, todas las
-# privaciones juntas) en dos momentos del tiempo — el primer y el último año
-# completo disponibles en la EPH — para las 3 regiones.
+# Comparamos el NBI AGREGADO (total, todas las
+# privaciones juntas) en dos momentos del tiempo (el primer y el último año
+# completo disponibles en la EPH) para las 3 regiones.
 #
-# No se puede hacer por PROVINCIA: la EPH no tiene cobertura representativa a
-# nivel provincial (es una encuesta por aglomerados urbanos), por eso el
-# pipeline solo agrega a 3 regiones. Un NBI por provincia requeriría datos de
-# Censo, que hoy no están en este repo.
 # =============================================================================
 
 library(tidyverse)
@@ -46,10 +41,10 @@ df_ancho
 
 
 # ---- Paso 3: fijar el orden del eje Y UNA sola vez ---------------------------
-# ⚠️ Ojo con este error común: si llamamos fct_reorder() por separado en cada
+# Si llamamos fct_reorder() por separado en cada
 # capa (una vez con los datos de ANIO_INI, otra con los de ANIO_FIN), cada
-# llamada puede devolver un orden distinto —2007 y 2025 no rankean igual las
-# regiones— y el eje queda inconsistente entre capas. Por eso fijamos el
+# llamada puede devolver un orden distinto (2007 y 2025 no rankean igual las
+# regiones) y el eje queda inconsistente entre capas. Por eso fijamos el
 # orden una sola vez, sobre el valor más reciente, y lo aplicamos como factor
 # a los dos data frames antes de graficar.
 
@@ -65,10 +60,10 @@ df_ancho     <- df_ancho     %>% mutate(la_rioja_region = factor(la_rioja_region
 # Región en el eje Y (ordenada por el valor más reciente), % de hogares con
 # NBI en el eje X. Un segmento por región conecta el valor inicial con el
 # final; el color codifica el AÑO, no la región (acá solo hay 3 categorías en
-# el eje Y, ya identificadas por la etiqueta — no hace falta un color por
+# el eje Y, ya identificadas por la etiqueta - no hace falta un color por
 # región además).
 #
-# Paleta: mismo criterio que el bump chart de salarios (05_bump_salarios.R) —
+# Paleta: mismo criterio que el bump chart de salarios (05_bump_salarios.R) -
 # un solo matiz (el verde/teal del proyecto) variando en LUMINANCIA en vez de
 # dos matices distintos, y los mismos dos tonos extremos de esa rampa para
 # que ambos gráficos de la clase compartan un lenguaje visual. Para que
@@ -126,7 +121,7 @@ ggsave("clases/clase_2_integridad_y_catalogo/plots/clase2_nbi_cleveland.png", wi
 #      La Rioja        10,2     2,1      -8,1
 #
 #    Las tres regiones bajaron su NBI en el período, pero La Rioja y el NOA
-#    bajaron mucho más (en puntos porcentuales) que el Resto país — que ya
+#    bajaron mucho más (en puntos porcentuales) que el Resto país - que ya
 #    arrancaba más bajo y tenía menos margen para caer.
 #
 # 3. ¿Por qué no partir el NBI en sus 6 sub-dimensiones acá también?
@@ -135,9 +130,9 @@ ggsave("clases/clase_2_integridad_y_catalogo/plots/clase2_nbi_cleveland.png", wi
 #    panel satura el gráfico. Con dos preguntas distintas conviene separar en
 #    dos gráficos: éste (el agregado cambió, ¿cuánto y en qué orden?) y uno
 #    de composición para un año dado (¿qué privación explica el total?, que
-#    es la pregunta de la versión anterior — queda como variante posible).
+#    es la pregunta de la versión anterior - queda como variante posible).
 #
-# NOTA METODOLÓGICA — por qué promediamos cada año:
+# NOTA METODOLÓGICA - por qué promediamos cada año:
 #    Igual que antes: un trimestre suelto tiene poca muestra efectiva en un
 #    dominio chico como La Rioja. Promediar las 4 ondas de 2007 y las 4 de
 #    2025 estabiliza ambas puntas de la comparación.

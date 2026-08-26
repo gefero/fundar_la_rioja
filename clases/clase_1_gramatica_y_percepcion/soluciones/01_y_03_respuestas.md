@@ -1,4 +1,4 @@
-# Respuestas — ejercicios 1 y 3 (clase 1)
+# Respuestas - ejercicios 1 y 3 (clase 1)
 
 Los ejercicios 1 y 3 no tienen `TODO` que completar: se ejecutan tal cual y lo que se responde son
 las preguntas del margen. Acá quedan las respuestas, para quien dicta y para quien quiera
@@ -6,7 +6,7 @@ verificar.
 
 ---
 
-## Ejercicio 1 — La gramática, capa por capa
+## Ejercicio 1 - La gramática, capa por capa
 
 **Paso 1. ¿Qué se ve? ¿Por qué el eje x está tan cargado?**
 
@@ -43,7 +43,7 @@ vivo, es muy ilustrativo.
 Nada en la geometría: las tres líneas ya estaban separadas por `group`. Lo que cambió es que ahora
 la región está codificada **también** en el color, y aparece la leyenda. Es un caso de *redundancia*
 de canales: la misma variable en dos canales (agrupamiento + matiz). La redundancia bien usada es
-buena práctica —el informe de Argendata la recomienda explícitamente—, no un desperdicio.
+buena práctica (el informe de Argendata la recomienda explícitamente), no un desperdicio.
 
 **Paso 5. ¿Cuánto tardás en encontrar La Rioja antes y después?**
 
@@ -62,7 +62,7 @@ se ve (si algún valor cayera fuera del rango, ggplot lo descarta y avisa con un
 
 ---
 
-## Ejercicio 3 — Romper el gráfico a propósito
+## Ejercicio 3 - Romper el gráfico a propósito
 
 **Versión A (color).** Encontrar La Rioja es instantáneo: la serie oscura contrasta contra dos
 claras. Los cruces se siguen sin problema. Con seis series el matiz todavía funciona, aunque
@@ -71,7 +71,7 @@ empieza a costar (el máximo razonable ronda 6–12 colores, contando fondo y l�
 **Versión B (forma).** Encontrar La Rioja obliga a ir a la leyenda, memorizar el símbolo y
 escanear el gráfico buscándolo. En los cruces se pierde el hilo por completo. Con seis series es
 inviable: la forma es el canal de **peor discriminabilidad** para variables categóricas. Además acá
-hubo que agregar puntos, porque la forma no se puede aplicar a una línea — el canal ni siquiera
+hubo que agregar puntos, porque la forma no se puede aplicar a una línea - el canal ni siquiera
 existe para esa marca.
 
 **Versión C (tamaño).** Se lee mejor que la forma, pero introduce un problema conceptual: el grosor
@@ -83,8 +83,8 @@ sin orden intrínseco. Es información falsa agregada por la codificación.
 usa el grosor **de forma deliberada y redundante** para reforzar el énfasis en La Rioja. Esa es la
 diferencia: ahí el grosor no es el único canal, refuerza lo que ya dice el color.)
 
-**Bonus (paleta plana).** El matiz sigue distinguiendo las tres regiones perfectamente —nadie las
-confunde—, pero La Rioja deja de saltar a la vista: hay que buscarla. La conclusión, que es la que
+**Bonus (paleta plana).** El matiz sigue distinguiendo las tres regiones perfectamente (nadie las
+confunde), pero La Rioja deja de saltar a la vista: hay que buscarla. La conclusión, que es la que
 importa: **distinguir y destacar son cosas distintas.** El matiz distingue; el contraste de
 luminancia destaca. La paleta del proyecto usa las dos porque tiene un protagonista.
 

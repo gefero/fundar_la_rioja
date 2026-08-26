@@ -1,5 +1,5 @@
 # =============================================================================
-# CLASE 2 — EJERCICIO 3: SOLUCIÓN
+# CLASE 2 - EJERCICIO 3: SOLUCIÓN
 # =============================================================================
 
 library(tidyverse)
@@ -106,7 +106,7 @@ df_idx %>%
 #    El spaghetti para el informe: responde en un vistazo la pregunta "¿cómo le
 #    fue a La Rioja comparada con el resto?" y da contexto con las 24 unidades.
 #    El facetado actual para el anexo: sirve para consultar el nivel de cada
-#    región, que es otra pregunta —y una que el spaghetti no puede contestar.
+#    región, que es otra pregunta - y una que el spaghetti no puede contestar.
 #
 # 4. EXTRA: ¿qué pasa si cambio la base?
 #    La conclusión SE MUEVE, y bastante. Con base enero-2009 (arranque de la
@@ -114,7 +114,7 @@ df_idx %>%
 #    cada provincia tuvo trayectorias distintas en el medio.
 #
 #    La lección para comunicar: EL AÑO BASE ES UNA DECISIÓN, no un dato. Hay que
-#    (a) elegirlo con un criterio explicable —el inicio de la serie, un cambio
-#    de régimen, un año "normal"—, (b) declararlo siempre en el subtítulo, y
+#    (a) elegirlo con un criterio explicable (el inicio de la serie, un cambio
+#    de régimen, un año "normal"), (b) declararlo siempre en el subtítulo, y
 #    (c) chequear que la conclusión no dependa exclusivamente de esa elección.
 #    Si cambia con la base, la conclusión honesta es más débil de lo que parece.

@@ -1,5 +1,5 @@
 # =============================================================================
-# CLASE 2 — EJERCICIO 1: de la línea al Cleveland dot plot
+# CLASE 2 - EJERCICIO 1: de la línea al Cleveland dot plot
 # -----------------------------------------------------------------------------
 # PREGUNTA: ¿qué privación explica el NBI de La Rioja, y en qué se diferencia
 #           del NOA y del resto del país?
@@ -79,7 +79,7 @@ df_anual %>%
   scale_x_continuous(limits = c(0, NA)) +   # el eje arranca en cero
   theme_monitor_barras_h() +                # variante con grilla vertical
   labs(
-    title    = "TODO: escribilo vos — que AFIRME el hallazgo, no que nombre la variable",
+    title    = "TODO: escribilo vos - que AFIRME el hallazgo, no que nombre la variable",
     subtitle = paste0("% de hogares con cada privación. Promedio de las 4 ondas de ", ANIO, "."),
     x        = "% de hogares",
     y        = NULL,
