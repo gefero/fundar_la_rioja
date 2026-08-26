@@ -1,5 +1,5 @@
 # =============================================================================
-# SWATCH DE REFERENCIA — paleta regional (FUNDAR_MULTI)
+# SWATCH DE REFERENCIA - paleta regional (FUNDAR_MULTI)
 # -----------------------------------------------------------------------------
 # Genera un swatch de los 3 colores regionales del monitor, LEYENDO los hex
 # desde style/fundar_monitor_theme.R (no los repite acá). Si alguien cambia un
@@ -24,7 +24,7 @@ png("outputs/plots/paleta_regional_la_rioja.png",
     width = 900, height = 260, res = 130)
 colorspace::swatchplot(
   paleta_regional,
-  main = "Paleta regional — style/fundar_monitor_theme.R (FUNDAR_MULTI)"
+  main = "Paleta regional - style/fundar_monitor_theme.R (FUNDAR_MULTI)"
 )
 dev.off()
 

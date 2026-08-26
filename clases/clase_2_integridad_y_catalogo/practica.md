@@ -1,4 +1,4 @@
-# Práctica — Clase 2
+# Práctica - Clase 2
 
 **Duración:** 40 minutos.
 
@@ -12,12 +12,12 @@ Todos trabajan sobre `data/inputs_md/`. Soluciones completas en `soluciones/`.
 
 ---
 
-## Ejercicio 1 — De la línea al Cleveland dot plot (NBI)
+## Ejercicio 1 - De la línea al Cleveland dot plot (NBI)
 
 **Archivo:** `ejercicios/01_cleveland_nbi.R` · **Dificultad:** guiado
 
 `src/13a_nbi_hogares.R` grafica hoy **una sola línea por región**, con el NBI **total**. Las cinco
-sub-dimensiones —hacinamiento, vivienda, sanitarias, escolaridad, subsistencia— están calculadas en
+sub-dimensiones (hacinamiento, vivienda, sanitarias, escolaridad, subsistencia) están calculadas en
 el CSV y **no se muestran en ningún lado**.
 
 La pregunta que el gráfico actual no puede contestar es justamente la más interesante:
@@ -31,7 +31,7 @@ Lo que hay que hacer:
 
 1. Pasar el CSV a formato largo (una fila por dimensión).
 2. **Promediar las cuatro ondas del último año.** ⚠️ Esto no es un detalle: en un trimestre suelto,
-   La Rioja da **0,00 % en cuatro de las seis dimensiones**. No es que no haya privación — es que la
+   La Rioja da **0,00 % en cuatro de las seis dimensiones**. No es que no haya privación - es que la
    muestra de un dominio chico no alcanza. Promediar el año estabiliza la estimación.
 3. Dimensiones en el eje Y (**ordenadas por valor**, no alfabéticamente), porcentaje en el X, un
    punto de color por región.
@@ -44,7 +44,7 @@ Lo que hay que hacer:
 
 ---
 
-## Ejercicio 2 — La brecha implícita (salarios público/privado)
+## Ejercicio 2 - La brecha implícita (salarios público/privado)
 
 **Archivo:** `ejercicios/02_brecha_salarios.R` · **Dificultad:** medio
 
@@ -74,7 +74,7 @@ Lo que hay que hacer:
 
 ---
 
-## Ejercicio 3 — Spaghetti plot (24 jurisdicciones)
+## Ejercicio 3 - Spaghetti plot (24 jurisdicciones)
 
 **Archivo:** `ejercicios/03_spaghetti_puestos.R` · **Dificultad:** abierto
 
@@ -84,7 +84,7 @@ facetado por región.
 
 > **¿Cómo le fue al empleo privado en La Rioja comparado con el resto del país?**
 
-Son 24 categorías y ~200 instancias temporales. Según la taxonomía: **spaghetti plot** — una línea
+Son 24 categorías y ~200 instancias temporales. Según la taxonomía: **spaghetti plot** - una línea
 por unidad, la protagonista destacada, el resto en gris de contexto.
 
 Hay un problema previo: **los niveles no son comparables**. Buenos Aires tiene 1.750 mil puestos y

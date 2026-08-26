@@ -1,5 +1,5 @@
 # =============================================================================
-# CLASE 3 — PASO 4: el gráfico del indicador nuevo
+# CLASE 3 - PASO 4: el gráfico del indicador nuevo
 # -----------------------------------------------------------------------------
 # Copiá este archivo a src/06_tasa_actividad.R y completá los TODO.
 #
@@ -50,7 +50,7 @@ ggsave("./outputs/plots/06_tasa_actividad.png", width = 12, height = 7)
 
 
 # =============================================================================
-# EXTRA — el gráfico que cuenta la historia completa
+# EXTRA - el gráfico que cuenta la historia completa
 # =============================================================================
 # Empleo, desocupación y actividad son tres caras del mismo fenómeno. Un
 # gráfico facetado de las tres series para La Rioja cuenta una historia que

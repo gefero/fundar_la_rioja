@@ -1,4 +1,4 @@
-# Práctica — Clase 3
+# Práctica - Clase 3
 
 **Duración:** 50 minutos. **En parejas de perfiles mezclados.**
 
@@ -24,7 +24,7 @@ tasa_actividad = pea / pob_tot × 100
 
 ---
 
-## Paso 1 — El cálculo *(perfil mantenimiento, 10')*
+## Paso 1 - El cálculo *(perfil mantenimiento, 10')*
 
 **Archivo:** `ejercicios/01_tasa_actividad_calculo.R` → copialo a `src/06_prep_tasa_actividad.R`
 
@@ -37,7 +37,7 @@ Hacé el `left_join()` de los dos CSV por `fecha` y `la_rioja_region`, calculá 
 
 ---
 
-## Paso 2 — Verificar *(los dos, 5')*
+## Paso 2 - Verificar *(los dos, 5')*
 
 Antes de graficar nada. Tres chequeos, en este orden:
 
@@ -58,7 +58,7 @@ son porcentajes, pero no del mismo denominador. ¿Cuál es cuál?
 
 ---
 
-## Paso 3 — La narrativa *(perfil comunicación, 10')*
+## Paso 3 - La narrativa *(perfil comunicación, 10')*
 
 Antes de que se escriba el `labs()`, mirá los datos y decidí **qué historia cuenta este indicador**.
 
@@ -67,9 +67,9 @@ mantiene? ¿Cómo se compara con el NOA y con el resto del país? ¿Hay algún q
 
 Después escribí los tres campos, siguiendo la tabla de la clase:
 
-- **Título** — el hallazgo afirmado, una oración que se lea sola. **No** "Tasa de actividad".
-- **Subtítulo** — unidad, universo, período.
-- **Caption** — la fuente completa y las advertencias metodológicas que correspondan.
+- **Título** - el hallazgo afirmado, una oración que se lea sola. **No** "Tasa de actividad".
+- **Subtítulo** - unidad, universo, período.
+- **Caption** - la fuente completa y las advertencias metodológicas que correspondan.
 
 **Preguntas para decidir el caption:**
 
@@ -80,7 +80,7 @@ Después escribí los tres campos, siguiendo la tabla de la clase:
 
 ---
 
-## Paso 4 — El gráfico *(perfil mantenimiento, 10')*
+## Paso 4 - El gráfico *(perfil mantenimiento, 10')*
 
 **Archivo:** `ejercicios/02_tasa_actividad_viz.R` → copialo a `src/06_tasa_actividad.R`
 
@@ -95,7 +95,7 @@ Guardá el PNG en `outputs/plots/06_tasa_actividad.png`.
 
 ---
 
-## Paso 5 — El dashboard *(los dos, 10')*
+## Paso 5 - El dashboard *(los dos, 10')*
 
 Registrá el indicador en `INDICADORES`, en `dashboard/R/data.R`. Va con `shape = "A"` (serie
 trimestral regional, una fila por fecha-región), que es la forma que tiene tu CSV.
@@ -115,7 +115,7 @@ sea uno de los tres de `TOPICOS`.
 
 ---
 
-## Paso 6 — Publicar *(los dos, 5')*
+## Paso 6 - Publicar *(los dos, 5')*
 
 ```bash
 git checkout -b tasa-actividad

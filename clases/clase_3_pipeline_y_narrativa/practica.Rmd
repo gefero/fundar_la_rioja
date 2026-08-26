@@ -1,6 +1,6 @@
 ---
-title: "Clase 3 — Práctica: Del microdato al producto"
-subtitle: "Taller de visualización de datos — Monitor La Rioja (Fundar)"
+title: "Clase 3 - Práctica: Del microdato al producto"
+subtitle: "Taller de visualización de datos - Monitor La Rioja (Fundar)"
 date: "`r format(Sys.Date(), '%d de %B de %Y')`"
 output:
   html_document:
@@ -49,7 +49,7 @@ tasa_actividad = pea / pob_tot × 100
 
 ---
 
-# Paso 1 — El cálculo *(perfil mantenimiento, 10')*
+# Paso 1 - El cálculo *(perfil mantenimiento, 10')*
 
 **Destino final:** `src/06_prep_tasa_actividad.R`
 
@@ -89,7 +89,7 @@ tasa_actividad <- desoc %>%
 
 ---
 
-# Paso 2 — Verificar *(los dos, 5')*
+# Paso 2 - Verificar *(los dos, 5')*
 
 Antes de graficar nada. Tres chequeos, en este orden.
 
@@ -155,7 +155,7 @@ tasa_actividad %>%
 
 ---
 
-# Paso 3 — La narrativa *(perfil comunicación, 10')*
+# Paso 3 - La narrativa *(perfil comunicación, 10')*
 
 Antes de que se escriba el `labs()`, mirá los datos y decidí **qué historia cuenta este
 indicador**.
@@ -171,12 +171,12 @@ read_csv("../../data/inputs_md/06_tasa_actividad.csv", show_col_types = FALSE) %
   slice(c(1:2, n() - 1, n()))   # primeros y últimos puntos de la serie
 ```
 
-Después escribí los tres campos, siguiendo la tabla de la clase (no es un chunk de código — es
+Después escribí los tres campos, siguiendo la tabla de la clase (no es un chunk de código - es
 texto para decidir antes del Paso 4):
 
-- **Título** — el hallazgo afirmado, una oración que se lea sola. **No** "Tasa de actividad".
-- **Subtítulo** — unidad, universo, período.
-- **Caption** — la fuente completa y las advertencias metodológicas que correspondan.
+- **Título** - el hallazgo afirmado, una oración que se lea sola. **No** "Tasa de actividad".
+- **Subtítulo** - unidad, universo, período.
+- **Caption** - la fuente completa y las advertencias metodológicas que correspondan.
 
 **Preguntas para decidir el caption:**
 
@@ -187,7 +187,7 @@ texto para decidir antes del Paso 4):
 
 ---
 
-# Paso 4 — El gráfico *(perfil mantenimiento, 10')*
+# Paso 4 - El gráfico *(perfil mantenimiento, 10')*
 
 **Destino final:** `src/06_tasa_actividad.R`
 
@@ -243,7 +243,7 @@ df_plot %>%
 # ggsave("../../outputs/plots/06_tasa_actividad.png", width = 12, height = 7)
 ```
 
-## Extra — el gráfico que cuenta la historia completa
+## Extra - el gráfico que cuenta la historia completa
 
 Empleo, desocupación y actividad son tres caras del mismo fenómeno. Un gráfico facetado de las
 tres series para La Rioja cuenta una historia que ninguna de las tres cuenta sola: si la actividad
@@ -275,12 +275,12 @@ de Argendata, ¿está justificado en este caso? ¿Por qué?
 
 ---
 
-# Paso 5 — El dashboard *(los dos, 10')*
+# Paso 5 - El dashboard *(los dos, 10')*
 
 Registrá el indicador en `INDICADORES`, en `dashboard/R/data.R`. Va con `shape = "A"` (serie
 trimestral regional, una fila por fecha-región), que es la forma que tiene tu CSV.
 
-**Esto no se corre en este notebook** — es una entrada de lista que se pega en
+**Esto no se corre en este notebook** - es una entrada de lista que se pega en
 `dashboard/R/data.R`, junto a las de `desocupacion` y `empleo`:
 
 ```r
@@ -308,7 +308,7 @@ plotly. También aparece en el sitio estático al renderizar `dashboard/index.qm
 
 ---
 
-# Paso 6 — Publicar *(los dos, 5')*
+# Paso 6 - Publicar *(los dos, 5')*
 
 Desde la terminal, en la raíz del repo:
 

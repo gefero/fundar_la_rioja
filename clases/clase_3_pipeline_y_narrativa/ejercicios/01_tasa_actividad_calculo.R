@@ -1,5 +1,5 @@
 # =============================================================================
-# CLASE 3 — PASO 1: el cálculo de un indicador nuevo
+# CLASE 3 - PASO 1: el cálculo de un indicador nuevo
 # -----------------------------------------------------------------------------
 # Copiá este archivo a src/06_prep_tasa_actividad.R y completá los TODO.
 #

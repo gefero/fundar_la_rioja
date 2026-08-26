@@ -1,5 +1,5 @@
 # =============================================================================
-# CLASE 3 — PASO 1: SOLUCIÓN
+# CLASE 3 - PASO 1: SOLUCIÓN
 # Destino final: src/06_prep_tasa_actividad.R
 # =============================================================================
 
@@ -76,8 +76,8 @@ tasa_actividad %>%
 #
 #    Los dos CSV de origen se generan en el mismo script y hoy comparten filtro
 #    (`filter(ANO4 >= 2007)`). Pero nada lo garantiza hacia adelante: si alguien
-#    cambia el filtro de años de uno solo —como ya pasa con el indicador 03b,
-#    que tiene su propio `ANO_DESDE_SALARIOS <- 2009`— el join empieza a
+#    cambia el filtro de años de uno solo (como ya pasa con el indicador 03b,
+#    que tiene su propio `ANO_DESDE_SALARIOS <- 2009`) el join empieza a
 #    devolver NA o a perder filas, y este script no lo sabe.
 #
 #    Es una dependencia frágil, y por eso este camino sirve para el taller pero
@@ -91,7 +91,7 @@ tasa_actividad %>%
 
 
 # =============================================================================
-# VARIANTE AVANZADA — desde el dataset canónico
+# VARIANTE AVANZADA - desde el dataset canónico
 # =============================================================================
 # Requiere haber corrido 00 y 01 (los microdatos NO están versionados).
 # Este bloque va en src/02_indicadores_eph_individuo.R, junto a los demás.

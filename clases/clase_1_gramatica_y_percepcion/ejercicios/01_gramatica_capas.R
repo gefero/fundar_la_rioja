@@ -1,11 +1,11 @@
 # =============================================================================
-# CLASE 1 — EJERCICIO 1: la gramática, capa por capa
+# CLASE 1 - EJERCICIO 1: la gramática, capa por capa
 # -----------------------------------------------------------------------------
 # Reconstruimos src/04_desoc.R desde cero, agregando UNA capa por vez.
 #
 # CÓMO USARLO: ejecutá cada PASO por separado (Ctrl+Enter línea por línea, o
 # seleccionar el bloque y Ctrl+Enter) y MIRÁ el gráfico antes de pasar al
-# siguiente. El objetivo no es llegar al gráfico final —ya existe— sino ver
+# siguiente. El objetivo no es llegar al gráfico final (ya existe) sino ver
 # qué aporta exactamente cada línea.
 # =============================================================================
 

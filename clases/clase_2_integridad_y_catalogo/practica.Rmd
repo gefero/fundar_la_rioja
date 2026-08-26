@@ -1,6 +1,6 @@
 ---
-title: "Clase 2 — Práctica: Integridad visual y catálogo de herramientas"
-subtitle: "Taller de visualización de datos — Monitor La Rioja (Fundar)"
+title: "Clase 2 - Práctica: Integridad visual y catálogo de herramientas"
+subtitle: "Taller de visualización de datos - Monitor La Rioja (Fundar)"
 date: "`r format(Sys.Date(), '%d de %B de %Y')`"
 output:
   html_document:
@@ -34,12 +34,12 @@ source("../../style/fundar_monitor_theme.R")
 
 ---
 
-# Ejercicio 1 — De la línea al Cleveland dot plot (NBI)
+# Ejercicio 1 - De la línea al Cleveland dot plot (NBI)
 
 **Dificultad:** guiado
 
 `src/13a_nbi_hogares.R` grafica hoy **una sola línea por región**, con el NBI **total**. Las cinco
-sub-dimensiones —hacinamiento, vivienda, sanitarias, escolaridad, subsistencia— están calculadas
+sub-dimensiones (hacinamiento, vivienda, sanitarias, escolaridad, subsistencia) están calculadas
 en el CSV y **no se muestran en ningún lado**.
 
 La pregunta que el gráfico actual no puede contestar es justamente la más interesante:
@@ -54,7 +54,7 @@ Lo que hay que hacer:
 
 1. Pasar el CSV a formato largo (una fila por dimensión).
 2. **Promediar las cuatro ondas del último año.** ⚠️ Esto no es un detalle: en un trimestre
-   suelto, La Rioja da **0,00 % en cuatro de las seis dimensiones**. No es que no haya privación —
+   suelto, La Rioja da **0,00 % en cuatro de las seis dimensiones**. No es que no haya privación -
    es que la muestra de un dominio chico no alcanza. Promediar el año estabiliza la estimación.
 3. Dimensiones en el eje Y (**ordenadas por valor**, no alfabéticamente), porcentaje en el X, un
    punto de color por región.
@@ -144,7 +144,7 @@ df_anual %>%
   scale_x_continuous(limits = c(0, NA)) +   # el eje arranca en cero
   theme_monitor_barras_h() +                # variante con grilla vertical
   labs(
-    title    = "TODO: escribilo vos — que AFIRME el hallazgo, no que nombre la variable",
+    title    = "TODO: escribilo vos - que AFIRME el hallazgo, no que nombre la variable",
     subtitle = paste0("% de hogares con cada privación. Promedio de las 4 ondas de ", ANIO, "."),
     x        = "% de hogares",
     y        = NULL,
@@ -164,7 +164,7 @@ df_anual %>%
 
 ---
 
-# Ejercicio 2 — La brecha implícita (salarios público/privado)
+# Ejercicio 2 - La brecha implícita (salarios público/privado)
 
 **Dificultad:** medio
 
@@ -194,7 +194,7 @@ df <- read_csv("../../data/inputs_md/03b_salarios_registrados_EPH.csv",
 glimpse(df)   # fecha, la_rioja_region, sector ("Público"/"Privado"), salario_promedio
 ```
 
-## Paso 1 — La Rioja, en formato ancho
+## Paso 1 - La Rioja, en formato ancho
 
 `geom_ribbon()` necesita `ymin` e `ymax` EN LA MISMA FILA. Hoy los dos sectores están en filas
 distintas: hay que pivotear a ancho.
@@ -211,7 +211,7 @@ df_lr <- df %>%
 glimpse(df_lr)   # debería tener: fecha, la_rioja_region, Privado, Público
 ```
 
-## Paso 2 — quién está arriba
+## Paso 2 - quién está arriba
 
 Coloreamos el área según el signo de la brecha: no siempre gana el mismo sector, y eso es parte
 del hallazgo.
@@ -226,7 +226,7 @@ df_lr <- df_lr %>%
 count(df_lr, signo)   # ¿cuántos trimestres de cada lado?
 ```
 
-## Paso 3 — el gráfico
+## Paso 3 - el gráfico
 
 Capas, de abajo hacia arriba: (1) el área entre las dos series, (2) las dos líneas, (3) la marca
 del quiebre metodológico.
@@ -264,7 +264,7 @@ df_lr %>%
   scale_x_date(date_labels = "%Y", date_breaks = "2 years") +
   theme_monitor() +
   labs(
-    title    = "TODO: escribilo vos — ¿qué le pasó a la brecha?",
+    title    = "TODO: escribilo vos - ¿qué le pasó a la brecha?",
     subtitle = "Salario promedio de asalariados registrados. Aglomerado La Rioja, pesos corrientes.",
     x        = NULL,
     y        = "Pesos corrientes",
@@ -291,7 +291,7 @@ df_lr %>%
 
 ---
 
-# Ejercicio 3 — Spaghetti plot (24 jurisdicciones)
+# Ejercicio 3 - Spaghetti plot (24 jurisdicciones)
 
 **Dificultad:** abierto
 
@@ -301,7 +301,7 @@ facetado por región.
 
 > **¿Cómo le fue al empleo privado en La Rioja comparado con el resto del país?**
 
-Son 24 categorías y ~200 instancias temporales. Según la taxonomía: **spaghetti plot** — una línea
+Son 24 categorías y ~200 instancias temporales. Según la taxonomía: **spaghetti plot** - una línea
 por unidad, la protagonista destacada, el resto en gris de contexto.
 
 Hay un problema previo: **los niveles no son comparables**. Buenos Aires tiene 1.750 mil puestos y
@@ -331,7 +331,7 @@ df %>%
 Buenos Aires arranca en ~1.750 mil puestos y La Rioja en ~27 mil. En un mismo eje, todas las
 provincias chicas quedan aplastadas contra el cero.
 
-## Paso 1 — índice base 100
+## Paso 1 - índice base 100
 
 **TODO:** completá el `group_by()` y el cálculo del índice. El índice de cada provincia es su
 valor dividido por SU PROPIO primer valor, por 100.
@@ -347,7 +347,7 @@ df_idx <- df %>%
 df_idx %>% filter(fecha == min(fecha)) %>% count(indice)
 ```
 
-## Paso 2 — separar la protagonista del contexto
+## Paso 2 - separar la protagonista del contexto
 
 El truco del spaghetti: DOS dataframes, no uno. El de contexto se dibuja primero (queda abajo) y
 el protagonista después (queda encima).
@@ -357,7 +357,7 @@ df_resto    <- df_idx %>% filter(jurisdiccion != "La Rioja")
 df_la_rioja <- df_idx %>% filter(jurisdiccion == "La Rioja")
 ```
 
-## Paso 3 — el gráfico
+## Paso 3 - el gráfico
 
 **TODO:** completá el orden de las capas. ¿Cuál va primero?
 
@@ -391,7 +391,7 @@ ggplot() +
   coord_cartesian(clip = "off") +
   theme_monitor() +
   labs(
-    title    = "TODO: escribilo vos — ¿le fue mejor o peor que al resto?",
+    title    = "TODO: escribilo vos - ¿le fue mejor o peor que al resto?",
     subtitle = paste0("Puestos asalariados privados registrados. Índice base 100 = ",
                       format(min(df$fecha), "%b-%Y"),
                       ". Cada línea gris es una jurisdicción."),

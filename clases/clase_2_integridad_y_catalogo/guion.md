@@ -1,10 +1,10 @@
-# Clase 2 — Integridad visual y catálogo de herramientas
+# Clase 2 - Integridad visual y catálogo de herramientas
 
 **Duración:** 120 minutos · **Teoría:** 65' · **Práctica:** 45' · **Cierre:** 10'
 
 **Material de slides:**
 - Primera mitad: `clases/Copia de Pract_Clase_1_introducción.pdf`, **diapositivas 58 a 169**
-  (el bloque "Integridad Visual"), recortado —ver abajo qué se saca—.
+  (el bloque "Integridad Visual"), recortado (ver abajo qué se saca).
 - Segunda mitad: **slides nuevas**, a partir de
   [`clases/materiales/Informe_final_argendata.pdf`](../materiales/Informe_final_argendata.pdf).
 
@@ -33,39 +33,39 @@ sobre cómo elegir la herramienta.
 
 Es mucho material para 35 minutos. El recorte sugerido, en cuatro bloques:
 
-### a) El caso Challenger (15') — slides 59–111
+### a) El caso Challenger (15') - slides 59–111
 
 Es el caso más potente del deck y hay que darlo, pero **acelerado**: son 50 diapositivas y la mayor
 parte son *builds* progresivos de la misma imagen. Se pasan rápido y se para solo en los hitos:
 
-- **59–63** — El accidente: 28 de enero de 1986, falla en las juntas tóricas, temperatura de −6 °C.
+- **59–63** - El accidente: 28 de enero de 1986, falla en las juntas tóricas, temperatura de −6 °C.
   Los ingenieros habían dado el alerta y recomendaron no despegar en 13 gráficas. La NASA lo
   desestimó: *"la evidencia presentada no es concluyente"*.
-- **65** — El problema básico, que es el corazón del caso: **falta de capacidad para demostrar la
+- **65** - El problema básico, que es el corazón del caso: **falta de capacidad para demostrar la
   conexión entre las bajas temperaturas y los problemas en las juntas.** No faltaban datos: faltaba
   mostrar la relación.
-- **66–86** — El análisis forense del informe: título críptico (SRM sin explicar), sin nombres —y
-  los nombres dan credibilidad—, nomenclaturas inconsistentes, fechas escritas a mano, indicadores
+- **66–86** - El análisis forense del informe: título críptico (SRM sin explicar), sin nombres (y
+  los nombres dan credibilidad), nomenclaturas inconsistentes, fechas escritas a mano, indicadores
   de daño sin definir, y sobre todo: **los cuadros no ordenan por temperatura**. Un solo caso no es
   evidencia; los motores también fallaron a temperaturas normales.
-- **87** — La frase para dejar en el pizarrón:
+- **87** - La frase para dejar en el pizarrón:
 
   > **Las relaciones son la evidencia.** Las cifras constituyen evidencia cuando mostramos sus
   > relaciones.
 
-- **88–96** — El rediseño de Tufte: ordenar por temperatura, y la correlación daño-temperatura
+- **88–96** - El rediseño de Tufte: ordenar por temperatura, y la correlación daño-temperatura
   aparece sola. La temperatura del 28/01/1986 queda muy fuera del rango de toda la experiencia
   previa.
-- **97** — La conclusión general: *existen mejores y peores maneras de mostrar datos; algunos
+- **97** - La conclusión general: *existen mejores y peores maneras de mostrar datos; algunos
   gráficos revelan la verdad y otros la ocultan.*
-- **98–111** — El informe oficial de investigación posterior (que también falla): leyenda
+- **98–111** - El informe oficial de investigación posterior (que también falla): leyenda
   desordenada, *visual clutter* de 48 contornos de cohetes, causa y efecto poco claros, variable de
   ordenamiento equivocada.
 
 **Si hay que recortar más:** las slides 112–122 (John Snow, la marcha de Napoleón, el gráfico
 climático) son excelentes pero prescindibles. Se pueden dejar como material de lectura.
 
-### b) El factor de mentira (8') — slides 125–138
+### b) El factor de mentira (8') - slides 125–138
 
 Definición de distorsión de Tufte (126):
 
@@ -85,18 +85,18 @@ El *dilema de percepción* (127–129) es el puente hacia la práctica: no podem
 visualización por lector. Lo mejor que podemos hacer es **generar uniformidad** en nuestros
 gráficos. Eso es exactamente lo que hace `style/fundar_monitor_theme.R` en este proyecto.
 
-### c) Variación en los datos, no en el diseño (7') — slides 143–152
+### c) Variación en los datos, no en el diseño (7') - slides 143–152
 
 Cuando el gráfico cambia de escala, de unidades o de dimensiones a lo largo de sí mismo, el lector
 lee variación que no está en los datos. La regla:
 
 > **Debemos visualizar la variación en los datos, no en el diseño.**
 
-Sumar de acá: **dimensionalidad** (160–162) — *la dimensión de los datos no puede ser superada por
-la dimensión del gráfico*, que es la razón de fondo por la que no se usa 3D — y **contexto**
-(163–167) — *los gráficos no deben sacar los datos de contexto*.
+Sumar de acá: **dimensionalidad** (160–162) - *la dimensión de los datos no puede ser superada por
+la dimensión del gráfico*, que es la razón de fondo por la que no se usa 3D - y **contexto**
+(163–167) - *los gráficos no deben sacar los datos de contexto*.
 
-### d) Nominal vs. real (5') — slides 153–159
+### d) Nominal vs. real (5') - slides 153–159
 
 Playfair, deuda nacional. La regla:
 
@@ -125,8 +125,8 @@ la clase 3.
 **2. Nuestros ejes X tienen 72 marcas de texto.**
 
 Abrir `outputs/plots/04_desoc.png`. Los CSV de EPH tienen **72 trimestres**, `fecha` es un string, y
-los scripts los dibujan como categorías rotadas 45°. Es *visual cluttering* de manual —el informe de
-Argendata recomienda 6 a 8 marcas por eje— y lo tenemos en casi todos los gráficos de la serie EPH.
+los scripts los dibujan como categorías rotadas 45°. Es *visual cluttering* de manual (el informe de
+Argendata recomienda 6 a 8 marcas por eje) y lo tenemos en casi todos los gráficos de la serie EPH.
 Se arregla con dos líneas (`lubridate::yq()` + `scale_x_date()`), como se vio en el bloque EXTRA del
 ejercicio 1 de la clase 1.
 
@@ -151,7 +151,7 @@ tenés?**, **¿qué operación estás haciendo sobre ellos?**
 
 ### La taxonomía (slide de referencia, la más útil de la clase)
 
-Reproducir como tabla —conviene que quede también impresa, está en
+Reproducir como tabla - conviene que quede también impresa, está en
 [`checklist_visualizacion.md`](../materiales/checklist_visualizacion.md):
 
 | Operación | Corte transversal | Serie de tiempo |
@@ -160,26 +160,26 @@ Reproducir como tabla —conviene que quede también impresa, está en
 | Rankear unidades | barras horizontales ordenadas | slope (2 momentos) · bump (muchos) |
 | Mostrar brechas | Cleveland dot plot | líneas con brecha implícita |
 | Correlacionar | scatter | líneas facetadas (**nunca doble eje**) |
-| Cambios en el tiempo | — | ≤5: slope · 5–50: línea · >50: área · muchas categorías: spaghetti |
+| Cambios en el tiempo | - | ≤5: slope · 5–50: línea · >50: área · muchas categorías: spaghetti |
 
 ### Las herramientas, una por una (una slide cada una, con ejemplo)
 
-- **Small multiples / facetado** — la respuesta por defecto al *cluttering*. Mismos ejes y escalas,
+- **Small multiples / facetado** - la respuesta por defecto al *cluttering*. Mismos ejes y escalas,
   un panel por categoría. Ya lo usamos en `03b` y `05`.
-- **Cleveland dot plot** — alternativa a las barras cuando hay muchas categorías: ocupa menos
+- **Cleveland dot plot** - alternativa a las barras cuando hay muchas categorías: ocupa menos
   espacio y permite comparación precisa (posición sobre escala común, el mejor canal). Sirve además
   para mostrar **brechas** entre dos series en paralelo.
-- **Brecha implícita** — dos líneas y el área entre ellas. Mejor que graficar la brecha calculada:
+- **Brecha implícita** - dos líneas y el área entre ellas. Mejor que graficar la brecha calculada:
   se ve de forma preatentiva, sin sumar un elemento al gráfico. Ejemplo del informe: informalidad
   por género, donde el área se achica sola a lo largo del tiempo.
-- **Slope chart** — comparar muchas categorías entre dos momentos. Usa el mejor canal (posición
+- **Slope chart** - comparar muchas categorías entre dos momentos. Usa el mejor canal (posición
   sobre escala común), por eso captura variaciones chicas mejor que un waffle.
-- **Spaghetti plot** — muchas categorías, 8 a 100 instancias temporales, una destacada y el resto en
+- **Spaghetti plot** - muchas categorías, 8 a 100 instancias temporales, una destacada y el resto en
   gris de contexto.
-- **Bump chart** — evolución de *rankings*, no de niveles.
-- **Waffle chart** — parte de un todo. Mejor que la torta: los estudios perceptuales muestran
+- **Bump chart** - evolución de *rankings*, no de niveles.
+- **Waffle chart** - parte de un todo. Mejor que la torta: los estudios perceptuales muestran
   errores significativamente menores (la torta codifica en ángulo, que es de los peores canales).
-- **Barras horizontales ordenadas** — ranking, una variable, un momento. Ordenar por la variable, no
+- **Barras horizontales ordenadas** - ranking, una variable, un momento. Ordenar por la variable, no
   alfabéticamente.
 
 Dos advertencias del informe que conviene destacar:

@@ -1,4 +1,4 @@
-# Clase 3 — Del microdato al producto: pipeline, actualización y narrativa
+# Clase 3 - Del microdato al producto: pipeline, actualización y narrativa
 
 **Duración:** 120 minutos · **Teoría y demo:** 55' · **Práctica integradora:** 50' · **Cierre:** 10'
 
@@ -97,7 +97,7 @@ Están todas documentadas en el README y en los comentarios del código, y las t
    `NA`".
 
 2. **El orden de `as.character()` en `limpiar_base_eph()`.** Primero se castean a texto las columnas
-   categóricas —sobre un objeto `labelled`, `as.character()` devuelve la **etiqueta** (`"Casa"`)— y
+   categóricas (sobre un objeto `labelled`, `as.character()` devuelve la **etiqueta** (`"Casa"`)) y
    **recién después** se pela la clase `labelled` del resto. Al revés, `as.character()` devuelve el
    **código** (`"2"`), y todas las comparaciones de texto (`case_when`, `%in%`, `==`) dejan de
    matchear **en silencio, sin error ni warning**. Es el bug más difícil de detectar del pipeline:
@@ -239,7 +239,7 @@ Es un recorrido completo del circuito, en cinco pasos:
 
 **Variante avanzada**, para quien tenga los microdatos descargados: calcular la tasa directamente
 desde el canónico en `02_indicadores_eph_individuo.R` (las variables `pea` y `PONDERA` ya están) y
-**contrastar los dos resultados**. Tienen que dar igual — y si no dan igual, encontrar por qué es el
+**contrastar los dos resultados**. Tienen que dar igual - y si no dan igual, encontrar por qué es el
 mejor ejercicio de todo el taller.
 
 **Cómo conducirla.** Los pasos 1 y 4 tienen scripts con `TODO`. El paso 5 es el momento *wow*: ver el

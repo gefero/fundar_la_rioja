@@ -1,11 +1,11 @@
-# Taller de visualización de datos — Gobierno de La Rioja
+# Taller de visualización de datos - Gobierno de La Rioja
 
 Materiales para las **3 clases de 2 horas** del Componente 3 (Etapa 3: *diseño de materiales para
 talleres de visualización de datos*).
 
 > **Publicado:** estos materiales también están en
 > **[gefero.github.io/fundar_la_rioja/clases/](https://gefero.github.io/fundar_la_rioja/clases/)**
-> — la práctica renderizada, `.Rmd`/`.R` como descarga, un `.zip` por clase (sin `guion.md`: es
+> - la práctica renderizada, `.Rmd`/`.R` como descarga, un `.zip` por clase (sin `guion.md`: es
 > material interno para quien dicta, no se publica). Se regenera solo con cada push a `main` que
 > toque `clases/**` (ver [`.github/workflows/dashboard.yml`](../.github/workflows/dashboard.yml)).
 
@@ -13,9 +13,9 @@ talleres de visualización de datos*).
 
 El taller tiene un público mixto y está diseñado alrededor de esa mezcla:
 
-- **Perfil mantenimiento** — quienes van a mantener este repositorio y actualizar los datos
+- **Perfil mantenimiento** - quienes van a mantener este repositorio y actualizar los datos
   cuando salga una onda nueva de la EPH o un reporte nuevo del SIPA.
-- **Perfil comunicación** — quienes van a tomar estos indicadores y armar los productos de
+- **Perfil comunicación** - quienes van a tomar estos indicadores y armar los productos de
   difusión: informes, presentaciones, placas, el dashboard.
 
 Los dos perfiles se necesitan, y el taller lo hace explícito con una idea que atraviesa las tres
@@ -69,18 +69,18 @@ navegar toda la clase en un solo documento con la consigna al lado de cada chunk
 
 En [`materiales/`](materiales/):
 
-- **[`checklist_visualizacion.md`](materiales/checklist_visualizacion.md)** — una página con el
+- **[`checklist_visualizacion.md`](materiales/checklist_visualizacion.md)** - una página con el
   checklist completo: qué preguntarse antes de graficar, al graficar y al publicar. Pensado para
   tener al lado mientras se arma un producto de comunicación.
-- **[`cheatsheet_repo.md`](materiales/cheatsheet_repo.md)** — una página con el mapa del repositorio
+- **[`cheatsheet_repo.md`](materiales/cheatsheet_repo.md)** - una página con el mapa del repositorio
   y los comandos de las tareas frecuentes de mantenimiento.
-- **[`Informe_final_argendata.pdf`](materiales/Informe_final_argendata.pdf)** — *Evaluación, análisis
+- **[`Informe_final_argendata.pdf`](materiales/Informe_final_argendata.pdf)** - *Evaluación, análisis
   y propuesta de mejoras del sistema de visualizaciones de Argendata* (Rosati, 2024). Es la fuente
   del catálogo de herramientas gráficas de la clase 2.
-- **[`paleta_regional_swatch.R`](materiales/paleta_regional_swatch.R)** — genera un swatch de los
+- **[`paleta_regional_swatch.R`](materiales/paleta_regional_swatch.R)** - genera un swatch de los
   3 colores regionales, leyendo `FUNDAR_MULTI` desde `style/fundar_monitor_theme.R` (no repite los
   hex), en `outputs/plots/paleta_regional_la_rioja.png`.
-- **`../Copia de Pract_Clase_1_introducción.pdf`** — el deck de 169 diapositivas del que salen los
+- **`../Copia de Pract_Clase_1_introducción.pdf`** - el deck de 169 diapositivas del que salen los
   bloques teóricos de las clases 1 y 2. Los guiones indican qué diapositivas usa cada bloque.
 
 ## Bibliografía

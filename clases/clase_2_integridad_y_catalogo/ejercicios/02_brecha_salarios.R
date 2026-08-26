@@ -1,5 +1,5 @@
 # =============================================================================
-# CLASE 2 — EJERCICIO 2: la brecha implícita
+# CLASE 2 - EJERCICIO 2: la brecha implícita
 # -----------------------------------------------------------------------------
 # PREGUNTA: ¿se agrandó o se achicó la brecha salarial entre el sector público
 #           y el privado en La Rioja?
@@ -85,7 +85,7 @@ df_lr %>%
   scale_x_date(date_labels = "%Y", date_breaks = "2 years") +
   theme_monitor() +
   labs(
-    title    = "TODO: escribilo vos — ¿qué le pasó a la brecha?",
+    title    = "TODO: escribilo vos - ¿qué le pasó a la brecha?",
     subtitle = "Salario promedio de asalariados registrados. Aglomerado La Rioja, pesos corrientes.",
     x        = NULL,
     y        = "Pesos corrientes",

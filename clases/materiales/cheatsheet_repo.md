@@ -1,4 +1,4 @@
-# Cheatsheet — mantenimiento del repositorio
+# Cheatsheet - mantenimiento del repositorio
 
 Referencia de una página para el equipo que mantiene el pipeline. Detalle completo en el
 [README](../../README.md).

@@ -6,7 +6,7 @@ comunicación. Fuentes: Tufte (1983, 1997), Munzner (2014), Healy (2019) y el
 
 ---
 
-## 1. Antes de graficar — ¿qué gráfico?
+## 1. Antes de graficar - ¿qué gráfico?
 
 **Primero la pregunta, después el gráfico.** No al revés. Definí en una frase qué querés que el
 lector se lleve, y recién ahí elegí la herramienta.
@@ -17,7 +17,7 @@ lector se lleve, y recién ahí elegí la herramienta.
 | **Rankear unidades** | barras horizontales ordenadas | slope chart (2 momentos) · bump chart (muchos momentos) |
 | **Mostrar brechas** | Cleveland dot plot | líneas con la brecha implícita (área entre las dos líneas) |
 | **Correlacionar variables** | scatter plot | líneas facetadas (una por variable), nunca doble eje |
-| **Cambios en el tiempo** | — | ≤5 momentos: slope · 5–50: líneas · >50: área · muchas categorías: spaghetti |
+| **Cambios en el tiempo** | - | ≤5 momentos: slope · 5–50: líneas · >50: área · muchas categorías: spaghetti |
 | **Distribuciones** | boxplot · densidad | líneas con banda de variabilidad (ribbon) |
 
 Además:
@@ -31,7 +31,7 @@ Además:
 
 ---
 
-## 2. Al graficar — integridad y legibilidad
+## 2. Al graficar - integridad y legibilidad
 
 **Ejes**
 
@@ -76,7 +76,7 @@ Además:
 
 ---
 
-## 3. Al publicar — narrativa
+## 3. Al publicar - narrativa
 
 - [ ] **El título afirma el hallazgo**, no nombra la variable.
       *"Tasa de desocupación"* → **"La desocupación en La Rioja se ubica por debajo del NOA desde

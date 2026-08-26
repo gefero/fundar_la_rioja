@@ -1,10 +1,10 @@
-# Clase 1 — Gramática de gráficos y percepción
+# Clase 1 - Gramática de gráficos y percepción
 
 **Duración:** 120 minutos · **Teoría:** 65' · **Práctica:** 45' · **Cierre:** 10'
 
 **Material de slides:** `clases/Copia de Pract_Clase_1_introducción.pdf`, **diapositivas 1 a 57**
-(el bloque "Algunas nociones conceptuales"). El segundo bloque del deck —"Integridad visual",
-diapositivas 58 a 169— **no se da en esta clase**: abre la clase 2.
+(el bloque "Algunas nociones conceptuales"). El segundo bloque del deck ("Integridad visual",
+diapositivas 58 a 169) **no se da en esta clase**: abre la clase 2.
 
 **Objetivo de la clase:** que al terminar, cualquiera de los dos perfiles pueda mirar un gráfico del
 monitor y descomponerlo en *qué dato está mapeado a qué propiedad visual*, y decir si ese mapeo es
@@ -44,16 +44,16 @@ Presentar el taller entero antes de entrar en materia:
 
 Arrancar por la pregunta del deck: **¿qué es un gráfico?** Y la reformulación que la hace
 productiva: ¿cómo lo describimos sucintamente, de forma que podamos *generarlo*? De ahí la idea de
-Wilkinson de una **gramática**: "los principios fundamentales de un arte o una ciencia" — un
+Wilkinson de una **gramática**: "los principios fundamentales de un arte o una ciencia" - un
 conjunto chico de reglas que combinadas generan todos los gráficos posibles, igual que la gramática
 de una lengua genera todas las oraciones posibles.
 
 Las piezas, en el orden en que las presenta el deck:
 
-1. **Datos** — una tabla: filas (observaciones) y columnas (variables).
-2. **Mapeo estético** — cada variable se asigna a una propiedad visual: A → x, C → y, D → forma.
-3. **Objetos geométricos** — puntos, barras, líneas, superficies.
-4. **Escalas** — la traducción de los valores de los datos a coordenadas y colores que la máquina
+1. **Datos** - una tabla: filas (observaciones) y columnas (variables).
+2. **Mapeo estético** - cada variable se asigna a una propiedad visual: A → x, C → y, D → forma.
+3. **Objetos geométricos** - puntos, barras, líneas, superficies.
+4. **Escalas** - la traducción de los valores de los datos a coordenadas y colores que la máquina
    puede dibujar. Las slides 8–11 muestran la secuencia: datos → escalado → espacio estético →
    objetos producidos → plot final.
 
@@ -65,7 +65,7 @@ como está: es corto y hace el punto.
 
 ### El anclaje en el repo (lo importante de este bloque)
 
-Acá el taller deja de ser abstracto. Abrir **`src/04_desoc.R`** —tiene 23 líneas— y leerlo en voz
+Acá el taller deja de ser abstracto. Abrir **`src/04_desoc.R`** (tiene 23 líneas) y leerlo en voz
 alta como si fuera la gramática hecha código:
 
 ```r
@@ -132,8 +132,8 @@ porque escalan en complejidad:
 | `03b_salarios_registrados_EPH.png` | línea + punto + texto | pos. x, pos. y, matiz = sector, **región espacial** = facet | 4 |
 | `13a_nbi_hogares.png` | línea | pos. x, pos. y, matiz = región | 3 |
 
-El caso interesante es el segundo: **el facetado es un canal**. La "región espacial" —en qué panel
-cae la marca— codifica la zona, y eso libera el matiz para codificar el sector. Es la misma cantidad
+El caso interesante es el segundo: **el facetado es un canal**. La "región espacial" (en qué panel
+cae la marca) codifica la zona, y eso libera el matiz para codificar el sector. Es la misma cantidad
 de información que si hubiéramos puesto seis líneas de colores en un solo panel, pero mucho más
 legible. Es la primera aparición de los *small multiples*, que vuelven en la clase 2.
 
@@ -148,14 +148,14 @@ legible. Es la primera aparición de los *small multiples*, que vuelven en la cl
 El punto central de la clase: **no todos los canales transmiten igual de bien al sistema perceptivo
 humano.** Hay cuatro criterios (slide 33):
 
-1. **Precisión / efectividad** — ¿qué tan bien vemos la diferencia entre dos valores?
-2. **Discriminabilidad** — ¿cuántos niveles distintos podemos separar en ese canal?
-3. **Separabilidad** — ¿los canales interfieren entre sí?
-4. **Saliencia (pop-out)** — ¿hay algo que salte a la vista sin buscarlo?
+1. **Precisión / efectividad** - ¿qué tan bien vemos la diferencia entre dos valores?
+2. **Discriminabilidad** - ¿cuántos niveles distintos podemos separar en ese canal?
+3. **Separabilidad** - ¿los canales interfieren entre sí?
+4. **Saliencia (pop-out)** - ¿hay algo que salte a la vista sin buscarlo?
 
 **Precisión (slides 34–36).** Somos buenos comparando posiciones sobre una escala común; peores
 sobre escalas no alineadas; mucho peores con ángulos (adiós gráficos de torta); pésimos con áreas
-—de hecho **sobreestimamos** las diferencias de área—. Y nos cuesta mucho evaluar cambios de
+(de hecho **sobreestimamos** las diferencias de área). Y nos cuesta mucho evaluar cambios de
 pendiente, que además dependen del *aspect ratio* del gráfico.
 
 **Separabilidad (slides 37–38).** El cuadro de la slide 37 es el que hay que dejar grabado:
@@ -174,7 +174,7 @@ relativas, no absolutas**. La percepción de la luminancia depende del entorno; 
 que vemos. De ahí la conclusión práctica: **el mismo color puede leerse distinto según lo que tenga
 al lado.**
 
-**Paletas (slides 51–55).** Presentación breve —el desarrollo completo es la clase 2—: hay paletas
+**Paletas (slides 51–55).** Presentación breve (el desarrollo completo es la clase 2): hay paletas
 para variables cualitativas, secuenciales y divergentes, y elegir mal la familia es un error
 conceptual, no estético.
 
@@ -216,7 +216,7 @@ institucionales, mismo fondo, misma tipografía), y la paleta de 5 tonos se acot
 regionales con el criterio de saliencia recién explicado. Existe un tema anterior,
 `style/fundar_larioja_theme.R`, que fue el primer diseño antes de esa decisión de alinear el
 monitor con la identidad del Monitor de Empresas; quedó en el repo como referencia histórica, no
-se usa en `src/`. El desarrollo completo de esta historia —con el código anotado— está ahora en
+se usa en `src/`. El desarrollo completo de esta historia (con el código anotado) está ahora en
 `practica.Rmd`, sección "Cómo se generó el tema de La Rioja" (después del paso 6 del ejercicio 1);
 vale la pena abrirla en pantalla si sobra tiempo antes de la práctica.
 
@@ -269,5 +269,5 @@ pregunta responde mejor cada una**. Sin ganador único: el punto es que la pregu
 gráfico.
 
 **Anticipo de la clase 2:** hasta acá vimos si un gráfico *se entiende*. La próxima vemos si además
-*dice la verdad* —el caso Challenger, el factor de mentira— y cómo elegir la herramienta correcta a
+*dice la verdad* (el caso Challenger, el factor de mentira) y cómo elegir la herramienta correcta a
 partir del catálogo de Argendata.
