@@ -142,9 +142,10 @@ footer.site-footer a { color: var(--ink-muted); }
 /* rmarkdown emite su propio bloque de título (div#header: título, subtítulo,
    fecha) arriba del cuerpo; lo ocultamos porque esa función ya la cumple el
    banner (before_body). Los selectores de elemento quedan de respaldo por si
-   una versión de rmarkdown no envuelve el bloque en #header. */
+   una versión de rmarkdown no envuelve el bloque en #header (esta variante
+   emite h1.title, h3.subtitle y h4.date sueltos, sin envolver en #header). */
 #header,
-h1.title, h4.subtitle, h4.date { display: none; }
+h1.title, h3.subtitle, h4.subtitle, h4.date { display: none; }
 
 #TOC {
   background: var(--panel);
