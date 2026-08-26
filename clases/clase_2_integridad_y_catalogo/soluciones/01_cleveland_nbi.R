@@ -1,15 +1,10 @@
 # =============================================================================
 # CLASE 2 — EJERCICIO 1: SOLUCIÓN
 # -----------------------------------------------------------------------------
-# Versión actualizada: en vez de comparar las 6 sub-dimensiones del NBI en un
-# único corte transversal, comparamos el NBI AGREGADO (total, todas las
+# Comparamos el NBI AGREGADO (total, todas las
 # privaciones juntas) en dos momentos del tiempo — el primer y el último año
 # completo disponibles en la EPH — para las 3 regiones.
 #
-# No se puede hacer por PROVINCIA: la EPH no tiene cobertura representativa a
-# nivel provincial (es una encuesta por aglomerados urbanos), por eso el
-# pipeline solo agrega a 3 regiones. Un NBI por provincia requeriría datos de
-# Censo, que hoy no están en este repo.
 # =============================================================================
 
 library(tidyverse)
@@ -46,7 +41,7 @@ df_ancho
 
 
 # ---- Paso 3: fijar el orden del eje Y UNA sola vez ---------------------------
-# ⚠️ Ojo con este error común: si llamamos fct_reorder() por separado en cada
+# Si llamamos fct_reorder() por separado en cada
 # capa (una vez con los datos de ANIO_INI, otra con los de ANIO_FIN), cada
 # llamada puede devolver un orden distinto —2007 y 2025 no rankean igual las
 # regiones— y el eje queda inconsistente entre capas. Por eso fijamos el
