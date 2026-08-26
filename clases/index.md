@@ -43,6 +43,7 @@ jerarquía perceptual: por qué un gráfico se entiende o no.
 Tufte y el caso Challenger, factor de mentira, el catálogo de herramientas gráficas de Argendata y
 cómo elegir la correcta según la pregunta que se busca responder.
 
+- [Diapositivas - teórica](./clase_2_integridad_y_catalogo/Clase_2_Integridad_visual.pdf)
 - [Práctica - consigna](./clase_2_integridad_y_catalogo/practica.html)
 - [Práctica - notebook (.Rmd)](./clase_2_integridad_y_catalogo/practica.Rmd)
 - Soluciones:
