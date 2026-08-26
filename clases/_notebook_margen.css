@@ -1,0 +1,9 @@
+/* Más aire a los costados del notebook para practica.Rmd de las clases 2 y 3,
+   que usan el tema "flatly" de bootswatch tal cual (sin el _site_style.css
+   del resto del sitio: ese hides el bloque de título que acá no se reemplaza
+   por un banner propio). Solo ensancha el padding lateral del contenedor por
+   defecto de rmarkdown/Bootstrap (15px, demasiado ajustado). */
+.main-container {
+  padding-left: 48px;
+  padding-right: 48px;
+}

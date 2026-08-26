@@ -68,6 +68,10 @@ jobs:
           # absoluta y también la usa practica.Rmd de la clase 1 vía css: en
           # su YAML de salida).
           cp clases/_site_style.css "$OUT/"
+          # CSS de margen para los notebooks de las clases 2 y 3 (tema
+          # "flatly" sin el _site_style.css), referenciado por su practica.Rmd
+          # vía css: en su YAML de salida.
+          cp clases/_notebook_margen.css "$OUT/"
 
           render_md () {
             # render_md <origen.md> <destino.html> <título> [subtítulo]
