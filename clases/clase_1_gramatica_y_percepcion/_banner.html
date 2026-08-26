@@ -16,3 +16,10 @@
     <p class="subtitle">Taller de visualización de datos - Monitor La Rioja (Fundar)</p>
   </div>
 </header>
+
+<!-- rmarkdown con theme: null no envuelve el cuerpo en ningún contenedor
+     (a diferencia de Bootstrap, que usa .container-fluid.main-container):
+     sin este div, el bloque de título/TOC/cuerpo queda pegado a los bordes
+     de la ventana, sin el margen lateral de _site_style.css. Se cierra en
+     _footer.html, antes de <footer>. -->
+<div class="main-container">
