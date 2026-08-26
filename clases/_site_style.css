@@ -28,7 +28,7 @@ a:hover { text-decoration: none; }
 
 .site-nav {
   background: var(--ink);
-  padding: 10px 24px;
+  padding: 10px 32px;
   font-size: 0.82rem;
 }
 .site-nav a {
@@ -42,9 +42,9 @@ a:hover { text-decoration: none; }
 header.banner {
   background: linear-gradient(120deg, var(--banner-a), var(--banner-b));
   color: #FFFFFF;
-  padding: 48px 24px 40px;
+  padding: 48px 48px 40px;
 }
-header.banner .inner { max-width: 760px; margin: 0 auto; }
+header.banner .inner { max-width: 800px; margin: 0 auto; }
 .eyebrow {
   font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
   font-size: 0.72rem;
@@ -69,9 +69,9 @@ header.banner .subtitle {
    alrededor del cuerpo del notebook; no hay <main> ahí, a diferencia de las
    páginas .md que sí lo envuelven así vía _pandoc_template.html. */
 main, .main-container {
-  max-width: 760px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 36px 24px 64px;
+  padding: 36px 48px 64px;
 }
 
 main h2, .main-container h2 {
@@ -126,9 +126,9 @@ th { color: var(--ink-muted); font-weight: 600; }
 hr { border: none; border-top: 1px solid var(--rule); margin: 2.4em 0; }
 
 footer.site-footer {
-  max-width: 760px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 0 24px 48px;
+  padding: 0 48px 48px;
   color: var(--ink-muted);
   font-size: 0.8rem;
 }
@@ -159,7 +159,7 @@ h1.title, h4.subtitle, h4.date { display: none; }
 #TOC a:hover { color: var(--accent); }
 
 /* Salida de los chunks (gráficos): el ancho por defecto de knitr (10in) es
-   mayor que el cuerpo de 760px del sitio. */
+   mayor que el cuerpo de 800px del sitio. */
 img { max-width: 100%; height: auto; }
 
 /* Código (pre.r) vs. salida de consola (el resto de los <pre>) generados
