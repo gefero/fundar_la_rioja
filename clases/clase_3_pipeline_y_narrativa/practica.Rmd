@@ -1,5 +1,5 @@
 ---
-title: "Clase 3 - Práctica: Del microdato al producto"
+title: "Clase 3 - Práctica: un gráfico desde cero y de dónde salen los datos"
 subtitle: "Taller de visualización de datos - Monitor La Rioja (Fundar)"
 date: "`r format(Sys.Date(), '%d de %B de %Y')`"
 output:
@@ -15,342 +15,205 @@ output:
 knitr::opts_chunk$set(eval = FALSE, warning = FALSE, message = FALSE)
 ```
 
-> **Cómo usar este notebook.** `eval = FALSE` a propósito: hay chunks con `______` que no son R
-> válido. Corré cada chunk interactivamente con **Ctrl+Enter** (Cmd+Enter en Mac), en orden. Las
-> rutas de este notebook llevan `../../` adelante porque R Markdown usa la carpeta del propio
-> `.Rmd` como directorio de trabajo, a diferencia de los scripts finales en `src/`, que se corren
-> con la raíz del repo como working directory (vía `fundar_larioja.Rproj`) y por lo tanto **no**
-> llevan ese prefijo. Cuando copies el código resuelto a `src/`, sacale el `../../`.
+> **Cómo usar este notebook.** `eval = FALSE` a propósito: la mayoría de los chunks son plantillas
+> comentadas (empiezan con `#`) para que las descomentes y completes vos - no hay "`______`" en
+> código ejecutable, lo que falta lo escribís entero. Corré cada chunk interactivamente con
+> **Ctrl+Enter** (Cmd+Enter en Mac), en orden. Las rutas de este notebook llevan `../../` adelante
+> porque R Markdown usa la carpeta del propio `.Rmd` como directorio de trabajo, a diferencia de
+> los scripts finales en `src/`, que se corren con la raíz del repo como working directory (vía
+> `fundar_larioja.Rproj`) y por lo tanto **no** llevan ese prefijo.
 >
-> **En parejas de perfiles mezclados.** Si te trabás, la solución completa está en `soluciones/`.
+> **En parejas de perfiles mezclados.** Si te trabás, las soluciones completas están en
+> `soluciones/`.
 
-```{r libs}
+```{r libs, eval=TRUE}
 library(tidyverse)
-```
-
----
-
-# El ejercicio: agregar un indicador nuevo al monitor
-
-Vamos a recorrer el circuito completo, de punta a punta, con un indicador que **hoy no existe en
-el proyecto**: la **tasa de actividad** (población económicamente activa sobre población total).
-
-Es una buena elección por dos razones. Primero, porque completa el trío clásico del mercado de
-trabajo: hoy el monitor tiene tasa de empleo y tasa de desocupación, pero no la de actividad, que
-es la que dice **cuánta gente se ofrece al mercado**. Y segundo, porque se puede derivar de dos
-CSV que **ya están versionados**, sin descargar un solo microdato:
-
-- `data/inputs_md/04_tasa_desoc.csv` tiene la columna **`pea`** (población económicamente activa,
-  ponderada).
-- `data/inputs_md/10_tasa_empleo.csv` tiene la columna **`pob_tot`** (población total, ponderada).
-
-```
-tasa_actividad = pea / pob_tot × 100
-```
-
----
-
-# Paso 1 - El cálculo *(perfil mantenimiento, 10')*
-
-**Destino final:** `src/06_prep_tasa_actividad.R`
-
-Hacé el `left_join()` de los dos CSV por `fecha` y `la_rioja_region`, calculá la tasa y escribí
-`data/inputs_md/06_tasa_actividad.csv`.
-
-> **Por qué `06_prep_`:** el repositorio ya usa esa convención para los scripts que preparan un
-> CSV a partir de otra fuente (ver `03_prep_salarios_privados_SIPA.R` y
-> `05_prep_puestos_asalariados_privados.R`). El número 06 estaba libre.
-
-## Los dos insumos
-
-```{r p1-insumos, eval=TRUE}
-desoc  <- read_csv("../../data/inputs_md/04_tasa_desoc.csv",  show_col_types = FALSE)
-empleo <- read_csv("../../data/inputs_md/10_tasa_empleo.csv", show_col_types = FALSE)
-
-glimpse(desoc)    # fecha, la_rioja_region, desoc, pea, tasa_desoc
-glimpse(empleo)   # fecha, la_rioja_region, ocupado, pob_tot, tasa_empleo
-```
-
-## El join y el cálculo
-
-**TODO 1:** ¿por qué columnas hay que unir las dos tablas? Pensalo: ¿qué identifica de forma única
-una fila en cada una?
-
-**TODO 2:** completá el cálculo de la tasa.
-
-```{r p1-join}
-tasa_actividad <- desoc %>%
-  select(fecha, la_rioja_region, desoc, pea) %>%
-  left_join(
-    empleo %>% select(fecha, la_rioja_region, ocupado, pob_tot),
-    by = c(______, ______)                        # <-- TODO 1
-  ) %>%
-  mutate(tasa_actividad = ______ / ______ * 100)  # <-- TODO 2
-```
-
----
-
-# Paso 2 - Verificar *(los dos, 5')*
-
-Antes de graficar nada. Tres chequeos, en este orden.
-
-**Pregunta:** ¿por qué la tasa de actividad **no** es igual a `tasa_empleo + tasa_desoc`? Las dos
-son porcentajes, pero no del mismo denominador. ¿Cuál es cuál?
-
-## 1. ¿Cuántas filas quedaron?
-
-Tienen que ser **216** = 72 trimestres × 3 regiones. Si son menos, el join perdió filas; si son
-más, duplicó.
-
-```{r p2-filas}
-nrow(tasa_actividad)
-```
-
-## 2. ¿Hay `NA`?
-
-No tiene que haber ninguno.
-
-```{r p2-na}
-tasa_actividad %>% filter(if_any(everything(), is.na))
-```
-
-## 3. La verificación conceptual (la importante)
-
-```
-tasa_actividad ≈ tasa_empleo + (desocupados / pob_tot × 100)
-```
-
-Porque la PEA son los ocupados más los desocupados. Si esta identidad no se cumple, algo está mal
-en el join.
-
-```{r p2-conceptual}
-tasa_actividad %>%
-  mutate(
-    control = ocupado / pob_tot * 100 + desoc / pob_tot * 100,
-    dif     = abs(tasa_actividad - control)
-  ) %>%
-  summarise(dif_maxima = max(dif))
-# → tiene que dar prácticamente 0 (algo como 1e-14, que es error de redondeo
-#   de punto flotante, no un problema del cálculo).
-```
-
-## Escribir el CSV
-
-Guardamos también las columnas de base (`pea`, `pob_tot`), igual que hacen los otros indicadores:
-permiten auditar el cálculo y recalcular sin rehacer todo.
-
-```{r p2-write}
-tasa_actividad %>%
-  select(fecha, la_rioja_region, pea, pob_tot, tasa_actividad) %>%
-  arrange(fecha, la_rioja_region) %>%
-  write_csv("../../data/inputs_md/06_tasa_actividad.csv")
-```
-
-**Más preguntas para este paso:**
-
-- Usamos `left_join()`. ¿Qué habría pasado con un `inner_join()`? ¿Y si uno de los dos CSV tuviera
-  un trimestre que el otro no tiene?
-- Este script deriva un indicador de OTROS INDICADORES, no de los microdatos. ¿Qué riesgo tiene
-  eso? (Pista: ¿qué pasa si alguien cambia el filtro de años de uno solo de los dos CSV de
-  origen?)
-
----
-
-# Paso 3 - La narrativa *(perfil comunicación, 10')*
-
-Antes de que se escriba el `labs()`, mirá los datos y decidí **qué historia cuenta este
-indicador**.
-
-Abrí el CSV que acaban de generar (`../../data/inputs_md/06_tasa_actividad.csv`) y mirá la serie
-de La Rioja: ¿sube, baja, se mantiene? ¿Cómo se compara con el NOA y con el resto del país? ¿Hay
-algún quiebre?
-
-```{r p3-explorar, eval=TRUE}
-read_csv("../../data/inputs_md/06_tasa_actividad.csv", show_col_types = FALSE) %>%
-  filter(la_rioja_region == "3. La Rioja") %>%
-  arrange(fecha) %>%
-  slice(c(1:2, n() - 1, n()))   # primeros y últimos puntos de la serie
-```
-
-Después escribí los tres campos, siguiendo la tabla de la clase (no es un chunk de código - es
-texto para decidir antes del Paso 4):
-
-- **Título** - el hallazgo afirmado, una oración que se lea sola. **No** "Tasa de actividad".
-- **Subtítulo** - unidad, universo, período.
-- **Caption** - la fuente completa y las advertencias metodológicas que correspondan.
-
-**Preguntas para decidir el caption:**
-
-- ¿Hay que advertir sobre el quiebre de 2015/2016? ¿Aplica a este indicador o solo a los de
-  ingresos? (Pista: ¿este cálculo usa `PONDIIO`?)
-- ¿Hay que advertir algo sobre el tamaño de muestra de La Rioja?
-- La serie tiene un hueco entre 2015-T3 y 2016-T1. ¿Se ve en el gráfico? ¿Debería?
-
----
-
-# Paso 4 - El gráfico *(perfil mantenimiento, 10')*
-
-**Destino final:** `src/06_tasa_actividad.R`
-
-Seguí el patrón de `src/04_desoc.R`, y aplicá lo que aprendimos:
-
-- La paleta y el tema del proyecto.
-- **El eje X con fechas reales**, no las 72 etiquetas de texto (clase 2).
-- El eje Y arrancando en cero.
-- Los textos que escribió tu compañero o compañera en el Paso 3.
-
-```{r p4-libs}
 source("../../style/fundar_monitor_theme.R")
-
-df <- read_csv("../../data/inputs_md/06_tasa_actividad.csv", show_col_types = FALSE)
 ```
-
-## Preparación
-
-**TODO 1:** convertí `fecha` a Date. Hoy es texto (`"2007-Q1"`) y por eso los gráficos del repo
-tienen 72 etiquetas rotadas en el eje X (el caso de visual cluttering que vimos en la clase 2).
-Pista: `lubridate::yq()`.
-
-```{r p4-prep}
-df_plot <- df %>%
-  mutate(fecha = ______)                     # <-- TODO 1
-```
-
-## El gráfico
-
-**TODO 2:** completá el mapeo estético. Tres variables: tiempo, tasa y región.
-**TODO 3:** elegí los breaks del eje X para que sea legible.
-**TODO 4:** pegá acá los textos del Paso 3.
-
-```{r p4-plot}
-df_plot %>%
-  ggplot(aes(x = ______,                     # <-- TODO 2
-             y = ______,
-             group = la_rioja_region,
-             color = la_rioja_region)) +
-  geom_line(linewidth = 0.7) +
-  scale_color_fundar_multi(name = "Región") +
-  scale_x_date(date_labels = "%Y", date_breaks = "______") +   # <-- TODO 3
-  ylim(0, 55) +                              # el eje Y arranca en cero
-  theme_monitor() +
-  labs(
-    title    = "______",                     # <-- TODO 4: el hallazgo, afirmado
-    subtitle = "______",                     # <-- TODO 4: unidad, universo, período
-    x        = NULL,
-    y        = "Tasa de actividad (%)",
-    caption  = fuente_fundar("______")       # <-- TODO 4: fuente + advertencias
-  )
-
-# ggsave("../../outputs/plots/06_tasa_actividad.png", width = 12, height = 7)
-```
-
-## Extra - el gráfico que cuenta la historia completa
-
-Empleo, desocupación y actividad son tres caras del mismo fenómeno. Un gráfico facetado de las
-tres series para La Rioja cuenta una historia que ninguna de las tres cuenta sola: si la actividad
-sube y el empleo no la acompaña, la desocupación sube.
-
-Corré esto si te sobra tiempo.
-
-```{r p4-extra}
-bind_rows(
-  df     %>% transmute(fecha, la_rioja_region, serie = "Actividad",    valor = tasa_actividad),
-  empleo %>% transmute(fecha, la_rioja_region, serie = "Empleo",       valor = tasa_empleo),
-  desoc  %>% transmute(fecha, la_rioja_region, serie = "Desocupación", valor = tasa_desoc)
-) %>%
-  filter(la_rioja_region == "3. La Rioja") %>%
-  mutate(fecha = lubridate::yq(fecha),
-         serie = factor(serie, levels = c("Actividad", "Empleo", "Desocupación"))) %>%
-  ggplot(aes(x = fecha, y = valor)) +
-  geom_line(color = unname(FUNDAR_MULTI["serie_3"]), linewidth = 0.7) +
-  facet_wrap(~ serie, ncol = 1, scales = "free_y") +
-  scale_x_date(date_labels = "%Y", date_breaks = "2 years") +
-  theme_monitor() +
-  labs(title = "Actividad, empleo y desocupación en La Rioja",
-       x = NULL, y = "%",
-       caption = fuente_fundar("Fundar, con base en la EPH (INDEC)."))
-```
-
-**Pregunta:** acá usamos `scales = "free_y"`, que rompe la regla del eje en cero. Según el informe
-de Argendata, ¿está justificado en este caso? ¿Por qué?
 
 ---
 
-# Paso 5 - El dashboard *(los dos, 10')*
+# Bloque A - Un gráfico desde cero (45')
 
-Registrá el indicador en `INDICADORES`, en `dashboard/R/data.R`. Va con `shape = "A"` (serie
-trimestral regional, una fila por fecha-región), que es la forma que tiene tu CSV.
+Elegí un CSV del [catálogo de datos](../materiales/catalogo_datos.md) - **uno que no hayas usado
+en la Clase 1 ni en la Clase 2**. El archivo de trabajo equivalente fuera del notebook es
+`ejercicios/01_grafico_desde_cero.R`.
 
-**Esto no se corre en este notebook** - es una entrada de lista que se pega en
-`dashboard/R/data.R`, junto a las de `desocupacion` y `empleo`:
+## Paso 0 - La pregunta (5')
 
-```r
-  actividad = list(
-    id = "actividad", titulo = "Tasa de actividad",
-    topico = "Trabajo e ingresos", csv = "06_tasa_actividad.csv",
-    y_var = "tasa_actividad", y_lab = "PEA cada 100 hab. (%)",
-    eje_x = "Año", caption = "EPH-INDEC", ylim = c(0, 55), shape = "A",
-    desc = "Población económicamente activa (ocupados + desocupados) como % de la población total."
-  ),
+Elegí tu CSV y escribí, en una oración, qué querés contestar. Mala: "Graficar la tasa de
+desocupación." Buena: "¿La desocupación de La Rioja está por debajo del NOA desde 2021?"
+
+```{r p0-pregunta}
+# CSV elegido: data/inputs_md/____.csv
+# Pregunta:    ____
 ```
 
-Después, desde la raíz del repo (no desde este notebook):
+## Paso 1 - Mirar el dato (5')
 
-```r
-shiny::runApp("dashboard")
+```{r p1-mirar}
+# df <- read_csv("../../data/inputs_md/____.csv", show_col_types = FALSE)
+# glimpse(df)
 ```
 
-**No hay que tocar ni una línea de la app.** Si el registro está bien, el indicador aparece solo
-en el selector, con sus filtros de región y rango temporal, su descarga de PNG y CSV, y su versión
-plotly. También aparece en el sitio estático al renderizar `dashboard/index.qmd`.
+Contestá en comentario: ¿qué identifica una fila?, ¿qué período cubre `fecha`?, ¿hay `NA`?
+(`df %>% filter(if_any(everything(), is.na))`).
 
-**Si no aparece**, revisá en este orden: el nombre del CSV, el nombre de `y_var`, y que el
-`topico` sea uno de los tres de `TOPICOS`.
+## Paso 2 - Elegir la marca (5')
+
+Con la tabla de `checklist_visualizacion.md` §1:
+
+```{r p2-marca}
+# Operación elegida:    ____   (parte de un todo / ranking / brecha / correlación / cambio en el tiempo)
+# Marca elegida:         ____   (línea, barra, punto, área...)
+# Por qué esa y no otra: ____
+```
+
+## Paso 3 - El gráfico (15')
+
+Herramientas disponibles (`style/fundar_monitor_theme.R`): `theme_monitor()`,
+`theme_monitor_barras_h()`, `scale_color_fundar_multi()`, `scale_fill_fundar_multi()`,
+`fuente_fundar()`, `puntos_etiqueta()`.
+
+Si tu CSV trae `fecha` como texto tipo `"2007-Q1"` (los de EPH): convertila con
+`lubridate::yq()` para tener el eje X con fechas reales, no las 72 etiquetas rotadas (la trampa que
+vimos en la Clase 2). Si tu CSV es de SIPA (`03_`, `05_`, `07_`), `fecha` ya es `Date`.
+
+```{r p3-grafico}
+# df %>%
+#   ggplot(aes(x = ____, y = ____, color = ____)) +
+#   geom_____() +
+#   scale_color_fundar_multi() +
+#   theme_monitor()
+```
+
+## Paso 4 - Los tres campos de texto (10')
+
+Con `checklist_visualizacion.md` §3 al lado. La advertencia metodológica sale de tu fila en el
+catálogo, no se inventa.
+
+```{r p4-textos}
+# Título    (el hallazgo afirmado - no el nombre de la variable): ____
+# Subtítulo (unidad, universo, período):                          ____
+# Caption   (fuente + advertencia metodológica del catálogo):     ____
+```
+
+Agregá al gráfico del Paso 3:
+
+```{r p4-labs}
+#   labs(title = "____", subtitle = "____", caption = fuente_fundar("____"))
+```
+
+## Paso 5 - Guardar y auto-auditar (5')
+
+```{r p5-guardar}
+# ggsave("../../outputs/plots/clase3_<nombre_pareja>.png", width = 12, height = 7)
+```
+
+Antes de mostrarlo a la sala, repasá `checklist_visualizacion.md` §2: eje Y en cero (o el corte
+justificado y marcado), entre 6 y 8 marcas por eje, el color codificando lo que tiene que
+codificar. Si te trabás, `soluciones/01_ejemplos_resueltos.R` tiene tres ejemplos completos, sobre
+otros CSV y otras marcas.
 
 ---
 
-# Paso 6 - Publicar *(los dos, 5')*
+# Puesta en común (10')
 
-Desde la terminal, en la raíz del repo:
-
-```bash
-git checkout -b tasa-actividad
-git add src/06_prep_tasa_actividad.R src/06_tasa_actividad.R \
-        data/inputs_md/06_tasa_actividad.csv dashboard/R/data.R \
-        outputs/plots/06_tasa_actividad.png
-git commit -m "Agrego indicador de tasa de actividad"
-git push -u origin tasa-actividad
-```
-
-Y abrir el Pull Request en GitHub.
-
-**Pregunta:** el workflow `.github/workflows/dashboard.yml` se dispara con cambios en
-`data/inputs_md/`. ¿Se disparó con este push? ¿Por qué sí o por qué no?
+Proyectá tu PNG: qué pregunta elegiste, qué marca, y tu título. Se compara con el de las otras
+parejas - es el foco de esta puesta en común.
 
 ---
 
-# Variante avanzada *(solo si tenés los microdatos descargados)*
+# Pausa (5')
 
-Calculá la tasa de actividad **directamente desde el dataset canónico**, agregando el bloque a
-`src/02_indicadores_eph_individuo.R`. Las variables ya están: `pea` y `PONDERA`. Son seis líneas,
-copiando el patrón del bloque de tasa de empleo:
+---
 
-```r
-#### 06. Tasa de actividad
-df %>%
-  filter(ANO4 >= 2007) %>%
-  group_by(fecha, la_rioja_region) %>%
-  summarise(pea     = sum(pea * PONDERA),
-            pob_tot = sum(PONDERA),
-            .groups = "drop") %>%
-  mutate(tasa_actividad = pea / pob_tot * 100) %>%
-  write_csv('./data/inputs_md/06_tasa_actividad.csv')
+# Bloque B - De dónde salió esa columna (35')
+
+Trabajás sobre el **mismo CSV** que elegiste en el Bloque A. Sin descargar microdatos, sin red: la
+herramienta es **Ctrl+Shift+F** (Find in Files) de RStudio, buscando el nombre del CSV y de sus
+columnas dentro de `src/`. El archivo de trabajo equivalente fuera del notebook es
+`ejercicios/02_rastreo_pipeline.R`.
+
+## B1 - El rastreo (15')
+
+**Camino EPH** (tu CSV es `04_`, `09a_`, `10_`, `12_`, `13a_`, `13b_` o `03b_`):
+
+```{r b1-eph}
+# 1. ¿Qué script escribió este CSV? (buscá el nombre del archivo en src/)
+#    Respuesta: ____
+#
+# 2. Ese script lee un .rds con read_rds(). ¿Cuál, y qué script lo escribió?
+#    Respuesta: ____
+#
+# 3. ¿En qué línea de ESE script se creó la variable que se está sumando o
+#    promediando en tu CSV (ej. `ocupado`, `desocupado`, `NBI_HAC`)?
+#    Respuesta: ____
+#
+# 4. Esa variable derivada depende de una columna cruda de la EPH
+#    (ej. ESTADO, IV1, IV8). ¿Dónde se pidió esa columna por primera vez?
+#    Respuesta: ____
+#
+# 5. ¿Qué función convirtió el código numérico de esa columna cruda en el
+#    texto legible, y por qué importa el orden en que se aplica respecto de
+#    sacar la clase "labelled"?
+#    Respuesta: ____
 ```
 
-Después **contrastá los dos resultados**. Tienen que dar exactamente igual.
+**Camino SIPA** (tu CSV es `03_`, `05_` o `07_`):
 
-Si no dan igual, encontrar por qué es el mejor ejercicio de todo el taller: significa que alguno
-de los dos caminos tiene un filtro, un `ANO4 >=` o un `na.rm` que el otro no tiene.
+```{r b1-sipa}
+# 1. ¿Hay un script que prep-ó este CSV? Si lo hay, ¿de qué archivo .xlsx
+#    crudo? Si NO lo hay (el que LEE el CSV no es necesariamente el que lo
+#    ESCRIBE), esa ausencia es en sí misma un hallazgo del rastreo.
+#    Respuesta: ____
+#
+# 2. (si hay prep) ¿Qué transformación de formato necesitó ese .xlsx antes de
+#    poder pivotear a formato largo (fila = fecha × provincia)?
+#    Respuesta: ____
+#
+# 3. (si hay prep) ¿Dónde se homologan los nombres de provincia entre la
+#    fuente y el resto del proyecto, y por qué hace falta ese paso?
+#    Respuesta: ____
+```
+
+## B2 - Dibujar el diagrama (10')
+
+En papel, a partir de lo que encontraste en B1: las etapas del pipeline, qué archivo produce cada
+una, y dónde cae la línea de lo que está versionado en git. Se compara con el de referencia al
+cierre.
+
+## B3 - Auditar el CSV sin microdatos (10')
+
+Si tu CSV trae numerador y denominador (`04_`, `09a_`, `10_`, `12_`, `13a_`, `13b_`), el ejemplo de
+abajo corre tal cual con `04_tasa_desoc.csv` - adaptalo a las columnas de tu propio CSV:
+
+```{r b3-auditoria-eph, eval=TRUE}
+read_csv("../../data/inputs_md/04_tasa_desoc.csv", show_col_types = FALSE) %>%
+  mutate(control = desoc / pea * 100) %>%
+  summarise(dif_maxima = max(abs(tasa_desoc - control)))
+# → tiene que dar un número minúsculo (error de redondeo, no un problema del cálculo)
+```
+
+Si tu CSV es de SIPA o es `03b_` (un promedio ponderado, sin numerador/denominador propio), auditá
+la estructura en cambio - el ejemplo corre con `05_puestos_asalariados_privados.csv`:
+
+```{r b3-auditoria-sipa, eval=TRUE}
+read_csv("../../data/inputs_md/05_puestos_asalariados_privados.csv", show_col_types = FALSE) %>%
+  count(jurisdiccion, fecha) %>%
+  filter(n > 1)
+# → tiene que devolver 0 filas: ninguna combinación de unidad-período repetida
+```
+
+**Preguntas para cerrar el bloque:**
+
+- ¿Por qué `data/inputs_md/` está versionado en git y `data/raw_data/` no?
+- Sale una onda nueva de la EPH: ¿qué corrés, y qué NO volvés a correr?
+- ¿Y si además agregaste una variable nueva? (pista: no alcanza con agregarla al vector de
+  variables a descargar - ver la trampa nº 1 en `soluciones/02_rastreo_respuestas.md`)
+
+Si te trabás, las respuestas completas con `archivo:línea` están en
+`soluciones/02_rastreo_respuestas.md`.
 
 ---
 
@@ -358,5 +221,17 @@ de los dos caminos tiene un filtro, un `ANO4 >=` o un `na.rm` que el otro no tie
 
 Traé a la puesta en común:
 
-- El título que escribieron (Paso 3). Los vamos a comparar entre parejas.
-- Una cosa del circuito que les haya resultado más frágil de lo que esperaban.
+- El diagrama que dibujaste en B2. Lo comparamos con el de referencia.
+- Una cosa del circuito que te haya resultado más frágil de lo que esperabas.
+
+---
+
+# Opcional, si te sobra tiempo - Publicar tu gráfico
+
+Los pasos para que tu gráfico del Bloque A aparezca en el dashboard, y para subirlo por PR, están
+completos en [`materiales/cheatsheet_repo.md`](../materiales/cheatsheet_repo.md) ("Agregar un
+indicador al dashboard" y "Publicar") - no entran en el tiempo de esta clase.
+
+También queda, como recorrido opcional más largo para practicar el circuito completo con otro
+indicador de punta a punta (cálculo → gráfico → dashboard → PR), el ejercicio de
+[`anexo/`](anexo/): agregar la tasa de actividad al monitor.

@@ -53,22 +53,27 @@ cómo elegir la correcta según la pregunta que se busca responder.
 
 [⬇ Descargar todo (clase 2, .zip)](./clase_2_integridad_y_catalogo/clase_2_integridad_y_catalogo.zip)
 
-## Clase 3 - Del microdato al producto
+## Clase 3 - Un gráfico desde cero y de dónde salen los datos
 
-El pipeline completo (descarga, limpieza, indicadores, publicación), cómo alinear narrativa y
-visualización, y una práctica integradora: agregar un indicador nuevo al monitor de punta a punta.
+100% práctica, en dos bloques: armar un gráfico entero por cuenta propia eligiendo libremente entre
+los diez indicadores del monitor, y rastrear hacia atrás el pipeline que produjo el CSV elegido -
+sin descargar microdatos.
 
 - [Práctica - consigna](./clase_3_pipeline_y_narrativa/practica.html)
 - [Práctica - notebook (.Rmd)](./clase_3_pipeline_y_narrativa/practica.Rmd)
 - Soluciones:
-  [Ej. 1 - cálculo](./clase_3_pipeline_y_narrativa/soluciones/01_tasa_actividad_calculo.R) ·
-  [Ej. 2 - visualización](./clase_3_pipeline_y_narrativa/soluciones/02_tasa_actividad_viz.R) ·
-  [Registro en el dashboard](./clase_3_pipeline_y_narrativa/soluciones/03_registro_dashboard.md)
+  [Ej. resueltos - gráficos](./clase_3_pipeline_y_narrativa/soluciones/01_ejemplos_resueltos.R) ·
+  [Rastreo del pipeline - respuestas](./clase_3_pipeline_y_narrativa/soluciones/02_rastreo_respuestas.md)
+- [Anexo - recorrido integrador opcional](./clase_3_pipeline_y_narrativa/anexo/): agregar la tasa
+  de actividad al monitor, de punta a punta.
 
 [⬇ Descargar todo (clase 3, .zip)](./clase_3_pipeline_y_narrativa/clase_3_pipeline_y_narrativa.zip)
 
 ## Materiales de referencia
 
+- [Catálogo de datos](./materiales/catalogo_datos.html) - una entrada por cada CSV de
+  `data/inputs_md/`: columnas, granularidad, advertencia metodológica y pregunta sugerida. Base de
+  la elección libre de la Clase 3.
 - [Checklist de visualización](./materiales/checklist_visualizacion.html) - una página para tener
   al lado mientras se arma un producto de comunicación.
 - [Cheatsheet - mantenimiento del repositorio](./materiales/cheatsheet_repo.html) - el mapa del

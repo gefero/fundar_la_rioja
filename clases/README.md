@@ -34,7 +34,7 @@ define la pregunta y redacta el título; quien mantiene escribe el código.
 |---|---|---|---|
 | 1 | [Gramática de gráficos y percepción](clase_1_gramatica_y_percepcion/) | Cómo está construido un script de visualización del repo, capa por capa | Por qué un gráfico se entiende o no: marcas, canales y jerarquía perceptual |
 | 2 | [Integridad visual y catálogo de herramientas](clase_2_integridad_y_catalogo/) | Cómo implementar herramientas del catálogo (Cleveland, brecha implícita, spaghetti) y cómo auditar una paleta | Cómo elegir el gráfico correcto según la pregunta, y cómo detectar distorsiones |
-| 3 | [Del microdato al producto](clase_3_pipeline_y_narrativa/) | El pipeline completo: descarga, limpieza, indicadores, publicación | Cómo alinear narrativa y visualización: títulos, fuentes, advertencias |
+| 3 | [Un gráfico desde cero y de dónde salen los datos](clase_3_pipeline_y_narrativa/) | Rastrear el pipeline (descarga, limpieza, indicadores) hacia atrás desde un CSV, sin microdatos | Armar un gráfico entero por cuenta propia: pregunta, marca, y los tres campos de texto |
 
 Cada clase tiene la misma estructura:
 
@@ -50,6 +50,10 @@ clase_N_.../
 `practica.md` y `practica.Rmd` tienen la misma consigna; `ejercicios/*.R` y `practica.Rmd` tienen
 el mismo código. Usá lo que prefieras: archivos sueltos para ir de a uno, o el notebook para
 navegar toda la clase en un solo documento con la consigna al lado de cada chunk.
+
+> La Clase 3 tiene además una carpeta `anexo/` con el mismo formato (`ejercicios/`, `soluciones/`,
+> más un `README.md` propio): es un recorrido integrador opcional, archivado ahí porque no entra en
+> el tiempo de la clase.
 
 ## Antes de la primera clase
 
@@ -69,6 +73,9 @@ navegar toda la clase en un solo documento con la consigna al lado de cada chunk
 
 En [`materiales/`](materiales/):
 
+- **[`catalogo_datos.md`](materiales/catalogo_datos.md)** - una entrada por cada CSV de
+  `data/inputs_md/`, con columnas, granularidad, advertencia metodológica y pregunta sugerida. Es
+  la base de la elección libre del Bloque A de la Clase 3.
 - **[`checklist_visualizacion.md`](materiales/checklist_visualizacion.md)** - una página con el
   checklist completo: qué preguntarse antes de graficar, al graficar y al publicar. Pensado para
   tener al lado mientras se arma un producto de comunicación.

@@ -336,13 +336,14 @@ comunican los resultados. También están publicados en
 |---|---|---|
 | 1 | [Gramática de gráficos y percepción](clases/clase_1_gramatica_y_percepcion/) | Gramática de gráficos, marcas y canales, efectividad perceptual |
 | 2 | [Integridad visual y catálogo de herramientas](clases/clase_2_integridad_y_catalogo/) | Tufte y el caso Challenger, factor de mentira, catálogo de Argendata (Cleveland dot plot, brecha implícita, spaghetti, bump chart), paletas |
-| 3 | [Del microdato al producto](clases/clase_3_pipeline_y_narrativa/) | Pipeline, actualización de datos, narrativa y circuito de publicación |
+| 3 | [Un gráfico desde cero y de dónde salen los datos](clases/clase_3_pipeline_y_narrativa/) | 100% práctica: armar un gráfico de punta a punta con elección libre, y rastrear el pipeline hacia atrás desde un CSV, sin microdatos |
 
 Cada clase tiene un guion minutado (`guion.md`), una guía de práctica (`practica.md`) y scripts de
 ejercicios con sus soluciones. La práctica trabaja sobre los CSV versionados de `data/inputs_md/`,
 sin necesidad de descargar microdatos.
 
 Materiales de referencia en [`clases/materiales/`](clases/materiales/):
+[catálogo de datos](clases/materiales/catalogo_datos.md),
 [checklist de visualización](clases/materiales/checklist_visualizacion.md),
 [cheatsheet de mantenimiento](clases/materiales/cheatsheet_repo.md) y
 `00_setup.R` (verificación del entorno, para correr antes de la primera clase).

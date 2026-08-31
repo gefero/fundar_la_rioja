@@ -1,148 +1,144 @@
 # Práctica - Clase 3
 
-**Duración:** 50 minutos. **En parejas de perfiles mezclados.**
+**Duración:** 45' (Bloque A) + 10' (puesta en común) + 5' (pausa) + 35' (Bloque B) = 95 minutos.
+**En parejas de perfiles mezclados**, igual que en la Clase 2: quien comunica define la pregunta y
+redacta el título; quien mantiene escribe el código.
+
+Todo corre sobre los CSV ya versionados de `data/inputs_md/` - **no hace falta descargar
+microdatos**.
 
 ---
 
-## El ejercicio: agregar un indicador nuevo al monitor
+## Bloque A - Un gráfico desde cero (45')
 
-Vamos a recorrer el circuito completo, de punta a punta, con un indicador que **hoy no existe en el
-proyecto**: la **tasa de actividad** (población económicamente activa sobre población total).
+### El ejercicio
 
-Es una buena elección por dos razones. Primero, porque completa el trío clásico del mercado de
-trabajo: hoy el monitor tiene tasa de empleo y tasa de desocupación, pero no la de actividad, que es
-la que dice **cuánta gente se ofrece al mercado**. Y segundo, porque se puede derivar de dos CSV que
-**ya están versionados**, sin descargar un solo microdato:
+Elegí un CSV del [catálogo de datos](../materiales/catalogo_datos.md) - **uno que no hayas usado
+en la Clase 1 ni en la Clase 2** - y armá un gráfico entero, de punta a punta, sin ningún `______`
+para completar. El archivo de trabajo es `ejercicios/01_grafico_desde_cero.R`.
 
-- `data/inputs_md/04_tasa_desoc.csv` tiene la columna **`pea`** (población económicamente activa,
-  ponderada).
-- `data/inputs_md/10_tasa_empleo.csv` tiene la columna **`pob_tot`** (población total, ponderada).
+### Paso 0 - La pregunta *(5')*
 
-```
-tasa_actividad = pea / pob_tot × 100
-```
+Elegí tu CSV en `materiales/catalogo_datos.md` y escribí, en una oración, qué querés contestar.
 
----
+- **Mala:** "Graficar la tasa de desocupación."
+- **Buena:** "¿La desocupación de La Rioja está por debajo del NOA desde 2021?"
 
-## Paso 1 - El cálculo *(perfil mantenimiento, 10')*
+Si no se te ocurre una, usá la pregunta sugerida del catálogo para ese CSV.
 
-**Archivo:** `ejercicios/01_tasa_actividad_calculo.R` → copialo a `src/06_prep_tasa_actividad.R`
+### Paso 1 - Mirar el dato *(5')*
 
-Hacé el `left_join()` de los dos CSV por `fecha` y `la_rioja_region`, calculá la tasa y escribí
-`data/inputs_md/06_tasa_actividad.csv`.
+Antes de escribir una sola línea de `ggplot()`: `glimpse()` del CSV. Contestá en un comentario -
+¿qué identifica una fila?, ¿qué período cubre `fecha`?, ¿hay `NA`?
 
-> **Por qué `06_prep_`:** el repositorio ya usa esa convención para los scripts que preparan un CSV
-> a partir de otra fuente (ver `03_prep_salarios_privados_SIPA.R` y
-> `05_prep_puestos_asalariados_privados.R`). El número 06 estaba libre.
+### Paso 2 - Elegir la marca *(5')*
 
----
+Con la tabla de `materiales/checklist_visualizacion.md` §1 ("¿Qué gráfico?"): ¿qué operación es tu
+pregunta (parte de un todo, ranking, brecha, correlación, cambio en el tiempo)? ¿Qué marca le
+corresponde? Anotalo en un comentario, antes de graficar.
 
-## Paso 2 - Verificar *(los dos, 5')*
+### Paso 3 - El gráfico *(15')*
 
-Antes de graficar nada. Tres chequeos, en este orden:
+Escribilo desde una hoja en blanco. Tenés disponibles las herramientas del proyecto (todas en
+`style/fundar_monitor_theme.R`): `theme_monitor()`, `theme_monitor_barras_h()`,
+`scale_color_fundar_multi()`, `scale_fill_fundar_multi()`, `fuente_fundar()`, `puntos_etiqueta()`.
 
-1. **¿Cuántas filas quedaron?** Tienen que ser **216** = 72 trimestres × 3 regiones. Si son menos,
-   el join perdió filas; si son más, duplicó.
-2. **¿Hay `NA`?** No tiene que haber ninguno.
-3. **La verificación conceptual, que es la importante:**
+Si tu CSV trae `fecha` como texto tipo `"2007-Q1"` (los de EPH), convertila con
+`lubridate::yq()` para tener el eje X con fechas reales, no las 72 etiquetas rotadas (la trampa que
+vimos en la Clase 2). Si tu CSV es de SIPA (`03_`, `05_`, `07_`), `fecha` ya es `Date`.
 
-   ```
-   tasa_actividad ≈ tasa_empleo + (desocupados / pob_tot × 100)
-   ```
+### Paso 4 - Los tres campos de texto *(10')*
 
-   Porque la PEA son los ocupados más los desocupados. Si esta identidad no se cumple, algo está
-   mal en el join.
+Con `materiales/checklist_visualizacion.md` §3 al lado:
 
-**Pregunta:** ¿por qué la tasa de actividad **no** es igual a `tasa_empleo + tasa_desoc`? Las dos
-son porcentajes, pero no del mismo denominador. ¿Cuál es cuál?
+| Campo | Qué tiene que decir |
+|---|---|
+| **Título** | El hallazgo, afirmado. Una oración que se pueda leer sola. **No** el nombre de la variable. |
+| **Subtítulo** | Unidad, universo, período, y cualquier transformación aplicada. |
+| **Caption** | Fuente completa **y la advertencia metodológica que tu fila del catálogo marca** - no la inventes, ya está escrita ahí. |
 
----
+### Paso 5 - Guardar y auto-auditar *(5')*
 
-## Paso 3 - La narrativa *(perfil comunicación, 10')*
+`ggsave()` a `outputs/plots/clase3_<nombre_pareja>.png`. Antes de mostrarlo a la sala, repasá
+`materiales/checklist_visualizacion.md` §2: eje Y en cero (o el corte justificado y marcado), entre
+6 y 8 marcas por eje, el color codificando lo que tiene que codificar.
 
-Antes de que se escriba el `labs()`, mirá los datos y decidí **qué historia cuenta este indicador**.
-
-Abrí el CSV que produjo tu compañero o compañera y mirá la serie de La Rioja: ¿sube, baja, se
-mantiene? ¿Cómo se compara con el NOA y con el resto del país? ¿Hay algún quiebre?
-
-Después escribí los tres campos, siguiendo la tabla de la clase:
-
-- **Título** - el hallazgo afirmado, una oración que se lea sola. **No** "Tasa de actividad".
-- **Subtítulo** - unidad, universo, período.
-- **Caption** - la fuente completa y las advertencias metodológicas que correspondan.
-
-**Preguntas para decidir el caption:**
-
-- ¿Hay que advertir sobre el quiebre de 2015/2016? ¿Aplica a este indicador o solo a los de
-  ingresos? (Pista: ¿este cálculo usa `PONDIIO`?)
-- ¿Hay que advertir algo sobre el tamaño de muestra de La Rioja?
-- La serie tiene un hueco entre 2015-T3 y 2016-T1. ¿Se ve en el gráfico? ¿Debería?
+Si te trabás, `soluciones/01_ejemplos_resueltos.R` tiene tres ejemplos completos - sobre otros
+CSV y otras marcas, para no repetir tu propia elección.
 
 ---
 
-## Paso 4 - El gráfico *(perfil mantenimiento, 10')*
+## Puesta en común *(10')*
 
-**Archivo:** `ejercicios/02_tasa_actividad_viz.R` → copialo a `src/06_tasa_actividad.R`
-
-Seguí el patrón de `src/04_desoc.R`, y aplicá lo que aprendimos:
-
-- La paleta y el tema del proyecto.
-- **El eje X con fechas reales**, no las 72 etiquetas de texto (clase 2).
-- El eje Y arrancando en cero.
-- Los textos que escribió tu compañero o compañera en el paso 3.
-
-Guardá el PNG en `outputs/plots/06_tasa_actividad.png`.
+Proyectá tu PNG y contá: qué pregunta elegiste, qué marca, y tu título. Vamos a compararlo con los
+de las otras parejas.
 
 ---
 
-## Paso 5 - El dashboard *(los dos, 10')*
+## Pausa *(5')*
 
-Registrá el indicador en `INDICADORES`, en `dashboard/R/data.R`. Va con `shape = "A"` (serie
-trimestral regional, una fila por fecha-región), que es la forma que tiene tu CSV.
+---
 
-Después:
+## Bloque B - De dónde salió esa columna (35')
+
+### El ejercicio
+
+Trabajás sobre el **mismo CSV** que elegiste en el Bloque A. El archivo es
+`ejercicios/02_rastreo_pipeline.R`. Sin descargar microdatos, sin red: la herramienta es
+**Ctrl+Shift+F** (Find in Files) de RStudio, buscando el nombre de tu CSV y de sus columnas dentro
+de `src/`.
+
+### B1 - El rastreo *(15')*
+
+Según qué CSV elegiste, seguí el camino EPH o el camino SIPA (las preguntas exactas están en
+`ejercicios/02_rastreo_pipeline.R`):
+
+**Camino EPH** (`04_`, `09a_`, `10_`, `12_`, `13a_`, `13b_`, `03b_`): qué script escribió el CSV;
+de qué `.rds` lo leyó y quién escribió ese `.rds`; en qué línea se creó la variable que se está
+sumando; de qué columna cruda de la EPH depende, y dónde se pidió; qué función convirtió el código
+numérico en texto legible, y por qué importa el orden en que se aplica.
+
+**Camino SIPA** (`03_`, `05_`, `07_`): qué script prep-ó el CSV y de qué `.xlsx`; qué
+transformación de formato necesitó; dónde se homologan los nombres de provincia. **Si tu CSV es
+`07_`**: puede que no encuentres un script que lo escriba. Si es así, no es que te falte buscar
+mejor - documentalo como lo que es.
+
+### B2 - Dibujar el diagrama *(10')*
+
+En papel, a partir de lo que encontraste: las etapas del pipeline, qué archivo produce cada una, y
+dónde cae la línea de lo que está versionado en git.
+
+### B3 - Auditar el CSV sin microdatos *(10')*
+
+Si tu CSV trae numerador y denominador (`04_`, `09a_`, `10_`, `12_`, `13a_`, `13b_`), podés
+recalcular la tasa y compararla con la que ya está escrita:
 
 ```r
-shiny::runApp("dashboard")
+read_csv("./data/inputs_md/04_tasa_desoc.csv") %>%
+  mutate(control = desoc / pea * 100) %>%
+  summarise(dif_maxima = max(abs(tasa_desoc - control)))
+# → tiene que dar un número minúsculo (error de redondeo, no un problema del cálculo)
 ```
 
-**No hay que tocar ni una línea de la app.** Si el registro está bien, el indicador aparece solo en
-el selector, con sus filtros de región y rango temporal, su descarga de PNG y CSV, y su versión
-plotly. También aparece en el sitio estático al renderizar `dashboard/index.qmd`.
+Si tu CSV es de SIPA o es `03b_` (un promedio ponderado, sin numerador/denominador propio), auditá
+la estructura en cambio:
 
-**Si no aparece**, revisá en este orden: el nombre del CSV, el nombre de `y_var`, y que el `topico`
-sea uno de los tres de `TOPICOS`.
-
----
-
-## Paso 6 - Publicar *(los dos, 5')*
-
-```bash
-git checkout -b tasa-actividad
-git add src/06_prep_tasa_actividad.R src/06_tasa_actividad.R \
-        data/inputs_md/06_tasa_actividad.csv dashboard/R/data.R \
-        outputs/plots/06_tasa_actividad.png
-git commit -m "Agrego indicador de tasa de actividad"
-git push -u origin tasa-actividad
+```r
+read_csv("./data/inputs_md/____.csv") %>%
+  count(jurisdiccion, fecha) %>%
+  filter(n > 1)
+# → tiene que devolver 0 filas
 ```
 
-Y abrir el Pull Request en GitHub.
+**Preguntas para cerrar el bloque:**
 
-**Pregunta:** el workflow `.github/workflows/dashboard.yml` se dispara con cambios en
-`data/inputs_md/`. ¿Se disparó con este push? ¿Por qué sí o por qué no?
+- ¿Por qué `data/inputs_md/` está versionado en git y `data/raw_data/` no?
+- Sale una onda nueva de la EPH: ¿qué corrés, y qué NO volvés a correr?
+- ¿Y si además agregaste una variable nueva? (pista: no alcanza con agregarla al vector de
+  variables a descargar)
 
----
-
-## Variante avanzada *(solo si tenés los microdatos descargados)*
-
-Calculá la tasa de actividad **directamente desde el dataset canónico**, agregando el bloque a
-`src/02_indicadores_eph_individuo.R`. Las variables ya están: `pea` y `PONDERA`. Son seis líneas,
-copiando el patrón del bloque de tasa de empleo.
-
-Después **contrastá los dos resultados**. Tienen que dar exactamente igual.
-
-Si no dan igual, encontrar por qué es el mejor ejercicio de todo el taller: significa que alguno de
-los dos caminos tiene un filtro, un `ANO4 >=` o un `na.rm` que el otro no tiene.
+Si te trabás, las respuestas completas con `archivo:línea` están en
+`soluciones/02_rastreo_respuestas.md`.
 
 ---
 
@@ -150,5 +146,18 @@ los dos caminos tiene un filtro, un `ANO4 >=` o un `na.rm` que el otro no tiene.
 
 Traé a la puesta en común:
 
-- El título que escribieron (paso 3). Los vamos a comparar entre parejas.
-- Una cosa del circuito que les haya resultado más frágil de lo que esperaban.
+- El diagrama que dibujaste en B2. Lo comparamos con el de referencia.
+- Una cosa del circuito que te haya resultado más frágil de lo que esperabas.
+
+---
+
+## Opcional, si te sobra tiempo - Publicar tu gráfico
+
+Los pasos para que tu gráfico del Bloque A aparezca en el dashboard, y para subirlo por PR, no
+entran en el tiempo de la clase, pero son cortos y están completos en
+[`materiales/cheatsheet_repo.md`](../materiales/cheatsheet_repo.md) ("Agregar un indicador al
+dashboard" y "Publicar").
+
+También queda, como recorrido opcional más largo para practicar el circuito completo con otro
+indicador de punta a punta (cálculo → gráfico → dashboard → PR), el ejercicio de
+[`anexo/`](anexo/): agregar la tasa de actividad al monitor.

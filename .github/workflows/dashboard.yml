@@ -94,6 +94,9 @@ jobs:
           render_md clases/materiales/cheatsheet_repo.md \
             "$OUT/materiales/cheatsheet_repo.html" \
             "Cheatsheet — mantenimiento del repositorio"
+          render_md clases/materiales/catalogo_datos.md \
+            "$OUT/materiales/catalogo_datos.html" \
+            "Catálogo de datos"
           cp clases/materiales/00_setup.R "$OUT/materiales/"
           cp clases/materiales/paleta_regional_swatch.R "$OUT/materiales/"
           cp "clases/materiales/Informe_final_argendata.pdf" "$OUT/materiales/"
@@ -104,7 +107,7 @@ jobs:
           declare -A TITULOS=(
             [clase_1_gramatica_y_percepcion]="Clase 1 — Gramática de gráficos y percepción"
             [clase_2_integridad_y_catalogo]="Clase 2 — Integridad visual y catálogo de herramientas"
-            [clase_3_pipeline_y_narrativa]="Clase 3 — Del microdato al producto"
+            [clase_3_pipeline_y_narrativa]="Clase 3 — Un gráfico desde cero y de dónde salen los datos"
           )
 
           for dir in "${!TITULOS[@]}"; do
@@ -126,6 +129,8 @@ jobs:
             cp "$src"/*.pdf         "$dst/"               2>/dev/null || true
             cp "$src"/ejercicios/*.R "$dst/ejercicios/" 2>/dev/null || true
             cp "$src"/soluciones/*   "$dst/soluciones/"   2>/dev/null || true
+            # anexo/: recorrido integrador opcional (solo lo tiene la clase 3 por ahora).
+            cp -r "$src"/anexo "$dst/" 2>/dev/null || true
 
             # Bundle descargable con todo el material de la clase. guion.md queda
             # afuera a propósito: es material interno para quien dicta, no para
