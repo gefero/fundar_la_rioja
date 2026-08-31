@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo de
+datos · Taller de visualización - Monitor La Rioja</title>
+<!-- CSS compartido con el notebook de la clase 1 (practica.Rmd, vía css: en
+     su YAML de salida): fuente única en clases/_site_style.css. Ruta
+     absoluta por el mismo motivo que el nav de abajo: GitHub Project Page,
+     funciona igual sin importar la profundidad de la página actual. -->
+<link rel="stylesheet" href="/fundar_la_rioja/clases/_site_style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <!-- Rutas absolutas con el prefijo del repo: esta es una GitHub Project Page
+       (usuario.github.io/fundar_la_rioja/), así que un link absoluto funciona
+       igual sin importar la profundidad de la página actual. Si el sitio se
+       muda de URL, actualizar este prefijo acá (único lugar). -->
+  <a href="/fundar_la_rioja/">Monitor La Rioja</a>
+  <a href="/fundar_la_rioja/clases/">Taller de visualización</a>
+  <a href="https://github.com/gefero/fundar_la_rioja">Repositorio ↗</a>
+</nav>
+
+<header class="banner">
+  <div class="inner">
+    <p class="eyebrow">Fundar · grupo factor~data</p>
+    <h1>Catálogo de datos</h1>
+    
+  </div>
+</header>
+
+<main>
+<h1 id="catálogo-de-datos---clase-3">Catálogo de datos - Clase 3</h1>
+<p>Los 10 CSV de <code>data/inputs_md/</code> con los que se trabaja en
+el Bloque A (“Un gráfico desde cero”). Elegí uno antes de abrir RStudio:
+la pregunta que quieras contestar tiene que poder responderse con las
+columnas que tiene.</p>
+<p>Cada entrada trae lo mínimo para decidir sin tener que abrir el
+archivo primero: qué identifica una fila, la granularidad, y <strong>la
+advertencia metodológica que ese indicador necesita en el
+caption</strong> (ver <code>checklist_visualizacion.md</code> §3). Si tu
+CSV no está acá, no lo agarres para este ejercicio: no está versionado o
+no tiene un script que lo produzca.</p>
+<hr />
+<h2
+id="tasa_desoc.csv---tasa-de-desocupación"><code>04_tasa_desoc.csv</code>
+- Tasa de desocupación</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td><strong>Fila = </strong></td>
+<td>fecha × región</td>
+</tr>
+<tr>
+<td><strong>Columnas</strong></td>
+<td><code>fecha, la_rioja_region, desoc, pea, tasa_desoc</code></td>
+</tr>
+<tr>
+<td><strong>Granularidad</strong></td>
+<td>Trimestral, 2007-Q1 a 2025-Q4 (72 trimestres)</td>
+</tr>
+<tr>
+<td><strong>Unidades</strong></td>
+<td>3 regiones: <code>1. Resto país</code>, <code>2. NOA-Resto</code>,
+<code>3. La Rioja</code></td>
+</tr>
+<tr>
+<td><strong>Filas</strong></td>
+<td>216 = 72 × 3</td>
+</tr>
+<tr>
+<td><strong>Advertencia</strong></td>
+<td>La Rioja es dominio chico de la EPH: no reportar un nivel a partir
+de un solo trimestre.</td>
+</tr>
+<tr>
+<td><strong>Pregunta sugerida</strong></td>
+<td>¿La desocupación de La Rioja está por encima o por debajo del NOA y
+del resto del país, y desde cuándo?</td>
+</tr>
+</tbody>
+</table>
+<h2
+id="tasa_empleo.csv---tasa-de-empleo"><code>10_tasa_empleo.csv</code> -
+Tasa de empleo</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td><strong>Fila = </strong></td>
+<td>fecha × región</td>
+</tr>
+<tr>
+<td><strong>Columnas</strong></td>
+<td><code>fecha, la_rioja_region, ocupado, pob_tot, tasa_empleo</code></td>
+</tr>
+<tr>
+<td><strong>Granularidad</strong></td>
+<td>Trimestral, 2007-Q1 a 2025-Q4 (72 trimestres)</td>
+</tr>
+<tr>
+<td><strong>Unidades</strong></td>
+<td>3 regiones</td>
+</tr>
+<tr>
+<td><strong>Filas</strong></td>
+<td>216</td>
+</tr>
+<tr>
+<td><strong>Advertencia</strong></td>
+<td>Dominio chico (ídem <code>04_</code>).</td>
+</tr>
+<tr>
+<td><strong>Pregunta sugerida</strong></td>
+<td>¿Cuántos ocupados cada 100 habitantes hay en La Rioja, y esa cifra
+creció o bajó en la última década?</td>
+</tr>
+</tbody>
+</table>
+<h2
+id="a_tasa_informalidad_aportes.csv---tasa-de-informalidad-aportes"><code>09a_tasa_informalidad_aportes.csv</code>
+- Tasa de informalidad (aportes)</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td><strong>Fila = </strong></td>
+<td>fecha × región</td>
+</tr>
+<tr>
+<td><strong>Columnas</strong></td>
+<td><code>fecha, la_rioja_region, formales, asalariados, tasa_inf_aportes</code></td>
+</tr>
+<tr>
+<td><strong>Granularidad</strong></td>
+<td>Trimestral, 2007-Q1 a 2025-Q4 (72 trimestres)</td>
+</tr>
+<tr>
+<td><strong>Unidades</strong></td>
+<td>3 regiones</td>
+</tr>
+<tr>
+<td><strong>Filas</strong></td>
+<td>216</td>
+</tr>
+<tr>
+<td><strong>Advertencia</strong></td>
+<td>Dominio chico. <code>tasa_inf_aportes</code> es
+<code>100 - (formales/asalariados × 100)</code>: universo de
+asalariados, no de ocupados totales.</td>
+</tr>
+<tr>
+<td><strong>Pregunta sugerida</strong></td>
+<td>¿Qué región tiene mayor proporción de asalariados sin aportes ni
+descuentos jubilatorios?</td>
+</tr>
+</tbody>
+</table>
+<h2
+id="mayor_25_superior.csv---de-25-años-con-estudios-superiores-completos"><code>12_mayor_25_superior.csv</code>
+- % de +25 años con estudios superiores completos</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td><strong>Fila = </strong></td>
+<td>fecha × región</td>
+</tr>
+<tr>
+<td><strong>Columnas</strong></td>
+<td><code>fecha, la_rioja_region, mayor_25_superior, pob_tot, porc_mayor_25_superior</code></td>
+</tr>
+<tr>
+<td><strong>Granularidad</strong></td>
+<td>Trimestral, 2007-Q1 a 2025-Q4 (72 trimestres)</td>
+</tr>
+<tr>
+<td><strong>Unidades</strong></td>
+<td>3 regiones</td>
+</tr>
+<tr>
+<td><strong>Filas</strong></td>
+<td>216</td>
+</tr>
+<tr>
+<td><strong>Advertencia</strong></td>
+<td>Dominio chico.</td>
+</tr>
+<tr>
+<td><strong>Pregunta sugerida</strong></td>
+<td>¿Achicó o agrandó La Rioja la brecha educativa con el resto del país
+en estos 18 años?</td>
+</tr>
+</tbody>
+</table>
+<h2
+id="a_nbi_hogares.csv---hogares-con-nbi-total-y-5-sub-dimensiones"><code>13a_nbi_hogares.csv</code>
+- % Hogares con NBI (total y 5 sub-dimensiones)</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td><strong>Fila = </strong></td>
+<td>fecha × región</td>
+</tr>
+<tr>
+<td><strong>Columnas</strong></td>
+<td><code>fecha, la_rioja_region</code> + 6 conteos
+<code>hogares_NBI_{TOT,HAC,VIV,SAN,ESC,SUB}</code> +
+<code>hogares_base</code> + 6 <code>pct_hogares_NBI_*</code></td>
+</tr>
+<tr>
+<td><strong>Granularidad</strong></td>
+<td>Trimestral, 2007-Q1 a 2025-Q4, <strong>71 trimestres</strong> (falta
+uno: el hueco 2015-T3/2016-T1)</td>
+</tr>
+<tr>
+<td><strong>Unidades</strong></td>
+<td>3 regiones</td>
+</tr>
+<tr>
+<td><strong>Filas</strong></td>
+<td>213 = 71 × 3</td>
+</tr>
+<tr>
+<td><strong>Advertencia</strong></td>
+<td>Dominio chico, y acá se ve fuerte: en el último trimestre
+disponible, La Rioja da <strong>0,00 %</strong> en 4 de las 5
+sub-dimensiones. No promediar 4 ondas antes de publicar un nivel es el
+error más fácil de cometer con este CSV.</td>
+</tr>
+<tr>
+<td><strong>Pregunta sugerida</strong></td>
+<td>¿Qué privación explica la mayor parte del NBI de La Rioja? (Ya se
+usó en la Clase 2 con Cleveland dot plot - para este bloque, buscale una
+pregunta y una marca distintas: por ejemplo, la evolución del NBI total
+en el tiempo, o small multiples de las 5 sub-dimensiones.)</td>
+</tr>
+</tbody>
+</table>
+<h2
+id="b_nbi_poblacion.csv---población-en-hogares-con-nbi-espejo-poblacional-de-13a_"><code>13b_nbi_poblacion.csv</code>
+- % Población en hogares con NBI (espejo poblacional de
+<code>13a_</code>)</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td><strong>Fila = </strong></td>
+<td>fecha × región</td>
+</tr>
+<tr>
+<td><strong>Columnas</strong></td>
+<td><code>fecha, la_rioja_region</code> + 6 conteos
+<code>pob_NBI_*</code> + <code>pob_base</code> + 6
+<code>pct_pob_NBI_*</code></td>
+</tr>
+<tr>
+<td><strong>Granularidad</strong></td>
+<td>Trimestral, 71 trimestres (mismo hueco que <code>13a_</code>)</td>
+</tr>
+<tr>
+<td><strong>Unidades</strong></td>
+<td>3 regiones</td>
+</tr>
+<tr>
+<td><strong>Filas</strong></td>
+<td>213</td>
+</tr>
+<tr>
+<td><strong>Advertencia</strong></td>
+<td>Igual que <code>13a_</code>. Ojo con no mezclar las dos unidades de
+análisis (hogares vs. personas) en el mismo gráfico sin aclararlo.</td>
+</tr>
+<tr>
+<td><strong>Pregunta sugerida</strong></td>
+<td>¿Cuánta gente vive en un hogar con NBI en La Rioja, contra cuántos
+hogares tienen NBI? (son números distintos - hogares con NBI tienden a
+tener más miembros).</td>
+</tr>
+</tbody>
+</table>
+<h2
+id="b_salarios_registrados_eph.csv---salario-de-asalariados-registrados-por-sector"><code>03b_salarios_registrados_EPH.csv</code>
+- Salario de asalariados registrados, por sector</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td><strong>Fila = </strong></td>
+<td>fecha × región × sector</td>
+</tr>
+<tr>
+<td><strong>Columnas</strong></td>
+<td><code>fecha, la_rioja_region, sector, salario_promedio</code></td>
+</tr>
+<tr>
+<td><strong>Granularidad</strong></td>
+<td>Trimestral, 2007-Q1 a 2025-Q4 (72 trimestres)</td>
+</tr>
+<tr>
+<td><strong>Unidades</strong></td>
+<td>3 regiones × 2 sectores (Público/Privado)</td>
+</tr>
+<tr>
+<td><strong>Filas</strong></td>
+<td>432 = 72 × 3 × 2</td>
+</tr>
+<tr>
+<td><strong>Advertencia</strong></td>
+<td><strong>El quiebre 2015/2016</strong>: el ponderador de ingreso
+<code>PONDIIO</code> no existe antes de esa fecha (fallback a
+<code>PONDERA</code>), y la EPH estuvo interrumpida entre 2015-T3 y
+2016-T1. Los niveles a ambos lados no son estrictamente comparables.
+Además está en <strong>pesos corrientes</strong> (no deflactado).</td>
+</tr>
+<tr>
+<td><strong>Pregunta sugerida</strong></td>
+<td>¿Cuál es la brecha entre el salario del sector público y el privado
+en La Rioja, y se achica o se agranda con el tiempo?</td>
+</tr>
+</tbody>
+</table>
+<h2
+id="salarios_privados_sipa.csv---salario-promedio-del-sector-privado-sipa"><code>03_salarios_privados_SIPA.csv</code>
+- Salario promedio del sector privado (SIPA)</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td><strong>Fila = </strong></td>
+<td>fecha × provincia</td>
+</tr>
+<tr>
+<td><strong>Columnas</strong></td>
+<td><code>jurisdiccion, fecha, salario_promedio</code></td>
+</tr>
+<tr>
+<td><strong>Granularidad</strong></td>
+<td>Mensual, 2015-01 a 2026-03 (135 meses)</td>
+</tr>
+<tr>
+<td><strong>Unidades</strong></td>
+<td>24 provincias</td>
+</tr>
+<tr>
+<td><strong>Filas</strong></td>
+<td>3.240 = 135 × 24</td>
+</tr>
+<tr>
+<td><strong>Advertencia</strong></td>
+<td><strong>Pesos corrientes, no deflactado</strong> - es el pendiente
+de mayor impacto sobre la calidad de lo publicado
+(<code>checklist_visualizacion.md</code> §3). Un gráfico de esta serie
+sin advertirlo muestra inflación, no el fenómeno. Cubre solo sector
+privado <strong>registrado</strong>.</td>
+</tr>
+<tr>
+<td><strong>Pregunta sugerida</strong></td>
+<td>¿Cómo se ubica el salario privado de La Rioja contra el de las
+provincias vecinas del NOA? (Nota: en pesos corrientes, comparar entre
+provincias en un mismo momento es válido; comparar a través del tiempo,
+no.)</td>
+</tr>
+</tbody>
+</table>
+<h2
+id="puestos_asalariados_privados.csv---puestos-asalariados-privados"><code>05_puestos_asalariados_privados.csv</code>
+- Puestos asalariados privados</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td><strong>Fila = </strong></td>
+<td>fecha × provincia</td>
+</tr>
+<tr>
+<td><strong>Columnas</strong></td>
+<td><code>jurisdiccion, fecha, puestos_miles</code></td>
+</tr>
+<tr>
+<td><strong>Granularidad</strong></td>
+<td>Mensual, 2009-01 a 2026-03 (205 meses), serie
+desestacionalizada</td>
+</tr>
+<tr>
+<td><strong>Unidades</strong></td>
+<td>24 provincias</td>
+</tr>
+<tr>
+<td><strong>Filas</strong></td>
+<td>4.920 = 205 × 24</td>
+</tr>
+<tr>
+<td><strong>Advertencia</strong></td>
+<td>Es un nivel (miles de puestos), no una tasa: una provincia grande
+siempre va a tener más puestos que La Rioja. Para comparar entre
+provincias hace falta normalizar (índice base 100, variación %).</td>
+</tr>
+<tr>
+<td><strong>Pregunta sugerida</strong></td>
+<td>¿Cómo evolucionó el empleo privado de La Rioja en índice base 100
+desde 2009, contra el total país?</td>
+</tr>
+</tbody>
+</table>
+<h2
+id="serie_empresas_por_jurisdiccion.csv---cantidad-de-empresas"><code>07_serie_empresas_por_jurisdiccion.csv</code>
+- Cantidad de empresas</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr>
+<td><strong>Fila = </strong></td>
+<td>fecha × provincia</td>
+</tr>
+<tr>
+<td><strong>Columnas</strong></td>
+<td><code>jurisdiccion, fecha, empresas</code></td>
+</tr>
+<tr>
+<td><strong>Granularidad</strong></td>
+<td>Mensual, 2015-01 a 2026-03 (135 meses)</td>
+</tr>
+<tr>
+<td><strong>Unidades</strong></td>
+<td>24 provincias</td>
+</tr>
+<tr>
+<td><strong>Filas</strong></td>
+<td>3.240 = 135 × 24</td>
+</tr>
+<tr>
+<td><strong>Advertencia</strong></td>
+<td>Igual que <code>05_</code>: es un nivel, no una tasa. Comparar
+niveles entre provincias de tamaño muy distinto necesita normalizar o
+dejarlo explícito en el título.</td>
+</tr>
+<tr>
+<td><strong>Pregunta sugerida</strong></td>
+<td>¿Cuántas empresas hay en La Rioja hoy, y es más o menos que hace 5
+años?</td>
+</tr>
+<tr>
+<td><strong>Si elegís este para el Bloque B</strong></td>
+<td>Este CSV es un caso especial para el rastreo: a diferencia de los
+otros nueve, <strong>no tiene script de prep ni fuente cruda en el
+repo</strong> (<code>src/07_cant_empresas.R</code> lo <em>lee</em>, no
+lo <em>escribe</em>). Es un hallazgo válido, no un error tuyo:
+documentalo así.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cómo-usar-esta-tabla">Cómo usar esta tabla</h2>
+<ol type="1">
+<li>Elegí un CSV por la pregunta que te interese, no por el que ya
+conocés de las clases 1 y 2.</li>
+<li>Mirá la advertencia: <strong>va a aparecer en tu caption</strong>
+(Paso 4 del Bloque A).</li>
+<li>Si tu CSV tiene una unidad de análisis con más de 3 categorías
+(<code>05_</code>, <code>07_</code>, <code>03_</code>, con 24
+provincias), pensá si tu gráfico necesita mostrar las 24 o si conviene
+agrupar / destacar solo algunas (regla de la Clase 1: más de 12 colores
+no se distinguen).</li>
+</ol>
+</main>
+
+<footer class="site-footer">
+  <p>Fundar - grupo factor~data · Monitor Socioeconómico La Rioja</p>
+</footer>
+
+</body>
+</html>
