@@ -33,62 +33,21 @@ datos · Taller de visualización - Monitor La Rioja</title>
 
 <main>
 <h1 id="práctica---clase-3">Práctica - Clase 3</h1>
-<p><strong>Duración:</strong> 45’ (Bloque A) + 10’ (puesta en común) +
-5’ (pausa) + 35’ (Bloque B) = 95 minutos. <strong>En parejas de perfiles
-mezclados</strong>, igual que en la Clase 2: quien comunica define la
-pregunta y redacta el título; quien mantiene escribe el código.</p>
-<p>Todo corre sobre los CSV ya versionados de
-<code>data/inputs_md/</code> - <strong>no hace falta descargar
-microdatos</strong>.</p>
+<p><strong>Duración:</strong> ~18 minutos en clase (el resto del
+material queda para hacer en casa). <strong>En parejas de perfiles
+mezclados.</strong></p>
+<p>Dos partes cortas. La Parte 1 la lleva adelante el perfil
+mantenimiento; la Parte 2 se hace entre los dos.</p>
 <hr />
-<h2 id="bloque-a---un-gráfico-desde-cero-45">Bloque A - Un gráfico desde
-cero (45’)</h2>
-<h3 id="el-ejercicio">El ejercicio</h3>
-<p>Elegí un CSV del <a href="../materiales/catalogo_datos.md">catálogo
-de datos</a> - <strong>uno que no hayas usado en la Clase 1 ni en la
-Clase 2</strong> - y armá un gráfico entero, de punta a punta, sin
-ningún <code>______</code> para completar. El archivo de trabajo es
-<code>ejercicios/01_grafico_desde_cero.R</code>.</p>
-<h3 id="paso-0---la-pregunta-5">Paso 0 - La pregunta <em>(5’)</em></h3>
-<p>Elegí tu CSV en <code>materiales/catalogo_datos.md</code> y escribí,
-en una oración, qué querés contestar.</p>
-<ul>
-<li><strong>Mala:</strong> “Graficar la tasa de desocupación.”</li>
-<li><strong>Buena:</strong> “¿La desocupación de La Rioja está por
-debajo del NOA desde 2021?”</li>
-</ul>
-<p>Si no se te ocurre una, usá la pregunta sugerida del catálogo para
-ese CSV.</p>
-<h3 id="paso-1---mirar-el-dato-5">Paso 1 - Mirar el dato
-<em>(5’)</em></h3>
-<p>Antes de escribir una sola línea de <code>ggplot()</code>:
-<code>glimpse()</code> del CSV. Contestá en un comentario - ¿qué
-identifica una fila?, ¿qué período cubre <code>fecha</code>?, ¿hay
-<code>NA</code>?</p>
-<h3 id="paso-2---elegir-la-marca-5">Paso 2 - Elegir la marca
-<em>(5’)</em></h3>
-<p>Con la tabla de <code>materiales/checklist_visualizacion.md</code> §1
-(“¿Qué gráfico?”): ¿qué operación es tu pregunta (parte de un todo,
-ranking, brecha, correlación, cambio en el tiempo)? ¿Qué marca le
-corresponde? Anotalo en un comentario, antes de graficar.</p>
-<h3 id="paso-3---el-gráfico-15">Paso 3 - El gráfico <em>(15’)</em></h3>
-<p>Escribilo desde una hoja en blanco. Tenés disponibles las
-herramientas del proyecto (todas en
-<code>style/fundar_monitor_theme.R</code>):
-<code>theme_monitor()</code>, <code>theme_monitor_barras_h()</code>,
-<code>scale_color_fundar_multi()</code>,
-<code>scale_fill_fundar_multi()</code>, <code>fuente_fundar()</code>,
-<code>puntos_etiqueta()</code>.</p>
-<p>Si tu CSV trae <code>fecha</code> como texto tipo
-<code>"2007-Q1"</code> (los de EPH), convertila con
-<code>lubridate::yq()</code> para tener el eje X con fechas reales, no
-las 72 etiquetas rotadas (la trampa que vimos en la Clase 2). Si tu CSV
-es de SIPA (<code>03_</code>, <code>05_</code>, <code>07_</code>),
-<code>fecha</code> ya es <code>Date</code>.</p>
-<h3 id="paso-4---los-tres-campos-de-texto-10">Paso 4 - Los tres campos
-de texto <em>(10’)</em></h3>
-<p>Con <code>materiales/checklist_visualizacion.md</code> §3 al
-lado:</p>
+<h2 id="parte-1-terminar-el-bump-chart-perfil-mantenimiento-9">Parte 1 ·
+Terminar el bump chart <em>(perfil mantenimiento, ~9’)</em></h2>
+<p><strong>Archivo:</strong> <code>ejercicios/02_bump_pbg.R</code> —
+tiene el esqueleto con cuatro <code>______</code>.</p>
+<p>Es la versión simplificada del ranking de PBG per cápita provincial
+(<code>src/15_pbg_ranking_percapita.R</code>). Trabajás sobre
+<code>data/inputs_md/15_pbg_per_capita_por_provincia.csv</code>, que
+<strong>ya está versionado</strong> (24 provincias × 15 años).</p>
+<p>Completá:</p>
 <table>
 <colgroup>
 <col style="width: 50%" />
@@ -96,125 +55,146 @@ lado:</p>
 </colgroup>
 <thead>
 <tr>
-<th>Campo</th>
-<th>Qué tiene que decir</th>
+<th>TODO</th>
+<th>Qué</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Título</strong></td>
-<td>El hallazgo, afirmado. Una oración que se pueda leer sola.
-<strong>No</strong> el nombre de la variable.</td>
+<td>1</td>
+<td>El ranking: <code>min_rank(desc(pbg_per_capita))</code> dentro del
+<code>group_by(anio)</code>. <strong>El gráfico dibuja el ranking, no el
+valor.</strong></td>
 </tr>
 <tr>
-<td><strong>Subtítulo</strong></td>
-<td>Unidad, universo, período, y cualquier transformación aplicada.</td>
+<td>2</td>
+<td><code>scale_y_reverse(breaks = 1:24)</code> — el puesto 1 va
+arriba.</td>
 </tr>
 <tr>
-<td><strong>Caption</strong></td>
-<td>Fuente completa <strong>y la advertencia metodológica que tu fila
-del catálogo marca</strong> - no la inventes, ya está escrita ahí.</td>
+<td>3</td>
+<td><code>scale_linewidth_manual(values = c(0.3, 0.5, 1.4))</code> —
+contexto fino, La Rioja gruesa.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>El <code>filter()</code> de la etiqueta: quedarte con la fila de La
+Rioja en el último año.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="paso-5---guardar-y-auto-auditar-5">Paso 5 - Guardar y
-auto-auditar <em>(5’)</em></h3>
-<p><code>ggsave()</code> a
-<code>outputs/plots/clase3_&lt;nombre_pareja&gt;.png</code>. Antes de
-mostrarlo a la sala, repasá
-<code>materiales/checklist_visualizacion.md</code> §2: eje Y en cero (o
-el corte justificado y marcado), entre 6 y 8 marcas por eje, el color
-codificando lo que tiene que codificar.</p>
-<p>Si te trabás, <code>soluciones/01_ejemplos_resueltos.R</code> tiene
-tres ejemplos completos - sobre otros CSV y otras marcas, para no
-repetir tu propia elección.</p>
+<p><strong>El resultado</strong> tiene que dejar ver de un vistazo en
+qué puesto está La Rioja y si subió, bajó o se mantuvo entre 2010 y
+2024.</p>
+<p><strong>Preguntas:</strong></p>
+<ol type="1">
+<li>¿Por qué <code>group = provincia</code> y no
+<code>group = la_rioja_region</code>?</li>
+<li>Si sacás <code>scale_y_reverse()</code>, ¿qué le pasa a la lectura
+de “mejorar en el ranking”?</li>
+<li>El PBG provincial es una estimación. Si La Rioja pasa del puesto 20
+al 19 entre dos años, ¿es una tendencia? ¿Qué pondrías en el
+caption?</li>
+</ol>
+<blockquote>
+<p><strong>La idea de fondo:</strong> un bump chart <strong>es</strong>
+un gráfico de líneas.
+<code>data → aes → geom → scale → theme → labs</code>, igual que
+<code>src/12_educ.R</code>. Lo único que cambia son esas tres cosas: la
+transformación a ranking en el paso de datos, el eje Y invertido, y el
+patrón figura/fondo.</p>
+</blockquote>
+<p>Solución completa: <code>soluciones/02_bump_pbg.R</code>.</p>
 <hr />
-<h2 id="puesta-en-común-10">Puesta en común <em>(10’)</em></h2>
-<p>Proyectá tu PNG y contá: qué pregunta elegiste, qué marca, y tu
-título. Vamos a compararlo con los de las otras parejas.</p>
+<h2
+id="parte-2-simulacro-de-actualización-recorrido-inverso-los-dos-7">Parte
+2 · Simulacro de actualización + recorrido inverso <em>(los dos,
+~7’)</em></h2>
+<h3 id="a-simulacro-4">a) Simulacro <em>(4’)</em></h3>
+<p>Sin descargar un solo microdato, vas a ver el último eslabón
+funcionando solo.</p>
+<ol type="1">
+<li>Abrí <code>data/inputs_md/04_tasa_desoc.csv</code> y mirá el último
+trimestre.</li>
+<li>Agregá al final tres filas ficticias para <code>2026-Q2</code> (una
+por región). Columnas:
+<code>fecha,la_rioja_region,desoc,pea,tasa_desoc</code>.</li>
+<li>Corré <code>source("src/04_desoc.R")</code> desde la raíz del
+repo.</li>
+<li>Abrí <code>outputs/plots/04_desoc.png</code>: la serie llega un
+trimestre más lejos.</li>
+<li><strong>Revertí con git:</strong>
+<code>git checkout data/inputs_md/04_tasa_desoc.csv</code></li>
+</ol>
+<p><strong>Pregunta:</strong> en un flujo real, ¿quién escribe esa fila
+en vez de vos? ¿Después de qué dos etapas?</p>
+<h3 id="b-recorrido-inverso-3">b) Recorrido inverso <em>(3’)</em></h3>
+<p>Para <strong>uno</strong> de estos tres números (el que más les
+interese), encontrá la cadena completa: el CSV, la columna, el script
+que lo calcula y la fuente cruda.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>#</th>
+<th>Número publicado</th>
+<th>Gráfico</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Tasa de desocupación de La Rioja, último trimestre</td>
+<td><code>outputs/plots/04_desoc.png</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>% de hogares de La Rioja con alguna NBI</td>
+<td><code>outputs/plots/13a_nbi_hogares.png</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Salario promedio del sector privado registrado en La Rioja</td>
+<td><code>outputs/plots/03_salarios_privados_SIPA.png</code></td>
+</tr>
+</tbody>
+</table>
+<p>Pista: empezá por el script de viz (<code>src/NN_*.R</code>), fijate
+qué CSV lee, y de ahí subí por el diagrama del <code>guion.md</code>. El
+nº 3 <strong>no pasa por la EPH</strong>.</p>
+<p>Solución: <code>soluciones/03_simulacro_actualizacion.md</code>.</p>
 <hr />
-<h2 id="pausa-5">Pausa <em>(5’)</em></h2>
-<hr />
-<h2 id="bloque-b---de-dónde-salió-esa-columna-35">Bloque B - De dónde
-salió esa columna (35’)</h2>
-<h3 id="el-ejercicio-1">El ejercicio</h3>
-<p>Trabajás sobre el <strong>mismo CSV</strong> que elegiste en el
-Bloque A. El archivo es <code>ejercicios/02_rastreo_pipeline.R</code>.
-Sin descargar microdatos, sin red: la herramienta es
-<strong>Ctrl+Shift+F</strong> (Find in Files) de RStudio, buscando el
-nombre de tu CSV y de sus columnas dentro de <code>src/</code>.</p>
-<h3 id="b1---el-rastreo-15">B1 - El rastreo <em>(15’)</em></h3>
-<p>Según qué CSV elegiste, seguí el camino EPH o el camino SIPA (las
-preguntas exactas están en
-<code>ejercicios/02_rastreo_pipeline.R</code>):</p>
-<p><strong>Camino EPH</strong> (<code>04_</code>, <code>09a_</code>,
-<code>10_</code>, <code>12_</code>, <code>13a_</code>,
-<code>13b_</code>, <code>03b_</code>): qué script escribió el CSV; de
-qué <code>.rds</code> lo leyó y quién escribió ese <code>.rds</code>; en
-qué línea se creó la variable que se está sumando; de qué columna cruda
-de la EPH depende, y dónde se pidió; qué función convirtió el código
-numérico en texto legible, y por qué importa el orden en que se
-aplica.</p>
-<p><strong>Camino SIPA</strong> (<code>03_</code>, <code>05_</code>,
-<code>07_</code>): qué script prep-ó el CSV y de qué <code>.xlsx</code>;
-qué transformación de formato necesitó; dónde se homologan los nombres
-de provincia. <strong>Si tu CSV es <code>07_</code></strong>: puede que
-no encuentres un script que lo escriba. Si es así, no es que te falte
-buscar mejor - documentalo como lo que es.</p>
-<h3 id="b2---dibujar-el-diagrama-10">B2 - Dibujar el diagrama
-<em>(10’)</em></h3>
-<p>En papel, a partir de lo que encontraste: las etapas del pipeline,
-qué archivo produce cada una, y dónde cae la línea de lo que está
-versionado en git.</p>
-<h3 id="b3---auditar-el-csv-sin-microdatos-10">B3 - Auditar el CSV sin
-microdatos <em>(10’)</em></h3>
-<p>Si tu CSV trae numerador y denominador (<code>04_</code>,
-<code>09a_</code>, <code>10_</code>, <code>12_</code>,
-<code>13a_</code>, <code>13b_</code>), podés recalcular la tasa y
-compararla con la que ya está escrita:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">&quot;./data/inputs_md/04_tasa_desoc.csv&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">control =</span> desoc <span class="sc">/</span> pea <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">dif_maxima =</span> <span class="fu">max</span>(<span class="fu">abs</span>(tasa_desoc <span class="sc">-</span> control)))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># → tiene que dar un número minúsculo (error de redondeo, no un problema del cálculo)</span></span></code></pre></div>
-<p>Si tu CSV es de SIPA o es <code>03b_</code> (un promedio ponderado,
-sin numerador/denominador propio), auditá la estructura en cambio:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">&quot;./data/inputs_md/____.csv&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(jurisdiccion, fecha) <span class="sc">%&gt;%</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># → tiene que devolver 0 filas</span></span></code></pre></div>
-<p><strong>Preguntas para cerrar el bloque:</strong></p>
+<h2 id="para-la-puesta-en-común">Para la puesta en común</h2>
 <ul>
-<li>¿Por qué <code>data/inputs_md/</code> está versionado en git y
-<code>data/raw_data/</code> no?</li>
-<li>Sale una onda nueva de la EPH: ¿qué corrés, y qué NO volvés a
-correr?</li>
-<li>¿Y si además agregaste una variable nueva? (pista: no alcanza con
-agregarla al vector de variables a descargar)</li>
-</ul>
-<p>Si te trabás, las respuestas completas con <code>archivo:línea</code>
-están en <code>soluciones/02_rastreo_respuestas.md</code>.</p>
-<hr />
-<h2 id="cierre">Cierre</h2>
-<p>Traé a la puesta en común:</p>
-<ul>
-<li>El diagrama que dibujaste en B2. Lo comparamos con el de
-referencia.</li>
-<li>Una cosa del circuito que te haya resultado más frágil de lo que
-esperabas.</li>
+<li>El título que le pusieron al bump (Parte 1, TODO del
+<code>labs()</code>). Los comparamos entre parejas.</li>
+<li>Del recorrido inverso: ¿en qué eslabón se les hizo menos obvio de
+dónde salía el número?</li>
+<li>Una cosa del circuito que les haya resultado más frágil de lo que
+esperaban.</li>
 </ul>
 <hr />
-<h2 id="opcional-si-te-sobra-tiempo---publicar-tu-gráfico">Opcional, si
-te sobra tiempo - Publicar tu gráfico</h2>
-<p>Los pasos para que tu gráfico del Bloque A aparezca en el dashboard,
-y para subirlo por PR, no entran en el tiempo de la clase, pero son
-cortos y están completos en <a
-href="../materiales/cheatsheet_repo.md"><code>materiales/cheatsheet_repo.md</code></a>
-(“Agregar un indicador al dashboard” y “Publicar”).</p>
-<p>También queda, como recorrido opcional más largo para practicar el
-circuito completo con otro indicador de punta a punta (cálculo → gráfico
-→ dashboard → PR), el ejercicio de <a
-href="anexo/"><code>anexo/</code></a>: agregar la tasa de actividad al
-monitor.</p>
+<h2 id="material-para-seguir-en-casa-opcional">Material para seguir en
+casa (opcional)</h2>
+<h3 id="el-gráfico-de-líneas-paso-a-paso">El gráfico de líneas paso a
+paso</h3>
+<p><code>ejercicios/01_lineas_educacion.R</code> reconstruye
+<code>src/12_educ.R</code> sobre <code>12_mayor_25_superior.csv</code>,
+parando en las cuatro decisiones que lo vuelven un gráfico del monitor
+(eje X con fechas reales, <code>factor()</code> para el orden de dibujo,
+eje Y en cero, la paleta del proyecto). Solución en
+<code>soluciones/01_lineas_educacion.R</code>.</p>
+<h3 id="agregar-un-indicador-nuevo-de-punta-a-punta">Agregar un
+indicador nuevo de punta a punta</h3>
+<p>El recorrido completo del circuito —calcular un indicador que hoy no
+existe, graficarlo, registrarlo en el dashboard y abrir el PR— está en
+el <code>practica.Rmd</code>, sección “Variante avanzada”. El indicador
+es la <strong>tasa de actividad</strong> (PEA sobre población total),
+derivable de dos CSV ya versionados.</p>
 </main>
 
 <footer class="site-footer">
