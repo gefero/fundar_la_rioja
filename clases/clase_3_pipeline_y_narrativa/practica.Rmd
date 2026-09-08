@@ -1,5 +1,5 @@
 ---
-title: "Clase 3 - Práctica: un gráfico desde cero y de dónde salen los datos"
+title: "Clase 3 - Práctica: Del CSV al monitor"
 subtitle: "Taller de visualización de datos - Monitor La Rioja (Fundar)"
 date: "`r format(Sys.Date(), '%d de %B de %Y')`"
 output:
@@ -15,205 +15,281 @@ output:
 knitr::opts_chunk$set(eval = FALSE, warning = FALSE, message = FALSE)
 ```
 
-> **Cómo usar este notebook.** `eval = FALSE` a propósito: la mayoría de los chunks son plantillas
-> comentadas (empiezan con `#`) para que las descomentes y completes vos - no hay "`______`" en
-> código ejecutable, lo que falta lo escribís entero. Corré cada chunk interactivamente con
-> **Ctrl+Enter** (Cmd+Enter en Mac), en orden. Las rutas de este notebook llevan `../../` adelante
-> porque R Markdown usa la carpeta del propio `.Rmd` como directorio de trabajo, a diferencia de
-> los scripts finales en `src/`, que se corren con la raíz del repo como working directory (vía
-> `fundar_larioja.Rproj`) y por lo tanto **no** llevan ese prefijo.
+> **Cómo usar este notebook.** `eval = FALSE` a propósito: hay chunks con `______` que no son R
+> válido. Corré cada chunk interactivamente con **Ctrl+Enter** (Cmd+Enter en Mac), en orden.
 >
-> **En parejas de perfiles mezclados.** Si te trabás, las soluciones completas están en
-> `soluciones/`.
+> Las rutas de este notebook llevan `../../` adelante porque R Markdown usa la carpeta del propio
+> `.Rmd` como directorio de trabajo. Los scripts de `src/` y los de `ejercicios/` se corren con la
+> raíz del repo como working directory (vía `fundar_larioja.Rproj`) y **no** llevan ese prefijo.
+>
+> **En parejas de perfiles mezclados.** Si te trabás, la solución completa está en `soluciones/`.
 
-```{r libs, eval=TRUE}
+```{r libs}
 library(tidyverse)
 source("../../style/fundar_monitor_theme.R")
 ```
 
 ---
 
-# Bloque A - Un gráfico desde cero (45')
+# Bloque A · Construir los gráficos del monitor
 
-Elegí un CSV del [catálogo de datos](../materiales/catalogo_datos.md) - **uno que no hayas usado
-en la Clase 1 ni en la Clase 2**. El archivo de trabajo equivalente fuera del notebook es
-`ejercicios/01_grafico_desde_cero.R`.
+## El último eslabón
 
-## Paso 0 - La pregunta (5')
+Un script de visualización del monitor (`src/NN_*.R`) hace tres cosas: **lee** un CSV de
+`data/inputs_md/`, **dibuja** con la gramática de la clase 1, y **escribe** un PNG en
+`outputs/plots/`. Los diez indicadores usan el mismo archivo de ~20 líneas: cambia el nombre del
+CSV, la columna `y`, el `ylim` y los textos.
 
-Elegí tu CSV y escribí, en una oración, qué querés contestar. Mala: "Graficar la tasa de
-desocupación." Buena: "¿La desocupación de La Rioja está por debajo del NOA desde 2021?"
+El número que grafica **ya viene calculado en el CSV**. De dónde sale ese número es el Bloque B.
 
-```{r p0-pregunta}
-# CSV elegido: data/inputs_md/____.csv
-# Pregunta:    ____
+```{r eslabon, eval=TRUE}
+# Los tres scripts de viz, uno al lado del otro: son el mismo archivo.
+# (Abrilos en RStudio)
+#   ../../src/04_desoc.R
+#   ../../src/12_educ.R
+#   ../../src/13a_nbi_hogares.R
+readLines("../../src/12_educ.R") |> head(30) |> writeLines()
 ```
-
-## Paso 1 - Mirar el dato (5')
-
-```{r p1-mirar}
-# df <- read_csv("../../data/inputs_md/____.csv", show_col_types = FALSE)
-# glimpse(df)
-```
-
-Contestá en comentario: ¿qué identifica una fila?, ¿qué período cubre `fecha`?, ¿hay `NA`?
-(`df %>% filter(if_any(everything(), is.na))`).
-
-## Paso 2 - Elegir la marca (5')
-
-Con la tabla de `checklist_visualizacion.md` §1:
-
-```{r p2-marca}
-# Operación elegida:    ____   (parte de un todo / ranking / brecha / correlación / cambio en el tiempo)
-# Marca elegida:         ____   (línea, barra, punto, área...)
-# Por qué esa y no otra: ____
-```
-
-## Paso 3 - El gráfico (15')
-
-Herramientas disponibles (`style/fundar_monitor_theme.R`): `theme_monitor()`,
-`theme_monitor_barras_h()`, `scale_color_fundar_multi()`, `scale_fill_fundar_multi()`,
-`fuente_fundar()`, `puntos_etiqueta()`.
-
-Si tu CSV trae `fecha` como texto tipo `"2007-Q1"` (los de EPH): convertila con
-`lubridate::yq()` para tener el eje X con fechas reales, no las 72 etiquetas rotadas (la trampa que
-vimos en la Clase 2). Si tu CSV es de SIPA (`03_`, `05_`, `07_`), `fecha` ya es `Date`.
-
-```{r p3-grafico}
-# df %>%
-#   ggplot(aes(x = ____, y = ____, color = ____)) +
-#   geom_____() +
-#   scale_color_fundar_multi() +
-#   theme_monitor()
-```
-
-## Paso 4 - Los tres campos de texto (10')
-
-Con `checklist_visualizacion.md` §3 al lado. La advertencia metodológica sale de tu fila en el
-catálogo, no se inventa.
-
-```{r p4-textos}
-# Título    (el hallazgo afirmado - no el nombre de la variable): ____
-# Subtítulo (unidad, universo, período):                          ____
-# Caption   (fuente + advertencia metodológica del catálogo):     ____
-```
-
-Agregá al gráfico del Paso 3:
-
-```{r p4-labs}
-#   labs(title = "____", subtitle = "____", caption = fuente_fundar("____"))
-```
-
-## Paso 5 - Guardar y auto-auditar (5')
-
-```{r p5-guardar}
-# ggsave("../../outputs/plots/clase3_<nombre_pareja>.png", width = 12, height = 7)
-```
-
-Antes de mostrarlo a la sala, repasá `checklist_visualizacion.md` §2: eje Y en cero (o el corte
-justificado y marcado), entre 6 y 8 marcas por eje, el color codificando lo que tiene que
-codificar. Si te trabás, `soluciones/01_ejemplos_resueltos.R` tiene tres ejemplos completos, sobre
-otros CSV y otras marcas.
 
 ---
 
-# Puesta en común (10')
+## Ejercicio 1 - Gráfico de líneas (recap acelerado)
 
-Proyectá tu PNG: qué pregunta elegiste, qué marca, y tu título. Se compara con el de las otras
-parejas - es el foco de esta puesta en común.
+La gramática de líneas ya se vio entera en la clase 1. Acá el foco está en **las cuatro decisiones
+que separan un gráfico de exploración de uno del monitor**, sobre un CSV nuevo:
+`12_mayor_25_superior.csv` (% de personas de +25 con estudios superiores completos).
+
+```{r ej1-datos, eval=TRUE}
+df <- read_csv("../../data/inputs_md/12_mayor_25_superior.csv", show_col_types = FALSE)
+glimpse(df)
+# fecha : TEXTO ("2007-Q1")  ·  la_rioja_region : las 3 regiones
+# porc_mayor_25_superior : el indicador
+```
+
+### Paso 0 - el gráfico crudo
+
+Sin ninguna de las cuatro decisiones. Anotá los problemas que ves.
+
+```{r ej1-crudo, eval=TRUE}
+ggplot(df, aes(x = fecha, y = porc_mayor_25_superior,
+               group = la_rioja_region, color = la_rioja_region)) +
+  geom_line(linewidth = 0.7)
+```
+
+### Paso 1 - preparar los datos
+
+- **Decisión 1** — `fecha` a fecha real: hoy es texto y por eso hay 75 etiquetas rotadas. **TODO 1:**
+  convertila con `lubridate::yq()`.
+- **Decisión 2** — `factor(la_rioja_region)`: fuerza el orden `1 < 2 < 3`, así La Rioja se dibuja
+  última y queda por encima cuando las líneas se cruzan.
+
+```{r ej1-prep}
+df_plot <- df %>%
+  mutate(
+    fecha           = ______,                    # <-- TODO 1
+    la_rioja_region = factor(la_rioja_region)
+  )
+```
+
+### Paso 2 - el gráfico
+
+- **Decisión 3** — `ylim(0, 35)`: el eje Y arranca en cero.
+- **Decisión 4** — `scale_color_fundar_multi()`: la paleta del proyecto, que destaca a La Rioja.
+
+**TODO 2:** elegí un `date_breaks` legible. **TODO 3:** poné un título provisorio.
+
+```{r ej1-plot}
+df_plot %>%
+  ggplot(aes(x = fecha, y = porc_mayor_25_superior,
+             group = la_rioja_region, color = la_rioja_region)) +
+  geom_line(linewidth = 0.7) +
+  scale_color_fundar_multi(name = "Región") +
+  scale_x_date(date_labels = "%Y", date_breaks = "______") +   # <-- TODO 2
+  ylim(0, 35) +
+  theme_monitor() +
+  labs(title = "______",                                       # <-- TODO 3
+       x = NULL, y = "% de personas mayores de 25 años",
+       caption = fuente_fundar("EPH-INDEC"))
+```
+
+**Preguntas:**
+
+- ¿Cuál de las cuatro decisiones tuvo más impacto en la legibilidad?
+- `src/12_educ.R` usa `scale_x_discrete(breaks = quiebres_x)` en vez de `scale_x_date()`. ¿Qué hace
+  ese truco con `grepl("Q1$|Q3$")`? ¿Por qué `scale_x_date()` es más robusto?
 
 ---
 
-# Pausa (5')
+## Ejercicio 2 - Bump chart desde cero
+
+**Pregunta:** ¿en qué puesto está La Rioja en el ranking provincial de PBG per cápita, y cómo
+cambió entre 2010 y 2024?
+
+Es la versión simplificada de `src/15_pbg_ranking_percapita.R`. Datos:
+`15_pbg_per_capita_por_provincia.csv` (24 provincias × 15 años, ya versionado).
+
+```{r ej2-datos, eval=TRUE}
+prov <- read_csv("../../data/inputs_md/15_pbg_per_capita_por_provincia.csv",
+                 show_col_types = FALSE)
+glimpse(prov)
+# anio · provincia · pbg_per_capita (pesos const. 2004) · la_rioja_region
+```
+
+### La idea clave: es la MISMA gramática que las líneas
+
+`data → aes → geom → scale → theme → labs`. Un bump chart **es** un gráfico de líneas. Cambian tres
+cosas.
+
+### Novedad 1 - de valor a ranking
+
+El gráfico **no dibuja `pbg_per_capita`**, dibuja el puesto en el ranking de cada año. Muchas veces
+el gráfico grafica algo *derivado* de la columna del CSV, no la columna cruda.
+
+**TODO 1:** calculá `ranking` con `min_rank(desc(pbg_per_capita))` dentro del `group_by(anio)`.
+
+```{r ej2-rank}
+rank_df <- prov %>%
+  group_by(anio) %>%
+  mutate(ranking = ______) %>%                         # <-- TODO 1
+  ungroup() %>%
+  arrange(la_rioja_region, provincia, anio)            # La Rioja se dibuja encima
+
+rank_df %>% count(anio) %>% pull(n) %>% unique()        # -> tiene que dar 24
+```
+
+### Paso intermedio - el gráfico crudo
+
+Mismo `aes` que un gráfico de líneas. Mirá los dos problemas: el puesto 1 está abajo y las tres
+regiones pesan visualmente igual.
+
+```{r ej2-crudo}
+ggplot(rank_df, aes(x = anio, y = ranking,
+                    group = provincia, color = la_rioja_region)) +
+  geom_line(linewidth = 0.7) +
+  scale_color_fundar_multi(name = "Región") +
+  theme_monitor()
+```
+
+### Novedades 2 y 3 - eje Y invertido + figura/fondo
+
+- **Novedad 2** — `scale_y_reverse()`: el puesto 1 arriba.
+- **Novedad 3** — figura/fondo: contexto fino, La Rioja gruesa, y una etiqueta al final de su línea
+  en vez de leyenda.
+
+**TODO 2:** agregá `scale_y_reverse(breaks = 1:24)`.
+**TODO 3:** tres `linewidth` crecientes (uno por región): `c(0.3, 0.5, 1.4)`.
+**TODO 4:** el `filter()` de la etiqueta: La Rioja en el último año.
+
+```{r ej2-final}
+etiqueta_lr <- rank_df %>%
+  filter(______)                                       # <-- TODO 4
+
+ggplot(rank_df, aes(x = anio, y = ranking, group = provincia,
+                    color = la_rioja_region)) +
+  geom_line(aes(linewidth = la_rioja_region)) +
+  geom_text(data = etiqueta_lr,
+            aes(label = paste0("La Rioja (", ranking, "°)")),
+            hjust = -0.1, size = 3.2, fontface = "bold", show.legend = FALSE) +
+  ______ +                                             # <-- TODO 2: scale_y_reverse(...)
+  scale_color_fundar_multi(name = "Región") +
+  scale_linewidth_manual(values = ______, guide = "none") +   # <-- TODO 3
+  scale_x_continuous(breaks = seq(2010, 2024, 2),
+                     expand = expansion(mult = c(0.02, 0.15))) +
+  coord_cartesian(clip = "off") +
+  theme_monitor() +
+  theme(plot.margin = margin(16, 80, 16, 16)) +
+  labs(title = "______",   # el hallazgo: ¿subió, bajó, se mantuvo?
+       subtitle = "Puesto entre las 24 jurisdicciones · PBG per cápita en pesos constantes de 2004",
+       x = NULL, y = "Puesto (1 = mayor PBG per cápita)",
+       caption = fuente_fundar("Fundar, con base en CEPAL / Ministerio de Economía y proyecciones de población de la DNAP."))
+```
+
+**Preguntas:**
+
+- ¿Por qué `group = provincia` y no `group = la_rioja_region`?
+- Sacá `scale_y_reverse()`: ¿qué le pasa a la lectura de "subir en el ranking"?
+- Con `color = la_rioja_region` no se distinguen las 18 provincias del "Resto país". ¿Es un
+  problema para *esta* pregunta? ¿Y si la pregunta fuera "cuál es la provincia más rica"?
+
+Solución completa: `soluciones/02_bump_pbg.R`.
 
 ---
 
-# Bloque B - De dónde salió esa columna (35')
+# Bloque narrativa · Reescribir tres títulos *(perfil comunicación)*
 
-Trabajás sobre el **mismo CSV** que elegiste en el Bloque A. Sin descargar microdatos, sin red: la
-herramienta es **Ctrl+Shift+F** (Find in Files) de RStudio, buscando el nombre del CSV y de sus
-columnas dentro de `src/`. El archivo de trabajo equivalente fuera del notebook es
-`ejercicios/02_rastreo_pipeline.R`.
+El gráfico es **soporte de un texto**. Los tres campos:
 
-## B1 - El rastreo (15')
+| Campo | Qué dice |
+|---|---|
+| **Título** | El hallazgo, afirmado. Una oración que se lee sola. **No** "Tasa de desocupación". |
+| **Subtítulo** | Unidad, universo, período, transformaciones. |
+| **Caption** | Fuente completa **y** las advertencias metodológicas. |
 
-**Camino EPH** (tu CSV es `04_`, `09a_`, `10_`, `12_`, `13a_`, `13b_` o `03b_`):
+Tomá los `labs()` de estos tres scripts y reescribilos para publicar (esto es texto, no código):
 
-```{r b1-eph}
-# 1. ¿Qué script escribió este CSV? (buscá el nombre del archivo en src/)
-#    Respuesta: ____
-#
-# 2. Ese script lee un .rds con read_rds(). ¿Cuál, y qué script lo escribió?
-#    Respuesta: ____
-#
-# 3. ¿En qué línea de ESE script se creó la variable que se está sumando o
-#    promediando en tu CSV (ej. `ocupado`, `desocupado`, `NBI_HAC`)?
-#    Respuesta: ____
-#
-# 4. Esa variable derivada depende de una columna cruda de la EPH
-#    (ej. ESTADO, IV1, IV8). ¿Dónde se pidió esa columna por primera vez?
-#    Respuesta: ____
-#
-# 5. ¿Qué función convirtió el código numérico de esa columna cruda en el
-#    texto legible, y por qué importa el orden en que se aplica respecto de
-#    sacar la clase "labelled"?
-#    Respuesta: ____
+```{r narrativa, eval=TRUE}
+# Los títulos actuales (todos nombran la variable, ninguno afirma un hallazgo):
+purrr::walk(
+  c("../../src/04_desoc.R", "../../src/10_tasa_empleo.R", "../../src/12_educ.R"),
+  ~ { cat("\n===", .x, "===\n"); grep("title|caption", readLines(.x), value = TRUE) |> cat(sep = "\n") }
+)
 ```
 
-**Camino SIPA** (tu CSV es `03_`, `05_` o `07_`):
+**Advertencias que podrían ir en el caption, según el indicador:**
 
-```{r b1-sipa}
-# 1. ¿Hay un script que prep-ó este CSV? Si lo hay, ¿de qué archivo .xlsx
-#    crudo? Si NO lo hay (el que LEE el CSV no es necesariamente el que lo
-#    ESCRIBE), esa ausencia es en sí misma un hallazgo del rastreo.
-#    Respuesta: ____
-#
-# 2. (si hay prep) ¿Qué transformación de formato necesitó ese .xlsx antes de
-#    poder pivotear a formato largo (fila = fecha × provincia)?
-#    Respuesta: ____
-#
-# 3. (si hay prep) ¿Dónde se homologan los nombres de provincia entre la
-#    fuente y el resto del proyecto, y por qué hace falta ese paso?
-#    Respuesta: ____
+- **La Rioja es un dominio chico de la EPH.** Nunca un nivel de un solo trimestre: promediar las 4
+  ondas del año. Un `0,00` en una sub-dimensión de NBI = "la muestra no alcanza", no "no hay
+  privación".
+- **Quiebre 2015/2016** (solo indicadores de ingresos): cambió el método de imputación y la EPH
+  estuvo interrumpida. `src/03b_salarios_registrados_EPH.R` es el ejemplo a imitar: lo dice en el
+  caption y lo dibuja.
+
+---
+
+# Bloque B · Simulacro de actualización + recorrido inverso *(los dos)*
+
+## a) Simulacro - sin descargar microdatos
+
+Ver el último eslabón funcionando solo: cambiar el CSV, correr el viz, ver el PNG, revertir.
+
+1. Abrí `../../data/inputs_md/04_tasa_desoc.csv`, mirá el último trimestre.
+2. Agregá tres filas ficticias `2026-Q2` (una por región). Columnas:
+   `fecha,la_rioja_region,desoc,pea,tasa_desoc`.
+3. Corré el script de viz **desde la raíz del repo** (no desde este notebook):
+
+```r
+source("src/04_desoc.R")
 ```
 
-## B2 - Dibujar el diagrama (10')
+4. Abrí `outputs/plots/04_desoc.png`: la serie llega un trimestre más lejos.
+5. **Revertí con git:**
 
-En papel, a partir de lo que encontraste en B1: las etapas del pipeline, qué archivo produce cada
-una, y dónde cae la línea de lo que está versionado en git. Se compara con el de referencia al
-cierre.
-
-## B3 - Auditar el CSV sin microdatos (10')
-
-Si tu CSV trae numerador y denominador (`04_`, `09a_`, `10_`, `12_`, `13a_`, `13b_`), el ejemplo de
-abajo corre tal cual con `04_tasa_desoc.csv` - adaptalo a las columnas de tu propio CSV:
-
-```{r b3-auditoria-eph, eval=TRUE}
-read_csv("../../data/inputs_md/04_tasa_desoc.csv", show_col_types = FALSE) %>%
-  mutate(control = desoc / pea * 100) %>%
-  summarise(dif_maxima = max(abs(tasa_desoc - control)))
-# → tiene que dar un número minúsculo (error de redondeo, no un problema del cálculo)
+```bash
+git checkout data/inputs_md/04_tasa_desoc.csv
 ```
 
-Si tu CSV es de SIPA o es `03b_` (un promedio ponderado, sin numerador/denominador propio), auditá
-la estructura en cambio - el ejemplo corre con `05_puestos_asalariados_privados.csv`:
+**Pregunta:** en un flujo real, ¿quién escribe esa fila? ¿Después de qué dos etapas del pipeline?
 
-```{r b3-auditoria-sipa, eval=TRUE}
-read_csv("../../data/inputs_md/05_puestos_asalariados_privados.csv", show_col_types = FALSE) %>%
-  count(jurisdiccion, fecha) %>%
-  filter(n > 1)
-# → tiene que devolver 0 filas: ninguna combinación de unidad-período repetida
+## b) Recorrido inverso
+
+Para **uno** de estos números, encontrá la cadena: CSV → columna → script que lo calcula → fuente
+cruda. Empezá por el script de viz y subí por el diagrama del `guion.md`.
+
+```{r trace, eval=TRUE}
+# ¿Qué CSV lee cada gráfico?
+purrr::walk(
+  c("../../src/04_desoc.R", "../../src/13a_nbi_hogares.R", "../../src/03_salarios_privados_SIPA.R"),
+  ~ { cat(.x, "->\n  "); grep("read_csv", readLines(.x), value = TRUE)[1] |> cat("\n") }
+)
 ```
 
-**Preguntas para cerrar el bloque:**
+| # | Número | Ojo con |
+|---|---|---|
+| 1 | Tasa de desocupación de La Rioja, último trimestre | Se deriva de `ESTADO` en la limpieza |
+| 2 | % de hogares de La Rioja con alguna NBI | El cálculo cruza **hogar con individuo** |
+| 3 | Salario promedio del sector privado registrado | **No pasa por la EPH**: es un Excel del SIPA con su propio `prep` |
 
-- ¿Por qué `data/inputs_md/` está versionado en git y `data/raw_data/` no?
-- Sale una onda nueva de la EPH: ¿qué corrés, y qué NO volvés a correr?
-- ¿Y si además agregaste una variable nueva? (pista: no alcanza con agregarla al vector de
-  variables a descargar - ver la trampa nº 1 en `soluciones/02_rastreo_respuestas.md`)
-
-Si te trabás, las respuestas completas con `archivo:línea` están en
-`soluciones/02_rastreo_respuestas.md`.
+Solución: `soluciones/03_simulacro_actualizacion.md`.
 
 ---
 
@@ -221,17 +297,93 @@ Si te trabás, las respuestas completas con `archivo:línea` están en
 
 Traé a la puesta en común:
 
-- El diagrama que dibujaste en B2. Lo comparamos con el de referencia.
-- Una cosa del circuito que te haya resultado más frágil de lo que esperabas.
+- El título que le pusieron al bump.
+- Del recorrido inverso: el eslabón donde se hizo menos obvio de dónde salía el número.
+- Una cosa del circuito que resultó más frágil de lo esperado.
 
 ---
 
-# Opcional, si te sobra tiempo - Publicar tu gráfico
+# Variante avanzada *(opcional, para hacer en casa)*: agregar un indicador de punta a punta
 
-Los pasos para que tu gráfico del Bloque A aparezca en el dashboard, y para subirlo por PR, están
-completos en [`materiales/cheatsheet_repo.md`](../materiales/cheatsheet_repo.md) ("Agregar un
-indicador al dashboard" y "Publicar") - no entran en el tiempo de esta clase.
+Recorrido completo del circuito con un indicador que **hoy no existe**: la **tasa de actividad**
+(PEA sobre población total). Se deriva de dos CSV ya versionados, sin bajar microdatos:
+`04_tasa_desoc.csv` aporta `pea`, `10_tasa_empleo.csv` aporta `pob_tot`.
 
-También queda, como recorrido opcional más largo para practicar el circuito completo con otro
-indicador de punta a punta (cálculo → gráfico → dashboard → PR), el ejercicio de
-[`anexo/`](anexo/): agregar la tasa de actividad al monitor.
+```
+tasa_actividad = pea / pob_tot × 100
+```
+
+## Paso 1 - el cálculo → `src/06_prep_tasa_actividad.R`
+
+```{r va-calc}
+desoc  <- read_csv("../../data/inputs_md/04_tasa_desoc.csv",  show_col_types = FALSE)
+empleo <- read_csv("../../data/inputs_md/10_tasa_empleo.csv", show_col_types = FALSE)
+
+tasa_actividad <- desoc %>%
+  select(fecha, la_rioja_region, desoc, pea) %>%
+  left_join(empleo %>% select(fecha, la_rioja_region, ocupado, pob_tot),
+            by = c(______, ______)) %>%              # <-- ¿qué identifica una fila?
+  mutate(tasa_actividad = ______ / ______ * 100)
+```
+
+## Paso 2 - verificar (antes de graficar)
+
+```{r va-check}
+nrow(tasa_actividad)                                  # -> 216 = 72 trimestres × 3 regiones
+
+tasa_actividad %>% filter(if_any(everything(), is.na)) # -> 0 filas
+
+# Verificación conceptual: la PEA = ocupados + desocupados, así que
+# tasa_actividad ≈ (ocupado + desoc) / pob_tot * 100
+tasa_actividad %>%
+  mutate(control = (ocupado + desoc) / pob_tot * 100,
+         dif = abs(tasa_actividad - control)) %>%
+  summarise(dif_maxima = max(dif))                    # -> ~1e-14 (redondeo)
+```
+
+```{r va-write}
+tasa_actividad %>%
+  select(fecha, la_rioja_region, pea, pob_tot, tasa_actividad) %>%
+  arrange(fecha, la_rioja_region) %>%
+  write_csv("../../data/inputs_md/06_tasa_actividad.csv")
+```
+
+## Paso 3 - el gráfico → `src/06_tasa_actividad.R`
+
+Seguí el patrón del Ejercicio 1 (fecha real, eje Y en cero, la paleta, el título como hallazgo).
+
+## Paso 4 - el dashboard
+
+Registrar el indicador en `INDICADORES`, en `dashboard/R/data.R`, con `shape = "A"` (serie
+trimestral regional). No se toca la app: aparece solo en el selector y en el sitio estático.
+
+```r
+  actividad = list(
+    id = "actividad", titulo = "Tasa de actividad",
+    topico = "Trabajo e ingresos", csv = "06_tasa_actividad.csv",
+    y_var = "tasa_actividad", y_lab = "PEA cada 100 hab. (%)",
+    eje_x = "Año", caption = "EPH-INDEC", ylim = c(0, 55), shape = "A",
+    desc = "Población económicamente activa (ocupados + desocupados) como % de la población total."
+  ),
+```
+
+## Paso 5 - publicar
+
+```bash
+git checkout -b tasa-actividad
+git add src/06_prep_tasa_actividad.R src/06_tasa_actividad.R \
+        data/inputs_md/06_tasa_actividad.csv dashboard/R/data.R \
+        outputs/plots/06_tasa_actividad.png
+git commit -m "Agrego indicador de tasa de actividad"
+git push -u origin tasa-actividad
+```
+
+**Pregunta:** el workflow `.github/workflows/dashboard.yml` se dispara con cambios en
+`data/inputs_md/`. ¿Se disparó con este push a una rama? ¿Cuándo se dispara?
+
+## Variante sobre la variante *(si tenés los microdatos descargados)*
+
+Calculá la tasa de actividad **directamente desde el canónico**, agregando seis líneas a
+`src/02_indicadores_eph_individuo.R` (las variables `pea` y `PONDERA` ya están). Después **contrastá
+los dos resultados**: tienen que dar exactamente igual. Si no, alguno de los dos caminos tiene un
+filtro o un `ANO4 >=` que el otro no tiene — y encontrarlo es el mejor ejercicio del taller.

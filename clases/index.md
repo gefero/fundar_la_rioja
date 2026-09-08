@@ -43,7 +43,6 @@ jerarquía perceptual: por qué un gráfico se entiende o no.
 Tufte y el caso Challenger, factor de mentira, el catálogo de herramientas gráficas de Argendata y
 cómo elegir la correcta según la pregunta que se busca responder.
 
-- [Diapositivas - teórica](./clase_2_integridad_y_catalogo/Clase_2_Integridad_visual.pdf)
 - [Práctica - consigna](./clase_2_integridad_y_catalogo/practica.html)
 - [Práctica - notebook (.Rmd)](./clase_2_integridad_y_catalogo/practica.Rmd)
 - Soluciones:
@@ -53,27 +52,26 @@ cómo elegir la correcta según la pregunta que se busca responder.
 
 [⬇ Descargar todo (clase 2, .zip)](./clase_2_integridad_y_catalogo/clase_2_integridad_y_catalogo.zip)
 
-## Clase 3 - Un gráfico desde cero y de dónde salen los datos
+## Clase 3 - Del CSV al monitor
 
-100% práctica, en dos bloques: armar un gráfico entero por cuenta propia eligiendo libremente entre
-los diez indicadores del monitor, y rastrear hacia atrás el pipeline que produjo el CSV elegido -
-sin descargar microdatos.
+Construir los gráficos del monitor desde su CSV (un gráfico de líneas y un bump chart), y entender
+el flujo completo: de dónde salen los datos, qué cadena de scripts hay detrás, cómo alinear
+narrativa y visualización, y qué hacer cuando sale un dato nuevo.
 
 - [Práctica - consigna](./clase_3_pipeline_y_narrativa/practica.html)
 - [Práctica - notebook (.Rmd)](./clase_3_pipeline_y_narrativa/practica.Rmd)
+- Ejercicios:
+  [Gráfico de líneas](./clase_3_pipeline_y_narrativa/ejercicios/01_lineas_educacion.R) ·
+  [Bump chart](./clase_3_pipeline_y_narrativa/ejercicios/02_bump_pbg.R)
 - Soluciones:
-  [Ej. resueltos - gráficos](./clase_3_pipeline_y_narrativa/soluciones/01_ejemplos_resueltos.R) ·
-  [Rastreo del pipeline - respuestas](./clase_3_pipeline_y_narrativa/soluciones/02_rastreo_respuestas.md)
-- [Anexo - recorrido integrador opcional](./clase_3_pipeline_y_narrativa/anexo/): agregar la tasa
-  de actividad al monitor, de punta a punta.
+  [Líneas](./clase_3_pipeline_y_narrativa/soluciones/01_lineas_educacion.R) ·
+  [Bump](./clase_3_pipeline_y_narrativa/soluciones/02_bump_pbg.R) ·
+  [Simulacro + recorrido inverso](./clase_3_pipeline_y_narrativa/soluciones/03_simulacro_actualizacion.md)
 
 [⬇ Descargar todo (clase 3, .zip)](./clase_3_pipeline_y_narrativa/clase_3_pipeline_y_narrativa.zip)
 
 ## Materiales de referencia
 
-- [Catálogo de datos](./materiales/catalogo_datos.html) - una entrada por cada CSV de
-  `data/inputs_md/`: columnas, granularidad, advertencia metodológica y pregunta sugerida. Base de
-  la elección libre de la Clase 3.
 - [Checklist de visualización](./materiales/checklist_visualizacion.html) - una página para tener
   al lado mientras se arma un producto de comunicación.
 - [Cheatsheet - mantenimiento del repositorio](./materiales/cheatsheet_repo.html) - el mapa del
