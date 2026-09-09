@@ -132,6 +132,10 @@ jobs:
             cp "$src"/soluciones/*   "$dst/soluciones/"   2>/dev/null || true
             # anexo/: recorrido integrador opcional (solo lo tiene la clase 3 por ahora).
             cp -r "$src"/anexo "$dst/" 2>/dev/null || true
+            # plots/: imágenes propias de la práctica (ej. los "antes/después" y
+            # "con errores" de la clase 3), referenciadas desde practica.md con
+            # rutas relativas — sin este cp quedarían rotas en el sitio publicado.
+            cp -r "$src"/plots "$dst/" 2>/dev/null || true
 
             # Bundle descargable con todo el material de la clase. guion.md queda
             # afuera a propósito: es material interno para quien dicta, no para

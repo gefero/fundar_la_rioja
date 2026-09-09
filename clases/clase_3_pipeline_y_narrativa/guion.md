@@ -394,38 +394,53 @@ permite que otro mire el cambio antes de que salga.
 
 ## 95–113' · Práctica integradora
 
-Consigna completa en [`practica.md`](practica.md) / [`practica.Rmd`](practica.Rmd). **En parejas de
-perfiles mezclados.** Dos partes cortas.
+Consigna completa en [`practica.md`](practica.md). **En parejas de perfiles mezclados.** Reformulada
+para pesar hacia la **lectura e interpretación**, no hacia completar código: los `______` de
+siempre quedaron como refuerzo opcional para la casa, al final de `practica.md`.
 
-### Parte 1 · Terminar el bump *(mantenimiento lidera, ~9')*
+### Parte 1 · Lectura de gráficos *(los dos, ~8')*
 
-`ejercicios/02_bump_pbg.R` tiene el esqueleto con cuatro `______`:
+**1a. Antes/después** (4'): mostrar [`plots/clase3_educ_crudo.png`](plots/clase3_educ_crudo.png) —
+el mismo dato de `12_mayor_25_superior.csv` dibujado sin ninguna de las cuatro decisiones de la
+clase 1 (eje X ilegible, eje Y sin cero, sin paleta, título = nombre de variable). Sin mostrar el
+código: que nombren qué está mal. Recién después comparar con `outputs/plots/12_educ.png` y mapear
+cada problema a la decisión que lo resuelve.
 
-1. El `min_rank(desc(...))` dentro del `group_by(anio)`.
-2. El `scale_y_reverse()`.
-3. El `scale_linewidth_manual()` (contexto fino, La Rioja gruesa).
-4. La etiqueta al final de la línea de La Rioja.
+**1b. Errores plantados** (4'): mostrar
+[`plots/clase3_desoc_con_errores.png`](plots/clase3_desoc_con_errores.png) — la tasa de
+desocupación con **dos errores de integridad visual metidos a propósito**: el eje Y recortado
+(3–12, cuando el real va de 0 a ~21 y además corta el pico de 2020) y las tres regiones en el mismo
+color pálido con La Rioja dibujada primero (tapada donde las líneas se cruzan). Encontrarlos sin ver
+el original, después comparar con `outputs/plots/04_desoc.png`.
 
-La solución completa está en `soluciones/02_bump_pbg.R`. El gráfico terminado tiene que dejar ver de
-un vistazo en qué puesto está La Rioja y si subió o bajó en la serie.
+### Parte 2 · Predicción: leer código sin correrlo *(los dos, ~6')*
 
-### Parte 2 · Simulacro de actualización + recorrido inverso *(los dos, ~7')*
+Cuatro tarjetas en `practica.md`, variaciones del bump chart de PBG per cápita (código de
+`ejercicios/02_bump_pbg.R`, mostrado como texto — no hace falta correr nada). Para cada una,
+predicen qué cambia en el gráfico antes de leer la respuesta: sacar la transformación a ranking,
+sacar `scale_y_reverse()`, agrupar por región en vez de por provincia, y el efecto (parcial) del
+grosor de línea sin `scale_linewidth_manual()`. La tarjeta del `group` es la más rendidora: fuerza a
+distinguir "cuántas líneas hay" de "de qué color son".
 
-**a) Simulacro.** Sin descargar un microdato: agregar a mano una fila ficticia `2026-Q2` a
+### Parte 3 · Simulacro de actualización *(los dos, ~4')*
+
+Sin descargar un microdato: agregar a mano una fila ficticia `2026-Q2` a
 `data/inputs_md/04_tasa_desoc.csv` (los tres registros regionales), correr `source("src/04_desoc.R")`
 y ver el PNG extenderse un trimestre. Después **revertir con `git checkout data/inputs_md/04_tasa_desoc.csv`**.
 El punto: la etapa de viz es barata y determinística; el CSV es el contrato, y `git` es la red.
 
-**b) Recorrido inverso** (worksheet en `practica.md`). Tres números que aparecen en gráficos
-publicados; para cada uno, encontrar: **el CSV, la columna, el script que lo calcula y la fuente
-cruda.** Respuestas en `soluciones/03_simulacro_actualizacion.md`.
-
 ### Cómo conducirla
 
-La Parte 1 es la que más engancha al perfil mantenimiento; la Parte 2b, al de comunicación (es
-"entender de dónde viene lo que comunico"). Si una pareja va rápido, que hagan el simulacro
-**también con el bump**: agregar un año ficticio a `15_pbg_per_capita_por_provincia.csv` y ver el
-ranking recalcularse.
+Las Partes 1 y 2 enganchan a los dos perfiles por igual — no hay una mitad "de mantenimiento" y otra
+"de comunicación", que era el problema de la versión anterior (el bump fill-in-blank se lo llevaba
+puesto el perfil de mantenimiento). Si una pareja termina rápido, el rastreo completo del pipeline
+(`ejercicios/02_rastreo_pipeline.R`, reactivado como material para la casa) es la extensión natural
+de la Parte 1b: agarrar el CSV de la desocupación y seguirle el rastro hasta el `.rds` crudo de la EPH.
+
+> **Nota:** `data/inputs_md/15_pbg_per_capita_por_provincia.csv` (el CSV que usaría el bump chart
+> completo, `ejercicios/02_bump_pbg.R`, si se corriera de verdad) todavía no está en el repo — la
+> Parte 2 de acá arriba lo esquiva a propósito, usando el código como texto para predecir en vez de
+> pedir que se ejecute.
 
 ---
 

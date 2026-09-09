@@ -62,13 +62,15 @@ narrativa y visualización, y qué hacer cuando sale un dato nuevo.
   [versión PDF](./clase_3_pipeline_y_narrativa/Clase_3_Pipeline_y_narrativa.pdf)
 - [Práctica - consigna](./clase_3_pipeline_y_narrativa/practica.html)
 - [Práctica - notebook (.Rmd)](./clase_3_pipeline_y_narrativa/practica.Rmd)
-- Ejercicios:
+- Ejercicios (refuerzo opcional, completar código):
   [Gráfico de líneas](./clase_3_pipeline_y_narrativa/ejercicios/01_lineas_educacion.R) ·
-  [Bump chart](./clase_3_pipeline_y_narrativa/ejercicios/02_bump_pbg.R)
+  [Bump chart](./clase_3_pipeline_y_narrativa/ejercicios/02_bump_pbg.R) ·
+  [Rastreo del pipeline](./clase_3_pipeline_y_narrativa/ejercicios/02_rastreo_pipeline.R)
 - Soluciones:
   [Líneas](./clase_3_pipeline_y_narrativa/soluciones/01_lineas_educacion.R) ·
   [Bump](./clase_3_pipeline_y_narrativa/soluciones/02_bump_pbg.R) ·
-  [Simulacro + recorrido inverso](./clase_3_pipeline_y_narrativa/soluciones/03_simulacro_actualizacion.md)
+  [Simulacro](./clase_3_pipeline_y_narrativa/soluciones/03_simulacro_actualizacion.md) ·
+  [Rastreo del pipeline](./clase_3_pipeline_y_narrativa/soluciones/02_rastreo_respuestas.md)
 
 [⬇ Descargar todo (clase 3, .zip)](./clase_3_pipeline_y_narrativa/clase_3_pipeline_y_narrativa.zip)
 
