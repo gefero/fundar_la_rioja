@@ -119,8 +119,8 @@ es correcto, no un error tuyo**.
 `src/07_cant_empresas.R` **lee** ese CSV (línea 4: `read_csv("./data/inputs_md/07_serie_empresas_por_jurisdiccion.csv")`)
 pero no hay, en todo `src/`, ningún script que lo **escriba**. Tampoco hay un `.xlsx` de origen en
 `data/raw_data/sipa/` que corresponda (esa carpeta solo tiene los dos archivos que usan `03_prep_`
-y `05_prep_`). El CSV está versionado y se usa en el dashboard y en el gráfico, pero su procedencia
-no está documentada en el repositorio tal como está hoy.
+y `05_prep_`). El CSV está versionado y se usa en el gráfico, pero su procedencia no está
+documentada en el repositorio tal como está hoy.
 
 **Es un hallazgo del taller, no un TODO tuyo.** Anotalo para el mapa de pendientes del cierre: es
 exactamente el tipo de cosa que un equipo de mantenimiento necesita saber (¿de dónde sale este
@@ -149,10 +149,10 @@ dato? ¿cómo se actualiza?) y que hoy nadie puede contestar mirando solo el có
 │ 02_indicadores_eph_*  │  ETAPA 3 · cálculo de indicadores
 └──────────────────────┘  → data/inputs_md/{04,09a,10,12,03b,13a,13b}*.csv
         │                  [★ VERSIONADO ★ - la frontera del taller]
-        ├─────────────────────┬──────────────────────┐
-        ▼                     ▼                       ▼
-   src/NN_*.R             dashboard/              informes, placas,
-   → outputs/plots/       app.R + index.qmd        presentaciones
+        ├─────────────────────┐
+        ▼                     ▼
+   src/NN_*.R             informes, placas,
+   → outputs/plots/       presentaciones
 
    ¿ 07_serie_empresas_por_jurisdiccion.csv ?  →  no tiene ninguna flecha de entrada documentada.
 ```
@@ -169,8 +169,7 @@ dos convergen en la misma frontera: `data/inputs_md/*.csv`.
 Los microdatos (`data/raw_data/`) pesan mucho y se regeneran solos con `00_descarga_eph.R` - no
 tiene sentido pagar ese peso en git. Los CSV agregados (`data/inputs_md/`) pesan poco, **se pueden
 revisar en un diff** (si un indicador cambia, se ve exactamente en qué), y son lo único que
-consumen los gráficos y el dashboard: es la frontera de trabajo entre el equipo de datos y el de
-comunicación.
+consumen los gráficos: es la frontera de trabajo entre el equipo de datos y el de comunicación.
 
 **Sale una onda nueva de la EPH: ¿qué corrés, y qué NO volvés a correr?**
 Corrés `00_descarga_eph.R` (baja solo lo nuevo: `descargar_eph_incremental()` en

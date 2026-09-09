@@ -286,9 +286,7 @@ ggsave('outputs/plots/12_educ.png')
             columna <code>y</code>, el <code>ylim</code> y los textos. Si sabés hacer uno, sabés
             hacer los diez.</li>
           <li><strong>El script no calcula el indicador.</strong> El número ya viene hecho en el
-            CSV — solo lo dibuja.</li>
-          <li><strong>El PNG no es la única salida.</strong> El dashboard no lee el PNG: lee el
-            mismo CSV y lo vuelve a graficar.</li>
+            CSV — solo lo dibuja. Por eso el CSV, y no el PNG, es lo que importa versionar.</li>
         </ul>
       </div>
     </div>
@@ -299,43 +297,35 @@ ggsave('outputs/plots/12_educ.png')
   <section class="slide">
     <h2 class="title">La cadena completa</h2>
     <div class="body" style="justify-content:center;align-items:center">
-      <svg viewBox="0 0 1000 460" style="width:100%;max-width:820px" role="img" aria-label="Cadena desde el CSV versionado hasta el informe y el dashboard">
+      <svg viewBox="0 0 700 400" style="width:100%;max-width:560px" role="img" aria-label="Cadena desde el CSV versionado hasta el informe">
         <defs>
           <marker id="arrow4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
             <path d="M0,0 L10,5 L0,10 z" fill="#999"/>
           </marker>
         </defs>
 
-        <text x="450" y="20" font-size="15" fill="#262626" text-anchor="middle">el CSV versionado (la &quot;frontera&quot;)</text>
-        <line x1="450" y1="28" x2="450" y2="58" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
+        <text x="350" y="20" font-size="15" fill="#262626" text-anchor="middle">el CSV versionado (la &quot;frontera&quot;)</text>
+        <line x1="350" y1="28" x2="350" y2="58" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
 
-        <rect x="250" y="60" width="400" height="64" rx="4" fill="#EAF0FE" stroke="#1414D6" stroke-width="2"/>
-        <text x="450" y="87" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">data/inputs_md/</text>
-        <text x="450" y="107" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">12_mayor_25_superior.csv</text>
+        <rect x="150" y="60" width="400" height="64" rx="4" fill="#EAF0FE" stroke="#1414D6" stroke-width="2"/>
+        <text x="350" y="87" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">data/inputs_md/</text>
+        <text x="350" y="107" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">12_mayor_25_superior.csv</text>
 
-        <!-- rama hacia dashboard/ -->
-        <polyline points="650,92 800,92 800,298" fill="none" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
+        <line x1="350" y1="124" x2="350" y2="154" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
+        <rect x="200" y="156" width="300" height="46" rx="4" fill="#fff" stroke="#b3b3b3" stroke-width="1.5"/>
+        <text x="350" y="184" font-family="ui-monospace,monospace" font-size="16" font-weight="700" fill="#262626" text-anchor="middle">src/12_educ.R</text>
+        <text x="350" y="220" font-size="12.5" fill="#7a7a7a" text-anchor="middle">lee el CSV, dibuja, guarda el PNG</text>
 
-        <line x1="450" y1="124" x2="450" y2="154" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
-        <rect x="300" y="156" width="300" height="46" rx="4" fill="#fff" stroke="#b3b3b3" stroke-width="1.5"/>
-        <text x="450" y="184" font-family="ui-monospace,monospace" font-size="16" font-weight="700" fill="#262626" text-anchor="middle">src/12_educ.R</text>
-        <text x="450" y="220" font-size="12.5" fill="#7a7a7a" text-anchor="middle">lee el CSV, dibuja, guarda el PNG</text>
+        <line x1="350" y1="230" x2="350" y2="264" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
+        <rect x="180" y="266" width="340" height="46" rx="4" fill="#fff" stroke="#1414D6" stroke-width="2"/>
+        <text x="350" y="294" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">outputs/plots/12_educ.png</text>
 
-        <line x1="450" y1="230" x2="450" y2="264" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
-        <rect x="280" y="266" width="340" height="46" rx="4" fill="#fff" stroke="#1414D6" stroke-width="2"/>
-        <text x="450" y="294" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">outputs/plots/12_educ.png</text>
-
-        <line x1="450" y1="312" x2="450" y2="344" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
-        <rect x="250" y="346" width="400" height="46" rx="4" fill="#fff" stroke="#b3b3b3" stroke-width="1.5"/>
-        <text x="450" y="374" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">informe/monitor_la_rioja.Rmd</text>
-        <text x="450" y="412" font-size="11.5" fill="#7a7a7a" text-anchor="middle">lo inserta con mostrar(&quot;outputs/plots/12_educ.png&quot;)</text>
-
-        <rect x="720" y="300" width="180" height="46" rx="4" fill="#fff" stroke="#b3b3b3" stroke-width="1.5"/>
-        <text x="810" y="328" font-family="ui-monospace,monospace" font-size="16" font-weight="700" fill="#262626" text-anchor="middle">dashboard/</text>
-        <text x="810" y="366" font-size="11.5" fill="#7a7a7a" text-anchor="middle">lo regenera en vivo</text>
-        <text x="810" y="380" font-size="11.5" fill="#7a7a7a" text-anchor="middle">desde el mismo CSV</text>
+        <line x1="350" y1="312" x2="350" y2="344" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
+        <rect x="150" y="346" width="400" height="46" rx="4" fill="#fff" stroke="#b3b3b3" stroke-width="1.5"/>
+        <text x="350" y="374" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">informe/monitor_la_rioja.Rmd</text>
       </svg>
-      <p style="text-align:center;margin-top:6px">Por eso el CSV —y no el PNG— es lo que importa versionar.</p>
+      <p style="text-align:center;margin-top:6px">lo inserta con <code>mostrar("outputs/plots/12_educ.png")</code> —
+        por eso el CSV, y no el PNG, es lo que importa versionar.</p>
     </div>
     <span class="pagenum">4</span>
   </section>
@@ -747,22 +737,17 @@ ggsave("outputs/plots/clase3_bump_pbg.png")                              <span c
         <rect x="50" y="335" width="900" height="46" rx="4" fill="#EAF0FE" stroke="#1414D6" stroke-width="2"/>
         <text x="500" y="363" font-family="ui-monospace,monospace" font-size="17" font-weight="700" fill="#262626" text-anchor="middle">★ data/inputs_md/*.csv — VERSIONADO ★</text>
 
-        <line x1="190" y1="381" x2="190" y2="428" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
-        <line x1="505" y1="381" x2="505" y2="428" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
-        <line x1="815" y1="381" x2="815" y2="428" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
+        <line x1="290" y1="381" x2="290" y2="428" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
+        <line x1="710" y1="381" x2="710" y2="428" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
 
         <!-- salidas -->
-        <rect x="50" y="430" width="280" height="46" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
-        <text x="190" y="458" font-family="ui-monospace,monospace" font-size="14" font-weight="700" fill="#262626" text-anchor="middle">src/NN_*.R</text>
-        <text x="190" y="494" font-size="11" fill="#7a7a7a" text-anchor="middle">→ outputs/plots/</text>
+        <rect x="140" y="430" width="300" height="46" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
+        <text x="290" y="458" font-family="ui-monospace,monospace" font-size="14" font-weight="700" fill="#262626" text-anchor="middle">src/NN_*.R</text>
+        <text x="290" y="494" font-size="11" fill="#7a7a7a" text-anchor="middle">→ outputs/plots/</text>
 
-        <rect x="360" y="430" width="290" height="46" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
-        <text x="505" y="458" font-family="ui-monospace,monospace" font-size="14" font-weight="700" fill="#262626" text-anchor="middle">dashboard/</text>
-        <text x="505" y="494" font-size="11" fill="#7a7a7a" text-anchor="middle">app.R + index.qmd</text>
-
-        <rect x="680" y="430" width="270" height="46" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
-        <text x="815" y="455" font-family="ui-monospace,monospace" font-size="12.5" font-weight="700" fill="#262626" text-anchor="middle">informe/monitor_la_rioja.Rmd</text>
-        <text x="815" y="494" font-size="11" fill="#7a7a7a" text-anchor="middle">(inserta los PNG)</text>
+        <rect x="560" y="430" width="300" height="46" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
+        <text x="710" y="458" font-family="ui-monospace,monospace" font-size="13" font-weight="700" fill="#262626" text-anchor="middle">informe/monitor_la_rioja.Rmd</text>
+        <text x="710" y="494" font-size="11" fill="#7a7a7a" text-anchor="middle">(inserta los PNG)</text>
       </svg>
     </div>
     <span class="pagenum">21</span>
@@ -926,8 +911,8 @@ git commit -m "Actualizo indicadores EPH, onda 2026-T2"
 git push -u origin actualizo-eph-2026q2
 <span class="c"># → abrir un Pull Request en GitHub</span></pre>
       <p style="font-size:1.15rem">El push a <code>main</code> publica. El workflow de GitHub Actions
-        renderiza el dashboard y lo publica en <code>gh-pages</code> — <strong>actualizar un CSV
-        republica el dashboard solo.</strong> La rama y el PR permiten que otro mire el cambio antes
+        renderiza el sitio y lo publica en <code>gh-pages</code> — <strong>actualizar un CSV dispara
+        esa republicación sola.</strong> La rama y el PR permiten que otro mire el cambio antes
         de que salga.</p>
     </div>
     <span class="pagenum">28</span>
@@ -939,16 +924,13 @@ git push -u origin actualizo-eph-2026q2
     <div class="body">
       <p class="small">El foco es leer, no escribir: nada de código para completar en clase — eso
         queda como refuerzo opcional para la casa.</p>
-      <div class="cols c3">
+      <div class="cols c2">
         <div class="card"><span class="lbl">1 · Lectura de gráficos</span>
           <p class="small">Antes/después del gráfico de líneas, y errores de integridad plantados
             en el de desocupación — se identifican sin ver el código.</p></div>
         <div class="card"><span class="lbl">2 · Predicción</span>
           <p class="small">Cuatro variantes del código del bump: predecir qué cambia en el gráfico
             antes de leer la respuesta.</p></div>
-        <div class="card"><span class="lbl">3 · Simulacro</span>
-          <p class="small">Fila ficticia en un CSV → correr el script → ver el PNG extenderse →
-            revertir con <code>git checkout</code>.</p></div>
       </div>
       <p>Consigna completa en <code>practica.md</code>.</p>
     </div>

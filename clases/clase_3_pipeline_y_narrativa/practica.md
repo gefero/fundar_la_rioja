@@ -1,9 +1,9 @@
 # Práctica - Clase 3
 
-**Duración:** ~18 minutos en clase (el resto del material queda para hacer en casa). **En parejas de
-perfiles mezclados.**
+**Duración:** ~14 minutos en clase (el resto del material queda para hacer en casa; falta una
+tercera parte — ver nota al final). **En parejas de perfiles mezclados.**
 
-**El foco de esta práctica es leer, no escribir.** Las tres partes de acá abajo no piden completar
+**El foco de esta práctica es leer, no escribir.** Las partes de acá abajo no piden completar
 código: piden mirar un gráfico y decir qué está bien o mal, o leer un fragmento de `ggplot2` y
 predecir qué dibuja antes de correrlo. Completar código (los `______` de siempre) queda como
 refuerzo opcional para hacer en casa, al final de esta página.
@@ -149,19 +149,12 @@ patrón figura/fondo no depende solo del color.
 
 ---
 
-## Parte 3 · Simulacro de actualización *(los dos, ~4')*
+## Parte 3 · *(pendiente)*
 
-Sin descargar un solo microdato, van a ver el último eslabón funcionando solo.
-
-1. Abrí `data/inputs_md/04_tasa_desoc.csv` y mirá el último trimestre.
-2. Agregá al final tres filas ficticias para `2026-Q2` (una por región). Columnas:
-   `fecha,la_rioja_region,desoc,pea,tasa_desoc`.
-3. Corré `source("src/04_desoc.R")` desde la raíz del repo.
-4. Abrí `outputs/plots/04_desoc.png`: la serie llega un trimestre más lejos.
-5. **Revertí con git:** `git checkout data/inputs_md/04_tasa_desoc.csv`
-
-**Pregunta:** en un flujo real, ¿quién escribe esa fila en vez de vos? ¿Después de qué dos etapas
-del pipeline?
+> **Nota para quien dicta:** el simulacro de actualización que iba acá (agregar una fila ficticia
+> a un CSV, correr un script, revertir con `git checkout`) se sacó de la práctica. Falta una
+> Parte 3 de reemplazo — conceptual sobre el pipeline, sin correr R en vivo — para completar los
+> ~18' de práctica en clase.
 
 ---
 
@@ -202,6 +195,6 @@ interpretaron en las Partes 1 y 2:
 
 ### Agregar un indicador nuevo de punta a punta
 
-El recorrido completo del circuito —calcular un indicador que hoy no existe, graficarlo, registrarlo
-en el dashboard y abrir el PR— está en el `practica.Rmd`, sección "Variante avanzada". El indicador
-es la **tasa de actividad** (PEA sobre población total), derivable de dos CSV ya versionados.
+El recorrido completo del circuito —calcular un indicador que hoy no existe, graficarlo y abrir el
+PR— está en el `practica.Rmd`, sección "Variante avanzada". El indicador es la **tasa de
+actividad** (PEA sobre población total), derivable de dos CSV ya versionados.

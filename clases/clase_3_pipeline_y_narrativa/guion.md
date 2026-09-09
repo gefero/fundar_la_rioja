@@ -57,19 +57,17 @@ data/inputs_md/12_mayor_25_superior.csv   ←  el CSV versionado (la "frontera")
         ▼
 outputs/plots/12_educ.png
         │
-        ├──►  informe/monitor_la_rioja.Rmd   (lo inserta con mostrar("outputs/plots/12_educ.png"))
-        └──►  dashboard/  (lo regenera en vivo desde el mismo CSV)
+        └──►  informe/monitor_la_rioja.Rmd   (lo inserta con mostrar("outputs/plots/12_educ.png"))
 ```
 
-**Los tres puntos a fijar:**
+**Los dos puntos a fijar:**
 
 1. **Todos los scripts de viz son el mismo archivo.** Abrir [`src/04_desoc.R`](../../src/04_desoc.R)
    y [`src/13a_nbi_hogares.R`](../../src/13a_nbi_hogares.R) al lado: cambia el nombre del CSV, la
    columna `y`, el `ylim` y los textos. Nada más. **Si sabés hacer uno, sabés hacer los diez.**
 2. **El script no calcula el indicador.** El número ya viene hecho en el CSV. El script de viz solo
-   lo dibuja. De dónde sale ese número es el Bloque B.
-3. **El PNG no es la única salida.** El dashboard no usa el PNG: lee el mismo CSV y lo vuelve a
-   graficar. Por eso el CSV, y no el PNG, es lo que importa versionar.
+   lo dibuja. De dónde sale ese número es el Bloque B. Por eso el CSV, y no el PNG, es lo que importa
+   versionar: si el número está mal, se corrige en el CSV y el PNG se vuelve a generar solo.
 
 ### Demo (2')
 
@@ -284,10 +282,10 @@ cambio de **un solo puesto** entre dos años consecutivos probablemente sea ruid
         │  → data/inputs_md/*.csv              │
         │     [★ VERSIONADO ★] ◄───────────────┘
         │
-        ├──────────────────────┬─────────────────────┐
-        ▼                      ▼                     ▼
-   src/NN_*.R             dashboard/           informe/monitor_la_rioja.Rmd
-   → outputs/plots/       app.R + index.qmd    (inserta los PNG)
+        ├──────────────────────┐
+        ▼                      ▼
+   src/NN_*.R             informe/monitor_la_rioja.Rmd
+   → outputs/plots/       (inserta los PNG)
 ```
 
 **Las tres cosas que hay que explicar de este diagrama:**
@@ -298,8 +296,8 @@ cambio de **un solo puesto** entre dos años consecutivos probablemente sea ruid
    son más chicas y colapsan a un solo `prep`.
 2. **Por qué `data/raw_data/` está en `.gitignore` y `data/inputs_md/` no.** Los microdatos pesan
    ~1 GB, se regeneran solos y no tiene sentido versionarlos. Los CSV agregados pesan poco, **se
-   revisan en un diff** (si un indicador cambia, se ve exactamente en qué), y son lo que consumen
-   los gráficos y el dashboard.
+   revisan en un diff** (si un indicador cambia, se ve exactamente en qué), y son lo que consume
+   cada script de viz.
 3. **La línea con la estrella es la frontera del taller.** Es la misma que se presentó en la clase 1.
    Todo lo de arriba es del equipo de datos; todo lo de abajo, del de comunicación. El contrato es
    el CSV: si tiene las columnas esperadas y los datos correctos, las dos mitades trabajan en
@@ -382,13 +380,13 @@ git push -u origin actualizo-eph-2026q2
 
 Por qué una rama y un PR: **el push a `main` publica**. El workflow
 [`.github/workflows/dashboard.yml`](../../.github/workflows/dashboard.yml) se dispara al mergear a
-`main` un cambio en `dashboard/`, `data/inputs_md/`, `style/` o el propio workflow, renderiza el
-sitio Quarto y lo publica en `gh-pages`. **Actualizar un CSV republica el dashboard solo.** La rama
-permite que otro mire el cambio antes de que salga.
+`main` un cambio en `data/inputs_md/`, `style/` o el propio workflow, y republica el sitio de
+`clases/` en `gh-pages`. **Actualizar un CSV dispara esa republicación sola.** La rama permite que
+otro mire el cambio antes de que salga.
 
 > **Prioridad si falta tiempo.** Si el Bloque B se pasa de las 85', recortar el recorrido inverso
-> del bump (dejar solo el de educación) y **no** el playbook: el playbook es lo que se llevan como
-> referencia de trabajo.
+> del bump (dejar solo el de educación) y **no** la tabla de actualización: es lo que se llevan
+> como referencia de trabajo.
 
 ---
 
@@ -422,12 +420,11 @@ sacar `scale_y_reverse()`, agrupar por región en vez de por provincia, y el efe
 grosor de línea sin `scale_linewidth_manual()`. La tarjeta del `group` es la más rendidora: fuerza a
 distinguir "cuántas líneas hay" de "de qué color son".
 
-### Parte 3 · Simulacro de actualización *(los dos, ~4')*
+### Parte 3 · *(pendiente — ver nota abajo)*
 
-Sin descargar un microdato: agregar a mano una fila ficticia `2026-Q2` a
-`data/inputs_md/04_tasa_desoc.csv` (los tres registros regionales), correr `source("src/04_desoc.R")`
-y ver el PNG extenderse un trimestre. Después **revertir con `git checkout data/inputs_md/04_tasa_desoc.csv`**.
-El punto: la etapa de viz es barata y determinística; el CSV es el contrato, y `git` es la red.
+> **Nota:** la Parte 3 anterior (simulacro de actualización: fila ficticia + `git checkout`) se
+> sacó de la práctica. Reemplazo pendiente, tiene que ser conceptual sobre el pipeline y no
+> requerir correr R en vivo.
 
 ### Cómo conducirla
 
@@ -467,4 +464,4 @@ Cerrar con trabajo real. Conviene salir con nombres asignados:
 2. **La pregunta define la herramienta**, y un gráfico claro igual puede mentir. (Clase 2)
 3. **El circuito es reproducible de punta a punta.** Que un indicador se actualice cuando sale una
    onda nueva no es magia: las etapas están separadas, el CSV es el contrato entre los dos equipos,
-   y el mismo CSV alimenta el PNG, el informe y el dashboard. (Clase 3)
+   y el mismo CSV alimenta el PNG y el informe. (Clase 3)

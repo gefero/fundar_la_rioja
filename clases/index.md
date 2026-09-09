@@ -5,7 +5,7 @@ El taller tiene un público mixto y está diseñado alrededor de esa mezcla:
 - **Perfil mantenimiento** - quienes van a mantener este repositorio y actualizar los datos
   cuando salga una onda nueva de la EPH o un reporte nuevo del SIPA.
 - **Perfil comunicación** - quienes van a tomar estos indicadores y armar los productos de
-  difusión: informes, presentaciones, placas, el dashboard.
+  difusión: informes, presentaciones, placas.
 
 > Los CSV de `data/inputs_md/` son la frontera entre los dos equipos. El equipo de datos garantiza
 > que estén bien calculados y actualizados. El equipo de comunicación decide cómo se leen. Ese
@@ -59,7 +59,8 @@ el flujo completo: de dónde salen los datos, qué cadena de scripts hay detrás
 narrativa y visualización, y qué hacer cuando sale un dato nuevo.
 
 - [Diapositivas - teórica](./clase_3_pipeline_y_narrativa/slides.html) ·
-  [versión PDF](./clase_3_pipeline_y_narrativa/Clase_3_Pipeline_y_narrativa.pdf)
+  [versión PDF](./clase_3_pipeline_y_narrativa/Clase_3_Pipeline_y_narrativa.pdf) ·
+  [versión PPTX](./clase_3_pipeline_y_narrativa/Clase_3_Pipeline_y_narrativa.pptx)
 - [Práctica - consigna](./clase_3_pipeline_y_narrativa/practica.html)
 - [Práctica - notebook (.Rmd)](./clase_3_pipeline_y_narrativa/practica.Rmd)
 - Ejercicios (refuerzo opcional, completar código):
@@ -69,8 +70,8 @@ narrativa y visualización, y qué hacer cuando sale un dato nuevo.
 - Soluciones:
   [Líneas](./clase_3_pipeline_y_narrativa/soluciones/01_lineas_educacion.R) ·
   [Bump](./clase_3_pipeline_y_narrativa/soluciones/02_bump_pbg.R) ·
-  [Simulacro](./clase_3_pipeline_y_narrativa/soluciones/03_simulacro_actualizacion.md) ·
-  [Rastreo del pipeline](./clase_3_pipeline_y_narrativa/soluciones/02_rastreo_respuestas.md)
+  [Rastreo del pipeline](./clase_3_pipeline_y_narrativa/soluciones/02_rastreo_respuestas.md) ·
+  [Recorrido inverso](./clase_3_pipeline_y_narrativa/soluciones/03_recorrido_inverso_respuestas.md)
 
 [⬇ Descargar todo (clase 3, .zip)](./clase_3_pipeline_y_narrativa/clase_3_pipeline_y_narrativa.zip)
 

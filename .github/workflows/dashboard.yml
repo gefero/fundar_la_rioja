@@ -127,6 +127,7 @@ jobs:
 
             cp "$src/practica.Rmd" "$dst/"
             cp "$src"/*.pdf         "$dst/"               2>/dev/null || true
+            cp "$src"/*.pptx        "$dst/"               2>/dev/null || true
             cp "$src"/slides.html   "$dst/"               2>/dev/null || true
             cp "$src"/ejercicios/*.R "$dst/ejercicios/" 2>/dev/null || true
             cp "$src"/soluciones/*   "$dst/soluciones/"   2>/dev/null || true
