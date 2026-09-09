@@ -1,7 +1,7 @@
 # Práctica - Clase 3
 
-**Duración:** ~14 minutos en clase (el resto del material queda para hacer en casa; falta una
-tercera parte — ver nota al final). **En parejas de perfiles mezclados.**
+**Duración:** ~18 minutos en clase (el resto del material queda para hacer en casa). **En parejas de
+perfiles mezclados.**
 
 **El foco de esta práctica es leer, no escribir.** Las partes de acá abajo no piden completar
 código: piden mirar un gráfico y decir qué está bien o mal, o leer un fragmento de `ggplot2` y
@@ -149,12 +149,65 @@ patrón figura/fondo no depende solo del color.
 
 ---
 
-## Parte 3 · *(pendiente)*
+## Parte 3 · Del pipeline en general *(los dos, ~4')*
 
-> **Nota para quien dicta:** el simulacro de actualización que iba acá (agregar una fila ficticia
-> a un CSV, correr un script, revertir con `git checkout`) se sacó de la práctica. Falta una
-> Parte 3 de reemplazo — conceptual sobre el pipeline, sin correr R en vivo — para completar los
-> ~18' de práctica en clase.
+### 3a. Mapeá la cadena — un indicador nuevo *(2')*
+
+Ya siguieron la cadena completa de la educación (Parte 1a) y de la desocupación (Parte 1b). Ahora
+armen la misma cadena para la **tasa de empleo** (`outputs/plots/10_tasa_empleo.png`) — es la
+misma familia de datos (EPH), pero con una diferencia en el denominador. Completen los blancos
+abriendo los archivos — **no hace falta correr nada**:
+
+| Eslabón | Dónde |
+|---|---|
+| Lo dibuja | `src/10_tasa_empleo.R`, columna `______` |
+| El número está en | `data/inputs_md/______.csv` |
+| Lo calcula | `src/02_indicadores_eph_individuo.R`, bloque `"10"`: `ocupado / ______ * 100` |
+| De dónde sale `ocupado` | `src/01_limpieza_eph.R`: se deriva de `______` |
+
+**La pregunta que importa:** la tasa de desocupación (Parte 1b) divide por `pea` (ocupados +
+desocupados). La tasa de empleo divide por `______`. ¿Por qué no da lo mismo? (Pista: alguien que
+dejó de buscar trabajo no es PEA, pero sigue siendo población.)
+
+<details><summary>Respuesta</summary>
+
+| Eslabón | Dónde |
+|---|---|
+| Lo dibuja | `src/10_tasa_empleo.R`, columna `tasa_empleo` |
+| El número está en | `data/inputs_md/10_tasa_empleo.csv` |
+| Lo calcula | `src/02_indicadores_eph_individuo.R`, bloque `"10"`: `ocupado / pob_tot * 100` |
+| De dónde sale `ocupado` | `src/01_limpieza_eph.R`: `ocupado = if_else(ESTADO == "Ocupado", 1, 0)` |
+
+`pob_tot` es `sum(PONDERA)` de **todo** el dominio, sin filtrar por `ESTADO` — mientras que `pea`
+solo suma ocupados y desocupados. Por eso "tasa de empleo" (ocupados cada 100 habitantes) y "tasa de
+desocupación" (% de la PEA) no son espejo una de la otra: tienen denominadores distintos, aunque
+comparten el mismo `ocupado`/`ESTADO` de origen.
+
+</details>
+
+### 3b. ¿Qué pasa si...? *(2')*
+
+Tres escenarios. Para cada uno, digan **en qué archivo** harían el cambio — alcanza con nombrarlo,
+no hace falta escribir código.
+
+1. Sale la onda 2025-T3 de la EPH.
+2. El Ministerio de Capital Humano le cambia el nombre a la hoja "Total" del Excel del SIPA.
+3. Quieren agregar la **tasa de actividad** como indicador nuevo (la variante avanzada del
+   `practica.Rmd`).
+
+<details><summary>Respuestas</summary>
+
+1. **Ningún script cambia.** Se vuelve a correr `00_descarga_eph.R` (trae el trimestre nuevo) →
+   `01_limpieza_eph.R` → `02_indicadores_eph_*.R`: todos los CSV de la EPH se recalculan solos con
+   el trimestre nuevo adentro.
+2. Se rompe `03_prep_salarios_privados_SIPA.R` — es el único que lee esa hoja por nombre. Hay que
+   editar el string `"Total"` ahí. No toca ni la EPH ni `03_salarios_privados_SIPA.R` (el del
+   gráfico, que solo lee el CSV ya limpio).
+3. No alcanza con agregarle una columna a un CSV que ya existe: hace falta un script de cálculo
+   nuevo que escriba un CSV nuevo en `data/inputs_md/`, y un script de gráfico nuevo que lo lea.
+   Cada CSV es la salida de **un** indicador.
+
+</details>
 
 ---
 
@@ -164,6 +217,8 @@ patrón figura/fondo no depende solo del color.
   uno distinto?
 - Alguna predicción de la Parte 2 que les haya salido al revés de lo que esperaban — ¿por qué falló
   la intuición?
+- El porqué de la Parte 3a: ¿por qué la tasa de empleo y la de desocupación no son complementarias?
+- Cuál de los tres escenarios de la Parte 3b les generó más dudas sobre qué archivo tocar.
 - Si llegaron al rastreo del pipeline (más abajo): en qué eslabón se les hizo menos obvio de dónde
   salía el número.
 

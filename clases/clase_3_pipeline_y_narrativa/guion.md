@@ -420,11 +420,24 @@ sacar `scale_y_reverse()`, agrupar por región en vez de por provincia, y el efe
 grosor de línea sin `scale_linewidth_manual()`. La tarjeta del `group` es la más rendidora: fuerza a
 distinguir "cuántas líneas hay" de "de qué color son".
 
-### Parte 3 · *(pendiente — ver nota abajo)*
+### Parte 3 · Del pipeline en general *(los dos, ~4')*
 
-> **Nota:** la Parte 3 anterior (simulacro de actualización: fila ficticia + `git checkout`) se
-> sacó de la práctica. Reemplazo pendiente, tiene que ser conceptual sobre el pipeline y no
-> requerir correr R en vivo.
+Reemplaza al simulacro de actualización (fila ficticia + `git checkout`) que estaba acá antes — se
+sacó porque correr R en vivo en el horario de práctica era un riesgo innecesario. Las dos partes de
+acá son de lectura/discusión, sin correr nada.
+
+**3a. Mapeá la cadena** (2'): la misma tabla eslabón→dónde de la Parte 1b/recorrido inverso, pero
+para un indicador que todavía no vieron: la **tasa de empleo** (`src/10_tasa_empleo.R`,
+`10_tasa_empleo.csv`). Es la misma familia EPH que la desocupación (mismo `ESTADO`, mismo
+`01_limpieza_eph.R`), pero con un denominador distinto: `pob_tot` (toda la población) en vez de
+`pea` (ocupados + desocupados). El pago conceptual es notar que "cada 100 habitantes" y "% de la
+PEA" miden cosas relacionadas pero no complementarias, aunque compartan el `ocupado` de origen.
+
+**3b. ¿Qué pasa si...?** (2'): tres escenarios cortos — sale una onda nueva de la EPH, el SIPA le
+cambia el nombre a una hoja del Excel, quieren agregar la tasa de actividad como indicador nuevo.
+Para cada uno, decir en qué archivo tocaría el cambio (no escribir código). Sirve para consolidar la
+separación descarga/limpieza/indicadores (EPH) vs. prep de una sola pasada (SIPA) vs. "un indicador
+nuevo es un CSV nuevo", que es la misma distinción del diagrama de "eslabón 3" de más arriba.
 
 ### Cómo conducirla
 

@@ -249,7 +249,8 @@ purrr::walk(
 # Bloque B · Recorrido inverso *(los dos)*
 
 > Acá iba antes un simulacro de actualización (fila ficticia + `git checkout`) — se sacó de la
-> práctica. Queda pendiente una actividad de reemplazo, conceptual sobre el pipeline.
+> práctica por requerir correr R en vivo. Su reemplazo (Parte 3 · "Mapeá la cadena" y "¿Qué pasa
+> si...?", conceptual y sin correr nada) está en `practica.md`, no en este notebook.
 
 ## Recorrido inverso
 
