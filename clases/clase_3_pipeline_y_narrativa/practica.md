@@ -26,6 +26,9 @@ Contestá primero, solo mirando la imagen:
 3. El título dice `12_mayor_25_superior`. ¿Ayuda a entender el hallazgo? ¿Por qué sí o no?
 
 Ahora sí: abrí `outputs/plots/12_educ.png` (la versión real del monitor, mismo dato) y compará.
+
+![Gráfico real](../../outputs/plots/12_educ.png)
+
 Para cada problema que nombraste en la pregunta 2, decí **qué decisión del código lo resuelve** —
 no hace falta escribir la línea exacta, alcanza con nombrarla:
 
@@ -54,7 +57,11 @@ Encontralos **sin mirar el original todavía**.
    con nombrar la función o la decisión que falta — `ylim()`, un `factor()`, una paleta — no hace
    falta escribir el código completo)
 
-Ahora comparen con el original: `outputs/plots/04_desoc.png`. ¿Encontraron los dos errores, o se
+Ahora comparen con el original: `outputs/plots/04_desoc.png`. 
+
+![Gráfico real](../../outputs/plots/04_desoc.png)
+
+¿Encontraron los dos errores, o se
 les pasó alguno? El código real que sí lo hace bien está en `src/04_desoc.R`.
 
 > **Nota para quien dicta:** los errores plantados son (1) el eje Y recortado — va de 3 a 12,
@@ -247,9 +254,3 @@ interpretaron en las Partes 1 y 2:
   > ⚠️ Al día de hoy `data/inputs_md/15_pbg_per_capita_por_provincia.csv` (el CSV que lee este
   > ejercicio) todavía no está en el repo — avisale a quien dicta la clase antes de intentar
   > correrlo.
-
-### Agregar un indicador nuevo de punta a punta
-
-El recorrido completo del circuito —calcular un indicador que hoy no existe, graficarlo y abrir el
-PR— está en el `practica.Rmd`, sección "Variante avanzada". El indicador es la **tasa de
-actividad** (PEA sobre población total), derivable de dos CSV ya versionados.
