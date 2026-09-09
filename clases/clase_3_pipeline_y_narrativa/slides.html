@@ -813,54 +813,97 @@ ggsave("outputs/plots/clase3_bump_pbg.png")                              <span c
     <span class="pagenum">23</span>
   </section>
 
-  <!-- 24 (antes 20): recorrido inverso, educación — reformulado como cadena de pasos -->
+  <!-- 24 (antes 20): recorrido inverso, educación — esquema archivo→archivo→archivo -->
   <section class="slide">
-    <h2 class="title small">Recorrido inverso: de un punto del gráfico al código</h2>
-    <div class="body" style="justify-content:center;gap:0">
-      <div class="flow vertical compact" style="align-items:stretch">
-        <p class="qtag">¿Qué dibuja este punto?</p>
-        <div class="node"><strong>porc_mayor_25_superior</strong> de La Rioja, 2024-Q3<span class="tag">src/12_educ.R</span></div>
-        <div class="arrow">↓</div>
-        <p class="qtag">¿De dónde salió ese número?</p>
-        <div class="node">Una fila del CSV<span class="tag">12_mayor_25_superior.csv</span></div>
-        <div class="arrow">↓</div>
-        <p class="qtag">¿Quién escribió esa fila?</p>
-        <div class="node"><code style="font-size:.85em">sum(mayor_25_superior*PONDERA)/sum(PONDERA)*100</code><span class="tag">02_indicadores_eph_individuo.R</span></div>
-        <div class="arrow">↓</div>
-        <p class="qtag">¿De dónde sale esa variable?</p>
-        <div class="node">Se deriva de <code style="font-size:.85em">CH06</code> + <code style="font-size:.85em">NIVEL_ED</code>, en la limpieza<span class="tag">01_limpieza_eph.R</span></div>
-        <div class="arrow">↓</div>
-        <p class="qtag">¿Y esas columnas crudas?</p>
-        <div class="node">Descargadas de la EPH<span class="tag">00_descarga_eph.R → raw_data/eph/individuo/2024_3_EPH_individuo.rds</span></div>
-      </div>
+    <h2 class="title small">Recorrido inverso: cada eslabón es un archivo</h2>
+    <div class="body" style="justify-content:center;align-items:center">
+      <svg viewBox="0 0 700 400" style="width:100%;max-width:600px" role="img" aria-label="Recorrido inverso del indicador de educación: del CSV a la fuente cruda, siempre pasando por un archivo">
+        <defs>
+          <marker id="arrow24" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#999"/>
+          </marker>
+        </defs>
+
+        <text x="350" y="18" font-size="14.5" font-weight="700" fill="#262626" text-anchor="middle">Punto en el gráfico: porc_mayor_25_superior · La Rioja · 2024-Q3</text>
+        <line x1="350" y1="28" x2="350" y2="62" stroke="#999" stroke-width="1.6" marker-end="url(#arrow24)"/>
+        <text x="368" y="50" font-size="11" font-style="italic" fill="#7a7a7a">src/12_educ.R lee</text>
+
+        <rect x="120" y="64" width="460" height="58" rx="4" fill="#EAF0FE" stroke="#1414D6" stroke-width="2"/>
+        <circle cx="140" cy="93" r="5" fill="#1414D6"/>
+        <text x="358" y="89" font-family="ui-monospace,monospace" font-size="13.5" font-weight="700" fill="#262626" text-anchor="middle">12_mayor_25_superior.csv</text>
+        <text x="358" y="108" font-size="11" fill="#7a7a7a" text-anchor="middle">fila 2024-Q3 · La Rioja → columna porc_mayor_25_superior</text>
+
+        <line x1="350" y1="122" x2="350" y2="164" stroke="#999" stroke-width="1.6" marker-end="url(#arrow24)"/>
+        <text x="368" y="136" font-size="11" font-style="italic" fill="#7a7a7a">escribe · 02_indicadores_eph_individuo.R</text>
+        <text x="368" y="150" font-family="ui-monospace,monospace" font-size="10" fill="#7a7a7a">sum(mayor_25_superior·PONDERA)/sum(PONDERA)·100</text>
+
+        <rect x="120" y="166" width="460" height="58" rx="4" fill="#EAF0FE" stroke="#1414D6" stroke-width="2"/>
+        <circle cx="140" cy="195" r="5" fill="#1414D6"/>
+        <text x="358" y="191" font-family="ui-monospace,monospace" font-size="13.5" font-weight="700" fill="#262626" text-anchor="middle">proc_data/eph_individuo.rds</text>
+        <text x="358" y="210" font-size="11" fill="#7a7a7a" text-anchor="middle">columna mayor_25_superior</text>
+
+        <line x1="350" y1="224" x2="350" y2="266" stroke="#999" stroke-width="1.6" marker-end="url(#arrow24)"/>
+        <text x="368" y="238" font-size="11" font-style="italic" fill="#7a7a7a">deriva · 01_limpieza_eph.R</text>
+        <text x="368" y="252" font-family="ui-monospace,monospace" font-size="10" fill="#7a7a7a">CH06 + NIVEL_ED</text>
+
+        <rect x="120" y="268" width="460" height="58" rx="4" fill="#EAF0FE" stroke="#1414D6" stroke-width="2"/>
+        <circle cx="140" cy="297" r="5" fill="#1414D6"/>
+        <text x="358" y="291" font-family="ui-monospace,monospace" font-size="12" font-weight="700" fill="#262626" text-anchor="middle">raw_data/eph/individuo/2024_3_EPH_individuo.rds</text>
+        <text x="358" y="309" font-size="11" fill="#7a7a7a" text-anchor="middle">descargado por 00_descarga_eph.R — EPH continua, INDEC</text>
+
+        <circle cx="190" cy="356" r="5" fill="#1414D6"/>
+        <text x="202" y="360" font-size="11.5" fill="#595959">= vive en un archivo del repo, se puede abrir y mirar</text>
+      </svg>
+      <p style="text-align:center;max-width:60ch;margin:4px auto 0" class="small">Subiendo la
+        cadena, <strong>siempre se encuentra un archivo</strong> — el gráfico lee un CSV, el CSV lo
+        escribió un script que leyó otro archivo, y así hasta la fuente cruda. Es el caso general.</p>
     </div>
     <span class="pagenum">24</span>
   </section>
 
-  <!-- 25 (antes 21): recorrido inverso, bump — corregido: la transformación no viene de ningún CSV -->
+  <!-- 25 (antes 21): recorrido inverso, bump — el mismo esquema, con el eslabón que no es archivo -->
   <section class="slide">
     <h2 class="title small">Recorrido inverso, más corto: el bump</h2>
-    <div class="body" style="justify-content:center;gap:0">
-      <div class="flow vertical compact" style="align-items:stretch">
-        <p class="qtag">Un punto del bump</p>
-        <div class="node">La Rioja, 2020, <strong>puesto 22°</strong></div>
-        <div class="arrow">↓</div>
-        <p class="qtag">¿De dónde sale el "puesto 22"?</p>
-        <div class="node">Se calcula en el script de viz — <strong>no viene de ningún CSV</strong><span class="tag">min_rank(desc(pbg_per_capita)) en ejercicios/02_bump_pbg.R</span></div>
-        <div class="arrow">↓</div>
-        <p class="qtag">¿Y pbg_per_capita, la columna que sí usa?</p>
-        <div class="node">Una fila del CSV versionado<span class="tag">15_pbg_per_capita_por_provincia.csv</span></div>
-        <div class="arrow">↓</div>
-        <p class="qtag">¿Quién escribió esa fila?</p>
-        <div class="node">VAB × 1e6 / población<span class="tag">15_prep_pbg_per_capita.R</span></div>
-        <div class="arrow">↓</div>
-        <p class="qtag">¿Y esas fuentes crudas?</p>
-        <div class="node">xlsx de CEPAL + población de DNAP<span class="tag">data/raw_data/pbg/</span></div>
-      </div>
-      <p style="text-align:center;max-width:64ch;margin:10px auto 0" class="small">A diferencia del
-        indicador de educación, el primer paso hacia atrás acá <strong>no busca un CSV</strong>: se
-        recalcula cada vez que corre el script (la <em>Comparación</em> de la slide 10). La EPH
-        tampoco aparece en esta cadena — el PBG es una fuente distinta, con su propio prep.</p>
+    <div class="body" style="justify-content:center;align-items:center">
+      <svg viewBox="0 0 700 350" style="width:100%;max-width:600px" role="img" aria-label="Recorrido inverso del bump: el ranking se calcula en el script y no vive en ningún archivo, a diferencia del resto de la cadena">
+        <defs>
+          <marker id="arrow25" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#999"/>
+          </marker>
+          <marker id="arrow25amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#C77800"/>
+          </marker>
+        </defs>
+
+        <text x="350" y="18" font-size="14.5" font-weight="700" fill="#262626" text-anchor="middle">Punto en el gráfico: La Rioja · 2020 · puesto 22°</text>
+        <line x1="350" y1="28" x2="350" y2="90" stroke="#C77800" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arrow25amber)"/>
+        <circle cx="358" cy="41" r="4" fill="#C77800"/>
+        <text x="368" y="45" font-size="12" font-weight="700" fill="#C77800">se calcula acá — no se guarda</text>
+        <text x="368" y="61" font-family="ui-monospace,monospace" font-size="10.5" fill="#595959">min_rank(desc(pbg_per_capita))</text>
+        <text x="368" y="76" font-size="11" font-style="italic" fill="#7a7a7a">ejercicios/02_bump_pbg.R</text>
+
+        <rect x="120" y="92" width="460" height="58" rx="4" fill="#EAF0FE" stroke="#1414D6" stroke-width="2"/>
+        <circle cx="140" cy="121" r="5" fill="#1414D6"/>
+        <text x="358" y="117" font-family="ui-monospace,monospace" font-size="13" font-weight="700" fill="#262626" text-anchor="middle">15_pbg_per_capita_por_provincia.csv</text>
+        <text x="358" y="136" font-size="11" fill="#7a7a7a" text-anchor="middle">fila La Rioja · 2020 → columna pbg_per_capita</text>
+
+        <line x1="350" y1="150" x2="350" y2="192" stroke="#999" stroke-width="1.6" marker-end="url(#arrow25)"/>
+        <text x="368" y="164" font-size="11" font-style="italic" fill="#7a7a7a">escribe · 15_prep_pbg_per_capita.R</text>
+        <text x="368" y="178" font-family="ui-monospace,monospace" font-size="10.5" fill="#7a7a7a">VAB × 1e6 / población</text>
+
+        <rect x="120" y="194" width="460" height="58" rx="4" fill="#EAF0FE" stroke="#1414D6" stroke-width="2"/>
+        <circle cx="140" cy="223" r="5" fill="#1414D6"/>
+        <text x="358" y="219" font-family="ui-monospace,monospace" font-size="13" font-weight="700" fill="#262626" text-anchor="middle">xlsx CEPAL (VAB) + población DNAP</text>
+        <text x="358" y="238" font-size="11" fill="#7a7a7a" text-anchor="middle">fuente última — no es la EPH</text>
+
+        <circle cx="150" cy="290" r="5" fill="#1414D6"/>
+        <text x="162" y="294" font-size="11.5" fill="#595959">= archivo en el repo</text>
+        <circle cx="330" cy="290" r="5" fill="#fff" stroke="#C77800" stroke-width="2"/>
+        <text x="342" y="294" font-size="11.5" fill="#595959">= se calcula en el script, no se guarda en ningún lado</text>
+      </svg>
+      <p style="text-align:center;max-width:60ch;margin:4px auto 0" class="small">Acá la cadena es
+        <strong>más corta</strong>: antes de llegar a un archivo hay que pasar por un cálculo que no
+        deja rastro. La EPH tampoco aparece — el PBG es otra fuente, con su propio prep.</p>
     </div>
     <span class="pagenum">25</span>
   </section>
