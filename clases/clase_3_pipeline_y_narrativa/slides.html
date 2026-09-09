@@ -175,10 +175,12 @@
   .overview .thumb b { display: block; font-size: .84rem; color: var(--blue); margin-bottom: 4px; }
 
   @media print {
-    .nav-btn, .pagenum .hint, .progress { display: none !important; }
+    @page { size: 13.333in 7.5in; margin: 0; }
+    html, body { background: #fff; }
+    .nav-btn, .overview, .progress { display: none !important; }
     .deck { height: auto; }
-    .slide { position: static; display: block !important; opacity: 1 !important;
-      page-break-after: always; height: 100vh; }
+    .slide { position: static; display: flex !important; opacity: 1 !important;
+      page-break-after: always; break-after: page; width: 13.333in; height: 7.5in; }
   }
 </style>
 </head>
