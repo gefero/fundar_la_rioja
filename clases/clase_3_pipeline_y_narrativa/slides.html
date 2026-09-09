@@ -55,18 +55,20 @@
     font-weight: 800;
     font-size: 2.15rem;
     line-height: 1.2;
-    margin: 0 0 26px;
+    margin: 0 0 24px;
   }
+  .slide h2.title.small { font-size: 1.8rem; }
   .slide .kicker {
     font-size: .95rem; color: var(--ink); margin: 0 0 4px;
   }
   .slide .body { flex: 1; overflow: auto; display: flex; flex-direction: column; gap: 16px; }
   .slide p { font-size: 1.12rem; line-height: 1.55; color: var(--body); margin: 0; }
-  .slide p strong, .slide li strong { color: var(--ink); font-weight: 700; }
+  .slide p strong, .slide li strong, .slide td strong { color: var(--ink); font-weight: 700; }
   .slide ul, .slide ol { font-size: 1.1rem; line-height: 1.55; color: var(--body); padding-left: 1.3em; margin: 0; }
   .slide li { margin-bottom: 10px; }
   .slide li::marker { color: #b3b3b3; }
   .small { font-size: .95rem !important; }
+  .tight table td, .tight table th { padding: 7px 10px; font-size: .94rem; }
 
   /* ---- Diapositiva de portada ------------------------------------------ */
   .slide.title {
@@ -113,6 +115,7 @@
   th, td { border-bottom: 1px solid var(--rule); padding: 9px 12px; text-align: left; vertical-align: top; color: var(--body); }
   th { color: var(--ink); font-weight: 700; font-size: .82rem; text-transform: uppercase; letter-spacing: .02em; }
   td strong { color: var(--ink); }
+  td code, li code, p code { font-size: .92em; }
 
   /* ---- Código ------------------------------------------------------------ */
   pre {
@@ -139,10 +142,18 @@
 
   .cols { display: grid; gap: 26px; }
   .cols.c2 { grid-template-columns: 1fr 1fr; }
+  .cols.c3 { grid-template-columns: 1fr 1fr 1fr; }
 
   .card { border: 1px solid var(--rule); border-radius: 4px; padding: 16px 18px; }
   .card .lbl { font-weight: 700; color: var(--ink); font-size: .82rem; text-transform: uppercase; letter-spacing: .03em; display: block; margin-bottom: 6px; }
   .card p { margin: 0; }
+  .card ul { margin-top: 8px; }
+  .card .out {
+    margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--rule);
+    font-size: .88rem; color: var(--body-lt);
+  }
+
+  .swatch { display: inline-block; width: 13px; height: 13px; border-radius: 2px; margin-right: 7px; vertical-align: -2px; }
 
   /* ---- Numeración / controles --------------------------------------------- */
   .pagenum {
@@ -321,44 +332,147 @@ ggsave('outputs/plots/12_educ.png')
     <h2 class="title">Bump chart: la pregunta que responde</h2>
     <div class="body">
       <p style="font-size:1.2rem"><strong>¿En qué puesto está La Rioja respecto de las otras provincias, y
-        cómo cambió ese puesto?</strong> — algo que la serie de tiempo no responde bien.</p>
-      <div class="card"><span class="lbl">Es la MISMA gramática que las líneas</span>
-        <p><code>data → aes → geom → scale → theme → labs</code>. Un bump chart <strong>es</strong> un
-          gráfico de líneas. Cambian tres cosas.</p></div>
-      <p><strong>Datos:</strong> <code>15_pbg_per_capita_por_provincia.csv</code> — 24 provincias × 15 años.</p>
+        cómo cambió ese puesto?</strong> — algo que la serie de tiempo no responde bien: muestra el
+        nivel, pero no si se está ganando o perdiendo posiciones.</p>
+      <div class="card"><span class="lbl">Qué es</span>
+        <p>También se lo llama <strong>slopegraph de ranking</strong>: una familia de gráfico de
+          líneas donde el eje Y no es un valor, sino la <strong>posición</strong> de cada unidad en
+          un ranking, año a año. El repo lo usa en
+          <code>src/15_pbg_ranking_percapita.R</code> para el PBG per cápita.</p></div>
+      <p><strong>Datos:</strong> <code>15_pbg_per_capita_por_provincia.csv</code> — 24 provincias × 15 años (2010–2024).</p>
     </div>
     <span class="pagenum">6 · src/15_pbg_ranking_percapita.R</span>
   </section>
 
-  <!-- 7 -->
+  <!-- 7: NUEVA — ilustración de un bump chart -->
   <section class="slide">
-    <h2 class="title">Bump chart: las tres cosas que cambian</h2>
-    <div class="body">
-      <ol>
-        <li><strong>De valor a ranking</strong> — el gráfico dibuja <code>ranking</code>, no
-          <code>pbg_per_capita</code>: <code>mutate(ranking = min_rank(desc(pbg_per_capita)))</code>
-          dentro de <code>group_by(anio)</code>. El ranking es comparable entre años aunque el nivel
-          no lo sea.</li>
-        <li><strong><code>scale_y_reverse()</code></strong> — el puesto 1 va arriba, como lo espera el ojo.</li>
-        <li><strong>Patrón figura/fondo</strong> — 24 líneas del mismo color son ilegibles: contexto
-          en tono claro, NOA-Resto en tono medio, La Rioja gruesa y oscura, la única que se sigue
-          punto por punto.</li>
-      </ol>
-      <p>Reemplaza a la leyenda una etiqueta al final de la línea de La Rioja.</p>
+    <h2 class="title">Así se ve un bump chart</h2>
+    <div class="body" style="justify-content:center;align-items:center">
+      <svg viewBox="0 0 660 300" style="width:100%;max-width:640px" role="img" aria-label="Ejemplo de bump chart">
+        <line x1="40" y1="20" x2="40" y2="268" stroke="#b3b3b3" stroke-width="1.5"/>
+        <text x="30" y="34" font-size="13" fill="#595959" text-anchor="end">1°</text>
+        <text x="30" y="264" font-size="13" fill="#595959" text-anchor="end">6°</text>
+        <text x="10" y="150" font-size="12" fill="#7a7a7a" transform="rotate(-90 14 150)">Ranking (1° = más alto)</text>
+
+        <polyline points="50,214 217,168 383,122 550,76" fill="none" stroke="#c9c9c9" stroke-width="2.5"/>
+        <polyline points="50,30 217,76 383,76 550,122" fill="none" stroke="#c9c9c9" stroke-width="2.5"/>
+        <polyline points="50,76 217,30 383,30 550,168" fill="none" stroke="#c9c9c9" stroke-width="2.5"/>
+        <polyline points="50,122 217,122 383,214 550,214" fill="none" stroke="#c9c9c9" stroke-width="2.5"/>
+        <polyline points="50,168 217,260 383,260 550,260" fill="none" stroke="#c9c9c9" stroke-width="2.5"/>
+        <polyline points="50,260 217,214 383,168 550,30" fill="none" stroke="#1414D6" stroke-width="4"/>
+        <g fill="#1414D6">
+          <circle cx="50" cy="260" r="5"/><circle cx="217" cy="214" r="5"/>
+          <circle cx="383" cy="168" r="5"/><circle cx="550" cy="30" r="5"/>
+        </g>
+        <text x="562" y="34" font-size="15" font-weight="700" fill="#1414D6">La Rioja</text>
+
+        <text x="50" y="286" font-size="13" fill="#595959" text-anchor="middle">2010</text>
+        <text x="217" y="286" font-size="13" fill="#595959" text-anchor="middle">2015</text>
+        <text x="383" y="286" font-size="13" fill="#595959" text-anchor="middle">2020</text>
+        <text x="550" y="286" font-size="13" fill="#595959" text-anchor="middle">2024</text>
+      </svg>
+      <p style="text-align:center;max-width:56ch">Cada línea es una provincia. El eje Y no es un valor: es el
+        <strong>puesto</strong> en el ranking de ese año, con el 1° arriba. En este ejemplo, La Rioja
+        arranca última y termina primera — el bump chart deja ver esa trayectoria de un vistazo,
+        cosa que una tabla de rankings anuales no logra.</p>
     </div>
     <span class="pagenum">7</span>
   </section>
 
-  <!-- 8: quiebre -->
+  <!-- 8: NUEVA — cambio 1: de valor a ranking -->
+  <section class="slide">
+    <h2 class="title">Bump chart: la misma gramática, tres cambios</h2>
+    <div class="body">
+      <p><code>data → aes → geom → scale → theme → labs</code>. Un bump chart <strong>es</strong> un
+        gráfico de líneas — lo que cambia son tres decisiones. La primera:</p>
+      <div class="card"><span class="lbl">Cambio 1 de 3 · de valor a ranking</span>
+        <pre style="margin-top:8px">rank_df &lt;- prov %&gt;%
+  group_by(anio) %&gt;%
+  mutate(ranking = min_rank(desc(pbg_per_capita))) %&gt;%   <span class="c"># 1 = el más alto ese año</span>
+  ungroup()</pre>
+        <p style="margin-top:10px">El gráfico <strong>no dibuja <code>pbg_per_capita</code></strong>, dibuja
+          <code>ranking</code>. Muchas veces el gráfico no grafica la columna que viene en el CSV,
+          sino algo derivado de ella en el propio script de viz: acá es un ranking; en otros casos
+          es un índice base 100, una media móvil, una variación interanual.</p></div>
+      <p class="small"><strong>Por qué el ranking sí se puede comparar entre años aunque el nivel no.</strong>
+        El PBG per cápita está en pesos constantes de 2004, así que el nivel ya es comparable — pero
+        incluso si estuviera en pesos corrientes (como el salario del indicador 03), el
+        <strong>ranking dentro de un mismo año</strong> sería inmune a la inflación, porque afecta a
+        las 24 jurisdicciones por igual.</p>
+    </div>
+    <span class="pagenum">8</span>
+  </section>
+
+  <!-- 9: NUEVA — cambio 2: scale_y_reverse -->
+  <section class="slide">
+    <h2 class="title">Cambio 2 de 3: el puesto 1 va arriba</h2>
+    <div class="body">
+      <div class="cols c2">
+        <pre>ggplot(rank_df,
+       aes(anio, ranking,
+           group = provincia)) +
+  geom_line() +
+  <span class="s">scale_y_reverse(breaks = 1:24)</span></pre>
+        <ul>
+          <li>Un ranking se lee con <strong>el mejor arriba</strong>. Sin
+            <code>scale_y_reverse()</code>, <code>ggplot</code> dibuja el eje Y de manera creciente
+            hacia arriba y el puesto 1 queda <strong>abajo</strong>.</li>
+          <li>El resultado se lee al revés de como lo espera el ojo: subir de puesto se vería como
+            "bajar" en el gráfico.</li>
+        </ul>
+      </div>
+      <p><strong>Pregunta para la sala:</strong> ¿qué pasa si sacamos <code>scale_y_reverse()</code>?
+        — el gráfico se da vuelta y "subir en el ranking" se ve como bajar.</p>
+    </div>
+    <span class="pagenum">9</span>
+  </section>
+
+  <!-- 10: NUEVA — cambio 3: figura/fondo -->
+  <section class="slide">
+    <h2 class="title">Cambio 3 de 3: el patrón figura/fondo</h2>
+    <div class="body">
+      <p>24 líneas del mismo color son ilegibles. La solución es la misma paleta regional del
+        monitor: las provincias de contexto en un tono claro que no se puede —ni se necesita—
+        seguir individualmente, y La Rioja destacada.</p>
+      <ul>
+        <li><span class="swatch" style="background:#c9c9c9"></span><strong>Contexto</strong> (21 provincias) — línea fina, tono claro.</li>
+        <li><span class="swatch" style="background:#1414D6"></span><strong>La Rioja</strong> — línea gruesa, la única que se sigue punto por punto.</li>
+      </ul>
+      <pre>ggplot(rank_df, aes(anio, ranking, group = provincia, color = la_rioja_region)) +
+  geom_line(aes(linewidth = la_rioja_region)) +
+  scale_color_fundar_multi() +
+  scale_linewidth_manual(values = c(0.3, 0.6, 1.4))   <span class="c"># contexto fino, La Rioja gruesa</span></pre>
+      <p>Como el CSV ya trae <code>la_rioja_region</code>, el mapeo sale directo. Reemplaza a la
+        leyenda una <strong>etiqueta al final de la línea</strong> de La Rioja (<code>geom_text</code>
+        sobre el último año, con <code>coord_cartesian(clip = "off")</code>).</p>
+    </div>
+    <span class="pagenum">10</span>
+  </section>
+
+  <!-- 11: NUEVA — preguntas para la sala -->
+  <section class="slide">
+    <h2 class="title">Bump chart: preguntas para la sala</h2>
+    <div class="body">
+      <div class="card"><span class="lbl">¿Por qué <code>group = provincia</code> y no <code>group = la_rioja_region</code>?</span>
+        <p>Porque hay 24 líneas, una por provincia; el color agrupa de a tres pero la línea es por provincia.</p></div>
+      <div class="card"><span class="lbl">¿Qué pasa si saco <code>scale_y_reverse()</code>?</span>
+        <p>El gráfico se da vuelta y "subir en el ranking" se ve como bajar.</p></div>
+      <div class="card"><span class="lbl">No puedo distinguir las 18 provincias del "Resto país" entre sí. ¿Es un problema?</span>
+        <p>No: son contexto. La pregunta del gráfico es sobre La Rioja, no sobre el resto.</p></div>
+    </div>
+    <span class="pagenum">11</span>
+  </section>
+
+  <!-- 12: quiebre -->
   <section class="slide quote">
     <p class="q">El gráfico es soporte de una narrativa. Si el texto habla de cuatro cosas, no
       muestres doce. <strong style="color:var(--ink)">La granularidad del gráfico tiene que igualar
       la del texto.</strong></p>
     <p class="attrib">Informe final Argendata, págs. 40–42</p>
-    <span class="pagenum">8</span>
+    <span class="pagenum">12</span>
   </section>
 
-  <!-- 9 -->
+  <!-- 13 -->
   <section class="slide">
     <h2 class="title">El gráfico es soporte de un texto</h2>
     <div class="body">
@@ -369,10 +483,10 @@ ggsave('outputs/plots/12_educ.png')
         <code>13a_nbi_hogares.R</code> grafica solo el total, y está bien, porque el análisis habla
         del total.</p>
     </div>
-    <span class="pagenum">9</span>
+    <span class="pagenum">13</span>
   </section>
 
-  <!-- 10 -->
+  <!-- 14 -->
   <section class="slide">
     <h2 class="title">Los tres campos de texto de un gráfico</h2>
     <div class="body">
@@ -394,10 +508,10 @@ ggsave('outputs/plots/12_educ.png')
             indicadores tienen el mismo problema.</p></div>
       </div>
     </div>
-    <span class="pagenum">10</span>
+    <span class="pagenum">14</span>
   </section>
 
-  <!-- 11 -->
+  <!-- 15 -->
   <section class="slide">
     <h2 class="title">La Rioja es un dominio chico de la EPH</h2>
     <div class="body" style="justify-content:center">
@@ -411,19 +525,22 @@ ggsave('outputs/plots/12_educ.png')
       </ul>
       <p>Si se publica, esta advertencia va en el caption.</p>
     </div>
-    <span class="pagenum">11</span>
+    <span class="pagenum">15</span>
   </section>
 
-  <!-- 12: quiebre -->
+  <!-- 16: quiebre -->
   <section class="slide section">
     <h1>La lógica del monitor:<br>de dónde sale cada número</h1>
-    <span class="pagenum">12</span>
+    <span class="pagenum">16</span>
   </section>
 
-  <!-- 13 -->
+  <!-- 17 -->
   <section class="slide">
-    <h2 class="title">Del dato crudo al gráfico publicado</h2>
-    <div class="body">
+    <h2 class="title small">Del dato crudo al gráfico publicado</h2>
+    <p style="margin:-14px 0 14px">La EPH (Encuesta Permanente de Hogares, INDEC) es la fuente de
+      la mitad de los indicadores del monitor — desempleo, informalidad, educación, NBI. No es la
+      única fuente, pero es la única con <strong>tres</strong> etapas en vez de una.</p>
+    <div class="body" style="justify-content:flex-start">
       <div class="flow vertical" style="align-items:stretch">
         <div class="flow">
           <div class="node">INDEC (EPH)</div>
@@ -443,28 +560,120 @@ ggsave('outputs/plots/12_educ.png')
         </div>
       </div>
     </div>
-    <span class="pagenum">13</span>
+    <span class="pagenum">17</span>
   </section>
 
-  <!-- 14 -->
+  <!-- 18: NUEVA — zoom a las tres etapas de la EPH -->
+  <section class="slide">
+    <h2 class="title small">Zoom: las tres etapas de la EPH, script por script</h2>
+    <div class="body">
+      <div class="cols c3">
+        <div class="card">
+          <span class="lbl">Etapa 1 · descarga</span>
+          <p><code>00_descarga_eph.R</code></p>
+          <ul class="small">
+            <li>Descarga incremental de microdatos trimestrales con el paquete <code>eph</code>.</li>
+            <li>Si el <code>.rds</code> del trimestre ya existe, lo saltea.</li>
+          </ul>
+          <p class="out">→ <code>data/raw_data/eph/**/*.rds</code><br>no versionado, ~1&nbsp;GB</p>
+        </div>
+        <div class="card">
+          <span class="lbl">Etapa 2 · limpieza</span>
+          <p><code>01_limpieza_eph.R</code></p>
+          <ul class="small">
+            <li>Canoniza tipos y nombres de columnas.</li>
+            <li>Deriva variables (ej. <code>mayor_25_superior</code>).</li>
+            <li>⚠ el orden de <code>as.character()</code> importa (trampa 2).</li>
+          </ul>
+          <p class="out">→ <code>data/proc_data/eph_*.rds</code><br>no versionado</p>
+        </div>
+        <div class="card">
+          <span class="lbl">Etapa 3 · cálculo</span>
+          <p><code>02_indicadores_eph_*.R</code></p>
+          <ul class="small">
+            <li>Un bloque de código por indicador.</li>
+            <li>Pondera por <code>PONDERA</code> / <code>PONDIIO</code> según el indicador.</li>
+          </ul>
+          <p class="out">→ <code>data/inputs_md/*.csv</code><br>★ versionado ★ — lo que consumen los gráficos</p>
+        </div>
+      </div>
+      <p><strong>Por qué tres scripts y no uno:</strong> para poder re-ejecutar solo una parte. La
+        descarga completa tarda varios minutos; recalcular un indicador sobre datos ya limpios,
+        segundos.</p>
+    </div>
+    <span class="pagenum">18</span>
+  </section>
+
+  <!-- 19 -->
   <section class="slide">
     <h2 class="title">Tres cosas para explicar del diagrama</h2>
     <div class="body">
       <ol>
-        <li><strong>Por qué la EPH tiene tres etapas y no un script:</strong> para poder re-ejecutar
-          solo una parte. Recalcular un indicador no requiere volver a descargar ni relimpiar 19
-          años de microdatos.</li>
+        <li><strong>Por qué la EPH tiene tres etapas y no un script:</strong> recalcular un
+          indicador no requiere volver a descargar ni relimpiar 19 años de microdatos. Las fuentes
+          no-EPH son más chicas y colapsan a un solo <code>prep</code>.</li>
         <li><strong>Por qué <code>raw_data/</code> no se versiona</strong> pero <code>inputs_md/</code>
           sí: los microdatos pesan ~1&nbsp;GB y se regeneran solos; los CSV agregados pesan poco y
-          se revisan en un diff.</li>
+          se revisan en un diff — si un indicador cambia, se ve exactamente en qué.</li>
         <li><strong>La línea con la estrella es la frontera del taller.</strong> Arriba: equipo de
-          datos. Abajo: equipo de comunicación. El contrato es el CSV.</li>
+          datos. Abajo: equipo de comunicación. El contrato es el CSV: si tiene las columnas
+          esperadas y los datos correctos, las dos mitades trabajan en paralelo sin pisarse.</li>
       </ol>
     </div>
-    <span class="pagenum">14</span>
+    <span class="pagenum">19</span>
   </section>
 
-  <!-- 15 -->
+  <!-- 20: NUEVA — recorrido inverso, indicador de educación -->
+  <section class="slide">
+    <h2 class="title small">Recorrido inverso: de un punto del gráfico al código</h2>
+    <p style="margin:-12px 0 12px">La mejor forma de que el diagrama deje de ser abstracto: tomar
+      un punto del gráfico de educación (<code>12_educ.png</code>) y rastrearlo hacia atrás, en vivo.</p>
+    <div class="body tight">
+      <table>
+        <tr><th>Pregunta</th><th>Respuesta</th><th>Archivo</th></tr>
+        <tr><td>¿Qué dibuja este punto?</td>
+          <td><code>porc_mayor_25_superior</code> de La Rioja, 2024-Q3</td>
+          <td><code>src/12_educ.R</code></td></tr>
+        <tr><td>¿De dónde salió ese número?</td>
+          <td>Una fila del CSV</td>
+          <td><code>12_mayor_25_superior.csv</code></td></tr>
+        <tr><td>¿Quién escribió esa fila?</td>
+          <td><code>sum(mayor_25_superior * PONDERA) / sum(PONDERA) * 100</code></td>
+          <td><code>02_indicadores_eph_individuo.R</code></td></tr>
+        <tr><td>¿De dónde sale <code>mayor_25_superior</code>?</td>
+          <td>Se deriva en la limpieza: <code>mayor_25 == 1 &amp; niv_educ_sup == 1</code>, a partir
+            de <code>CH06</code> y <code>NIVEL_ED</code></td>
+          <td><code>01_limpieza_eph.R</code></td></tr>
+        <tr><td>¿Y esas columnas crudas?</td>
+          <td>Descargadas por <code>00_descarga_eph.R</code></td>
+          <td><code>raw_data/eph/individuo/2024_3_EPH_individuo.rds</code></td></tr>
+      </table>
+    </div>
+    <span class="pagenum">20</span>
+  </section>
+
+  <!-- 21: NUEVA — recorrido inverso, bump -->
+  <section class="slide">
+    <h2 class="title small">Recorrido inverso, más corto: el bump</h2>
+    <div class="body" style="justify-content:center">
+      <div class="flow vertical" style="align-items:stretch">
+        <div class="node">un punto del bump (La Rioja, un año, un ranking)</div>
+        <div class="flow" style="justify-content:center"><div class="arrow">↓</div></div>
+        <div class="node frontera">15_pbg_per_capita_por_provincia.csv</div>
+        <div class="flow" style="justify-content:center"><div class="arrow">↓</div></div>
+        <div class="node">15_prep_pbg_per_capita.R<br><span class="tag">VAB × 1e6 / población</span></div>
+        <div class="flow" style="justify-content:center"><div class="arrow">↓</div></div>
+        <div class="node">xlsx de CEPAL + población de DNAP<br><span class="tag">data/raw_data/pbg/</span></div>
+      </div>
+      <p style="text-align:center;max-width:56ch;margin:14px auto 0"><strong>La EPH no aparece en
+        esta cadena</strong> — es una fuente distinta, con su propio <code>prep</code>. Repetir este
+        ejercicio con datos que no son de la EPH deja claro que el patrón (cruda → prep → CSV
+        versionado) es el mismo en todo el repo, aunque las fuentes cambien.</p>
+    </div>
+    <span class="pagenum">21</span>
+  </section>
+
+  <!-- 22 -->
   <section class="slide">
     <h2 class="title">Las cuatro trampas</h2>
     <div class="body">
@@ -481,10 +690,10 @@ ggsave('outputs/plots/12_educ.png')
       </ul>
       <p>Las trampas 3 y 4 son exactamente lo que tiene que aparecer en el caption de un gráfico publicado.</p>
     </div>
-    <span class="pagenum">15</span>
+    <span class="pagenum">22</span>
   </section>
 
-  <!-- 16 -->
+  <!-- 23 -->
   <section class="slide">
     <h2 class="title">Cómo se actualiza: el playbook</h2>
     <div class="body">
@@ -497,10 +706,10 @@ ggsave('outputs/plots/12_educ.png')
       </table>
       <p>Fuerza bruta cuando no se sabe qué se tocó: <code>source("src/999_run_pipeline.R")</code>.</p>
     </div>
-    <span class="pagenum">16</span>
+    <span class="pagenum">23</span>
   </section>
 
-  <!-- 17 -->
+  <!-- 24 -->
   <section class="slide">
     <h2 class="title">El circuito de publicación</h2>
     <div class="body">
@@ -514,10 +723,10 @@ git push -u origin actualizo-eph-2026q2
         republica el dashboard solo.</strong> La rama y el PR permiten que otro mire el cambio antes
         de que salga.</p>
     </div>
-    <span class="pagenum">17</span>
+    <span class="pagenum">24</span>
   </section>
 
-  <!-- 18 -->
+  <!-- 25 -->
   <section class="slide">
     <h2 class="title">Práctica integradora — en parejas de perfiles mezclados</h2>
     <div class="body">
@@ -533,10 +742,10 @@ git push -u origin actualizo-eph-2026q2
       </div>
       <p>Consigna completa en <code>practica.md</code> / <code>practica.Rmd</code>.</p>
     </div>
-    <span class="pagenum">18</span>
+    <span class="pagenum">25</span>
   </section>
 
-  <!-- 19 -->
+  <!-- 26 -->
   <section class="slide">
     <h2 class="title">El mapa de pendientes del repositorio</h2>
     <div class="body">
@@ -547,10 +756,10 @@ git push -u origin actualizo-eph-2026q2
         <li><strong>Integrar los indicadores 17 y 18</strong> al <code>informe/monitor_la_rioja.Rmd</code>.</li>
       </ul>
     </div>
-    <span class="pagenum">19</span>
+    <span class="pagenum">26</span>
   </section>
 
-  <!-- 20: cierre -->
+  <!-- 27: cierre -->
   <section class="slide section">
     <h1 style="font-size:1.85rem;max-width:34ch;text-align:left">
       1. Un gráfico es un mapeo de datos a propiedades visuales — los canales no son intercambiables.
@@ -559,7 +768,7 @@ git push -u origin actualizo-eph-2026q2
       <br><br>
       3. El circuito es reproducible de punta a punta: el CSV es el contrato entre los dos equipos.
     </h1>
-    <span class="pagenum">20</span>
+    <span class="pagenum">27</span>
   </section>
 
 </div>
