@@ -33,15 +33,15 @@ datos · Taller de visualización - Monitor La Rioja</title>
 
 <main>
 <h1 id="práctica---clase-3">Práctica - Clase 3</h1>
-<p><strong>Duración:</strong> ~18 minutos en clase (el resto del
-material queda para hacer en casa). <strong>En parejas de perfiles
-mezclados.</strong></p>
+<p><strong>Duración:</strong> ~14 minutos en clase (el resto del
+material queda para hacer en casa; falta una tercera parte — ver nota al
+final). <strong>En parejas de perfiles mezclados.</strong></p>
 <p><strong>El foco de esta práctica es leer, no escribir.</strong> Las
-tres partes de acá abajo no piden completar código: piden mirar un
-gráfico y decir qué está bien o mal, o leer un fragmento de
-<code>ggplot2</code> y predecir qué dibuja antes de correrlo. Completar
-código (los <code>______</code> de siempre) queda como refuerzo opcional
-para hacer en casa, al final de esta página.</p>
+partes de acá abajo no piden completar código: piden mirar un gráfico y
+decir qué está bien o mal, o leer un fragmento de <code>ggplot2</code> y
+predecir qué dibuja antes de correrlo. Completar código (los
+<code>______</code> de siempre) queda como refuerzo opcional para hacer
+en casa, al final de esta página.</p>
 <hr />
 <h2 id="parte-1-lectura-de-gráficos-los-dos-8">Parte 1 · Lectura de
 gráficos <em>(los dos, ~8’)</em></h2>
@@ -205,25 +205,14 @@ el bump real suma <code>scale_linewidth_manual()</code>: contexto fino,
 La Rioja gruesa — el patrón figura/fondo no depende solo del color.</p>
 </details>
 <hr />
-<h2 id="parte-3-simulacro-de-actualización-los-dos-4">Parte 3 ·
-Simulacro de actualización <em>(los dos, ~4’)</em></h2>
-<p>Sin descargar un solo microdato, van a ver el último eslabón
-funcionando solo.</p>
-<ol type="1">
-<li>Abrí <code>data/inputs_md/04_tasa_desoc.csv</code> y mirá el último
-trimestre.</li>
-<li>Agregá al final tres filas ficticias para <code>2026-Q2</code> (una
-por región). Columnas:
-<code>fecha,la_rioja_region,desoc,pea,tasa_desoc</code>.</li>
-<li>Corré <code>source("src/04_desoc.R")</code> desde la raíz del
-repo.</li>
-<li>Abrí <code>outputs/plots/04_desoc.png</code>: la serie llega un
-trimestre más lejos.</li>
-<li><strong>Revertí con git:</strong>
-<code>git checkout data/inputs_md/04_tasa_desoc.csv</code></li>
-</ol>
-<p><strong>Pregunta:</strong> en un flujo real, ¿quién escribe esa fila
-en vez de vos? ¿Después de qué dos etapas del pipeline?</p>
+<h2 id="parte-3-pendiente">Parte 3 · <em>(pendiente)</em></h2>
+<blockquote>
+<p><strong>Nota para quien dicta:</strong> el simulacro de actualización
+que iba acá (agregar una fila ficticia a un CSV, correr un script,
+revertir con <code>git checkout</code>) se sacó de la práctica. Falta
+una Parte 3 de reemplazo — conceptual sobre el pipeline, sin correr R en
+vivo — para completar los ~18’ de práctica en clase.</p>
+</blockquote>
 <hr />
 <h2 id="para-la-puesta-en-común">Para la puesta en común</h2>
 <ul>
@@ -266,10 +255,10 @@ avisale a quien dicta la clase antes de intentar &gt; correrlo.</li>
 <h3 id="agregar-un-indicador-nuevo-de-punta-a-punta">Agregar un
 indicador nuevo de punta a punta</h3>
 <p>El recorrido completo del circuito —calcular un indicador que hoy no
-existe, graficarlo, registrarlo en el dashboard y abrir el PR— está en
-el <code>practica.Rmd</code>, sección “Variante avanzada”. El indicador
-es la <strong>tasa de actividad</strong> (PEA sobre población total),
-derivable de dos CSV ya versionados.</p>
+existe, graficarlo y abrir el PR— está en el <code>practica.Rmd</code>,
+sección “Variante avanzada”. El indicador es la <strong>tasa de
+actividad</strong> (PEA sobre población total), derivable de dos CSV ya
+versionados.</p>
 </main>
 
 <footer class="site-footer">

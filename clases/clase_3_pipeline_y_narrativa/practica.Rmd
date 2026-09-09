@@ -246,31 +246,12 @@ purrr::walk(
 
 ---
 
-# Bloque B · Simulacro de actualización + recorrido inverso *(los dos)*
+# Bloque B · Recorrido inverso *(los dos)*
 
-## a) Simulacro - sin descargar microdatos
+> Acá iba antes un simulacro de actualización (fila ficticia + `git checkout`) — se sacó de la
+> práctica. Queda pendiente una actividad de reemplazo, conceptual sobre el pipeline.
 
-Ver el último eslabón funcionando solo: cambiar el CSV, correr el viz, ver el PNG, revertir.
-
-1. Abrí `../../data/inputs_md/04_tasa_desoc.csv`, mirá el último trimestre.
-2. Agregá tres filas ficticias `2026-Q2` (una por región). Columnas:
-   `fecha,la_rioja_region,desoc,pea,tasa_desoc`.
-3. Corré el script de viz **desde la raíz del repo** (no desde este notebook):
-
-```r
-source("src/04_desoc.R")
-```
-
-4. Abrí `outputs/plots/04_desoc.png`: la serie llega un trimestre más lejos.
-5. **Revertí con git:**
-
-```bash
-git checkout data/inputs_md/04_tasa_desoc.csv
-```
-
-**Pregunta:** en un flujo real, ¿quién escribe esa fila? ¿Después de qué dos etapas del pipeline?
-
-## b) Recorrido inverso
+## Recorrido inverso
 
 Para **uno** de estos números, encontrá la cadena: CSV → columna → script que lo calcula → fuente
 cruda. Empezá por el script de viz y subí por el diagrama del `guion.md`.
@@ -289,7 +270,7 @@ purrr::walk(
 | 2 | % de hogares de La Rioja con alguna NBI | El cálculo cruza **hogar con individuo** |
 | 3 | Salario promedio del sector privado registrado | **No pasa por la EPH**: es un Excel del SIPA con su propio `prep` |
 
-Solución: `soluciones/03_simulacro_actualizacion.md`.
+Solución: `soluciones/03_recorrido_inverso_respuestas.md`.
 
 ---
 
@@ -352,27 +333,12 @@ tasa_actividad %>%
 
 Seguí el patrón del Ejercicio 1 (fecha real, eje Y en cero, la paleta, el título como hallazgo).
 
-## Paso 4 - el dashboard
-
-Registrar el indicador en `INDICADORES`, en `dashboard/R/data.R`, con `shape = "A"` (serie
-trimestral regional). No se toca la app: aparece solo en el selector y en el sitio estático.
-
-```r
-  actividad = list(
-    id = "actividad", titulo = "Tasa de actividad",
-    topico = "Trabajo e ingresos", csv = "06_tasa_actividad.csv",
-    y_var = "tasa_actividad", y_lab = "PEA cada 100 hab. (%)",
-    eje_x = "Año", caption = "EPH-INDEC", ylim = c(0, 55), shape = "A",
-    desc = "Población económicamente activa (ocupados + desocupados) como % de la población total."
-  ),
-```
-
-## Paso 5 - publicar
+## Paso 4 - publicar
 
 ```bash
 git checkout -b tasa-actividad
 git add src/06_prep_tasa_actividad.R src/06_tasa_actividad.R \
-        data/inputs_md/06_tasa_actividad.csv dashboard/R/data.R \
+        data/inputs_md/06_tasa_actividad.csv \
         outputs/plots/06_tasa_actividad.png
 git commit -m "Agrego indicador de tasa de actividad"
 git push -u origin tasa-actividad
