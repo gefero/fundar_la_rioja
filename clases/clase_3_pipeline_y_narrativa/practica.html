@@ -36,82 +36,178 @@ datos · Taller de visualización - Monitor La Rioja</title>
 <p><strong>Duración:</strong> ~18 minutos en clase (el resto del
 material queda para hacer en casa). <strong>En parejas de perfiles
 mezclados.</strong></p>
-<p>Dos partes cortas. La Parte 1 la lleva adelante el perfil
-mantenimiento; la Parte 2 se hace entre los dos.</p>
+<p><strong>El foco de esta práctica es leer, no escribir.</strong> Las
+tres partes de acá abajo no piden completar código: piden mirar un
+gráfico y decir qué está bien o mal, o leer un fragmento de
+<code>ggplot2</code> y predecir qué dibuja antes de correrlo. Completar
+código (los <code>______</code> de siempre) queda como refuerzo opcional
+para hacer en casa, al final de esta página.</p>
 <hr />
-<h2 id="parte-1-terminar-el-bump-chart-perfil-mantenimiento-9">Parte 1 ·
-Terminar el bump chart <em>(perfil mantenimiento, ~9’)</em></h2>
-<p><strong>Archivo:</strong> <code>ejercicios/02_bump_pbg.R</code> —
-tiene el esqueleto con cuatro <code>______</code>.</p>
-<p>Es la versión simplificada del ranking de PBG per cápita provincial
-(<code>src/15_pbg_ranking_percapita.R</code>). Trabajás sobre
-<code>data/inputs_md/15_pbg_per_capita_por_provincia.csv</code>, que
-<strong>ya está versionado</strong> (24 provincias × 15 años).</p>
-<p>Completá:</p>
+<h2 id="parte-1-lectura-de-gráficos-los-dos-8">Parte 1 · Lectura de
+gráficos <em>(los dos, ~8’)</em></h2>
+<h3 id="a.-antes-después-el-gráfico-de-líneas-4">1a. Antes / después —
+el gráfico de líneas <em>(4’)</em></h3>
+<p>Es el mismo dato que usa el monitor (% de personas +25 con estudios
+superiores, por región), pero dibujado sin ninguna de las decisiones de
+la clase 1. <strong>No mires todavía el código ni el gráfico
+real.</strong></p>
+<figure>
+<img src="plots/clase3_educ_crudo.png"
+alt="Gráfico crudo, sin las decisiones del monitor" />
+<figcaption aria-hidden="true">Gráfico crudo, sin las decisiones del
+monitor</figcaption>
+</figure>
+<p>Contestá primero, solo mirando la imagen:</p>
+<ol type="1">
+<li>¿Qué mide este gráfico? ¿Qué representa cada línea?</li>
+<li>Nombrá al menos tres cosas que dificultan leerlo.</li>
+<li>El título dice <code>12_mayor_25_superior</code>. ¿Ayuda a entender
+el hallazgo? ¿Por qué sí o no?</li>
+</ol>
+<p>Ahora sí: abrí <code>outputs/plots/12_educ.png</code> (la versión
+real del monitor, mismo dato) y compará. Para cada problema que
+nombraste en la pregunta 2, decí <strong>qué decisión del código lo
+resuelve</strong> — no hace falta escribir la línea exacta, alcanza con
+nombrarla:</p>
 <table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
 <thead>
 <tr>
-<th>TODO</th>
-<th>Qué</th>
+<th>Lo que viste mal en el “antes”</th>
+<th>La decisión que lo arregla</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>1</td>
-<td>El ranking: <code>min_rank(desc(pbg_per_capita))</code> dentro del
-<code>group_by(anio)</code>. <strong>El gráfico dibuja el ranking, no el
-valor.</strong></td>
+<td>Eje X con 76 etiquetas superpuestas</td>
+<td>¿…?</td>
 </tr>
 <tr>
-<td>2</td>
-<td><code>scale_y_reverse(breaks = 1:24)</code> — el puesto 1 va
-arriba.</td>
+<td>El eje Y no arranca en cero</td>
+<td>¿…?</td>
 </tr>
 <tr>
-<td>3</td>
-<td><code>scale_linewidth_manual(values = c(0.3, 0.5, 1.4))</code> —
-contexto fino, La Rioja gruesa.</td>
+<td>Las tres líneas pesan igual, ninguna salta</td>
+<td>¿…?</td>
 </tr>
 <tr>
-<td>4</td>
-<td>El <code>filter()</code> de la etiqueta: quedarte con la fila de La
-Rioja en el último año.</td>
+<td>El título es el nombre de una variable</td>
+<td>¿…?</td>
 </tr>
 </tbody>
 </table>
-<p><strong>El resultado</strong> tiene que dejar ver de un vistazo en
-qué puesto está La Rioja y si subió, bajó o se mantuvo entre 2010 y
-2024.</p>
-<p><strong>Preguntas:</strong></p>
+<p>Si querés confirmar tus respuestas viendo el código real:
+<code>ejercicios/01_lineas_educacion.R</code> (queda de refuerzo
+opcional, ver el final de esta página).</p>
+<h3 id="b.-errores-plantados-la-tasa-de-desocupación-4">1b. Errores
+plantados — la tasa de desocupación <em>(4’)</em></h3>
+<p>Alguien lo armó para publicar, con la paleta y el estilo del monitor
+— pero tiene <strong>dos errores de integridad visual</strong> metidos a
+propósito (de los que vimos en la clase 2 y en el Bloque A de hoy).
+Encontralos <strong>sin mirar el original todavía</strong>.</p>
+<figure>
+<img src="plots/clase3_desoc_con_errores.png"
+alt="Gráfico con dos errores de integridad visual plantados" />
+<figcaption aria-hidden="true">Gráfico con dos errores de integridad
+visual plantados</figcaption>
+</figure>
 <ol type="1">
-<li>¿Por qué <code>group = provincia</code> y no
-<code>group = la_rioja_region</code>?</li>
-<li>Si sacás <code>scale_y_reverse()</code>, ¿qué le pasa a la lectura
-de “mejorar en el ranking”?</li>
-<li>El PBG provincial es una estimación. Si La Rioja pasa del puesto 20
-al 19 entre dos años, ¿es una tendencia? ¿Qué pondrías en el
-caption?</li>
+<li>Miren el eje Y. ¿Dónde arranca? ¿Qué efecto tiene eso sobre cómo se
+lee la caída de la desocupación a lo largo de la serie?</li>
+<li>Traten de seguir la línea de La Rioja de punta a punta. ¿Se puede?
+¿Por qué no?</li>
+<li>Si tuvieran que pedir el arreglo en una revisión de código, ¿qué le
+dirían a quien lo hizo? (alcanza con nombrar la función o la decisión
+que falta — <code>ylim()</code>, un <code>factor()</code>, una paleta —
+no hace falta escribir el código completo)</li>
 </ol>
+<p>Ahora comparen con el original:
+<code>outputs/plots/04_desoc.png</code>. ¿Encontraron los dos errores, o
+se les pasó alguno? El código real que sí lo hace bien está en
+<code>src/04_desoc.R</code>.</p>
 <blockquote>
-<p><strong>La idea de fondo:</strong> un bump chart <strong>es</strong>
-un gráfico de líneas.
-<code>data → aes → geom → scale → theme → labs</code>, igual que
-<code>src/12_educ.R</code>. Lo único que cambia son esas tres cosas: la
-transformación a ranking en el paso de datos, el eje Y invertido, y el
-patrón figura/fondo.</p>
+<p><strong>Nota para quien dicta:</strong> los errores plantados son (1)
+el eje Y recortado — va de 3 a 12, cuando el real arranca en 0 y llega a
+~21, así que además recorta el pico de 2020 — y (2) las tres regiones en
+el mismo color pálido, con La Rioja dibujada <em>primero</em> y por lo
+tanto tapada donde las líneas se cruzan.</p>
 </blockquote>
-<p>Solución completa: <code>soluciones/02_bump_pbg.R</code>.</p>
 <hr />
-<h2
-id="parte-2-simulacro-de-actualización-recorrido-inverso-los-dos-7">Parte
-2 · Simulacro de actualización + recorrido inverso <em>(los dos,
-~7’)</em></h2>
-<h3 id="a-simulacro-4">a) Simulacro <em>(4’)</em></h3>
-<p>Sin descargar un solo microdato, vas a ver el último eslabón
+<h2 id="parte-2-predicción-leer-código-sin-correrlo-los-dos-6">Parte 2 ·
+Predicción: leer código sin correrlo <em>(los dos, ~6’)</em></h2>
+<p>Estas cuatro tarjetas son variaciones del bump chart de PBG per
+cápita (<code>ejercicios/02_bump_pbg.R</code>). <strong>No hace falta
+correr nada.</strong> Para cada una: escribí o decí en voz alta qué
+esperás que cambie en el gráfico, <strong>antes</strong> de leer la
+respuesta.</p>
+<p><strong>Tarjeta 1</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rank_df <span class="ot">&lt;-</span> prov <span class="sc">%&gt;%</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(anio) <span class="sc">%&gt;%</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ranking =</span> <span class="fu">min_rank</span>(<span class="fu">desc</span>(pbg_per_capita))) <span class="sc">%&gt;%</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
+<p><strong>Predicción:</strong> si borráramos estas tres líneas y
+graficáramos <code>pbg_per_capita</code> directo (sin pasar por
+<code>ranking</code>), ¿qué eje Y tendría el gráfico? ¿Serviría igual
+para responder “en qué puesto está La Rioja”?</p>
+<details>
+<summary>
+Respuesta
+</summary>
+<p>El eje Y pasaría a ser el valor en pesos, no un puesto del 1 al 24.
+Se podría ver el <em>nivel</em> del PBG per cápita de La Rioja en el
+tiempo, pero no si mejoró o empeoró <em>relativo a las demás</em> — que
+es la pregunta que responde un bump chart.</p>
+</details>
+<p><strong>Tarjeta 2</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rank_df, <span class="fu">aes</span>(<span class="at">x =</span> anio, <span class="at">y =</span> ranking, <span class="at">group =</span> provincia)) <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
+<p><strong>Predicción:</strong> ¿en qué puesto del eje Y aparece
+dibujada la provincia con el PBG per cápita más alto de cada año?</p>
+<details>
+<summary>
+Respuesta
+</summary>
+<p>Sin <code>scale_y_reverse()</code>, <code>ggplot</code> dibuja el eje
+Y de forma creciente hacia arriba: el puesto 1 (el más alto) queda
+<strong>abajo</strong>. La lectura sale al revés de lo que espera el ojo
+— “subir en el ranking” se ve como bajar en el gráfico.</p>
+</details>
+<p><strong>Tarjeta 3</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rank_df, <span class="fu">aes</span>(<span class="at">x =</span> anio, <span class="at">y =</span> ranking, <span class="at">group =</span> la_rioja_region, <span class="at">color =</span> la_rioja_region)) <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
+<p><strong>Predicción:</strong> ¿cuántas líneas hay dibujadas en este
+gráfico? (Pista: hay 24 provincias y 3 valores posibles de
+<code>la_rioja_region</code>.)</p>
+<details>
+<summary>
+Respuesta
+</summary>
+<p>Solo <strong>3 líneas</strong>, una por región — porque
+<code>group</code> agrupa las filas que se conectan en una misma línea,
+y acá se agrupó por región en vez de por provincia. Las 24 trayectorias
+individuales se pierden; lo que se ve es un promedio o una mezcla rara
+de las provincias de cada región. El <code>group</code> correcto es
+<code>provincia</code> (24 líneas); el <code>color</code> sí puede ser
+<code>la_rioja_region</code> (3 colores).</p>
+</details>
+<p><strong>Tarjeta 4</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rank_df, <span class="fu">aes</span>(<span class="at">x =</span> anio, <span class="at">y =</span> ranking, <span class="at">group =</span> provincia, <span class="at">color =</span> la_rioja_region)) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.6</span>)</span></code></pre></div>
+<p><strong>Predicción:</strong> con las 24 líneas del mismo grosor, ¿se
+puede identificar de un vistazo cuál es la de La Rioja?</p>
+<details>
+<summary>
+Respuesta
+</summary>
+<p>Se puede si el color de “3. La Rioja” contrasta fuerte con el resto
+(la paleta del proyecto ya ayuda), pero con las 21 provincias de
+contexto todas del mismo grosor, el gráfico sigue siendo denso. Por eso
+el bump real suma <code>scale_linewidth_manual()</code>: contexto fino,
+La Rioja gruesa — el patrón figura/fondo no depende solo del color.</p>
+</details>
+<hr />
+<h2 id="parte-3-simulacro-de-actualización-los-dos-4">Parte 3 ·
+Simulacro de actualización <em>(los dos, ~4’)</em></h2>
+<p>Sin descargar un solo microdato, van a ver el último eslabón
 funcionando solo.</p>
 <ol type="1">
 <li>Abrí <code>data/inputs_md/04_tasa_desoc.csv</code> y mirá el último
@@ -127,67 +223,46 @@ trimestre más lejos.</li>
 <code>git checkout data/inputs_md/04_tasa_desoc.csv</code></li>
 </ol>
 <p><strong>Pregunta:</strong> en un flujo real, ¿quién escribe esa fila
-en vez de vos? ¿Después de qué dos etapas?</p>
-<h3 id="b-recorrido-inverso-3">b) Recorrido inverso <em>(3’)</em></h3>
-<p>Para <strong>uno</strong> de estos tres números (el que más les
-interese), encontrá la cadena completa: el CSV, la columna, el script
-que lo calcula y la fuente cruda.</p>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th>#</th>
-<th>Número publicado</th>
-<th>Gráfico</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>Tasa de desocupación de La Rioja, último trimestre</td>
-<td><code>outputs/plots/04_desoc.png</code></td>
-</tr>
-<tr>
-<td>2</td>
-<td>% de hogares de La Rioja con alguna NBI</td>
-<td><code>outputs/plots/13a_nbi_hogares.png</code></td>
-</tr>
-<tr>
-<td>3</td>
-<td>Salario promedio del sector privado registrado en La Rioja</td>
-<td><code>outputs/plots/03_salarios_privados_SIPA.png</code></td>
-</tr>
-</tbody>
-</table>
-<p>Pista: empezá por el script de viz (<code>src/NN_*.R</code>), fijate
-qué CSV lee, y de ahí subí por el diagrama del <code>guion.md</code>. El
-nº 3 <strong>no pasa por la EPH</strong>.</p>
-<p>Solución: <code>soluciones/03_simulacro_actualizacion.md</code>.</p>
+en vez de vos? ¿Después de qué dos etapas del pipeline?</p>
 <hr />
 <h2 id="para-la-puesta-en-común">Para la puesta en común</h2>
 <ul>
-<li>El título que le pusieron al bump (Parte 1, TODO del
-<code>labs()</code>). Los comparamos entre parejas.</li>
-<li>Del recorrido inverso: ¿en qué eslabón se les hizo menos obvio de
-dónde salía el número?</li>
-<li>Una cosa del circuito que les haya resultado más frágil de lo que
-esperaban.</li>
+<li>Los dos errores de la Parte 1b: ¿los encontraron los dos integrantes
+de la pareja, o cada uno vio uno distinto?</li>
+<li>Alguna predicción de la Parte 2 que les haya salido al revés de lo
+que esperaban — ¿por qué falló la intuición?</li>
+<li>Si llegaron al rastreo del pipeline (más abajo): en qué eslabón se
+les hizo menos obvio de dónde salía el número.</li>
 </ul>
 <hr />
 <h2 id="material-para-seguir-en-casa-opcional">Material para seguir en
 casa (opcional)</h2>
-<h3 id="el-gráfico-de-líneas-paso-a-paso">El gráfico de líneas paso a
-paso</h3>
-<p><code>ejercicios/01_lineas_educacion.R</code> reconstruye
-<code>src/12_educ.R</code> sobre <code>12_mayor_25_superior.csv</code>,
-parando en las cuatro decisiones que lo vuelven un gráfico del monitor
-(eje X con fechas reales, <code>factor()</code> para el orden de dibujo,
-eje Y en cero, la paleta del proyecto). Solución en
-<code>soluciones/01_lineas_educacion.R</code>.</p>
+<h3 id="rastreo-completo-del-pipeline">Rastreo completo del
+pipeline</h3>
+<p>La versión larga del “de dónde sale este número”, con rastreo guiado,
+diagrama a mano y auditoría del CSV sin microdatos:
+<strong><code>ejercicios/02_rastreo_pipeline.R</code></strong> (~35’ si
+lo hacés completo — B1 rastreo, B2 diagrama, B3 auditoría). Elegí como
+punto de partida cualquiera de los CSV que vieron hoy
+(<code>04_tasa_desoc.csv</code> de la Parte 1b es un buen candidato) y
+seguile el rastro hasta la fuente cruda. Solución:
+<code>soluciones/02_rastreo_respuestas.md</code>.</p>
+<h3 id="practicar-la-sintaxis-de-ggplot2-fill-in-the-blank">Practicar la
+sintaxis de ggplot2 (fill-in-the-blank)</h3>
+<p>Para quien quiera reforzar completando código de verdad, ahora con el
+contexto de lo que ya interpretaron en las Partes 1 y 2:</p>
+<ul>
+<li><strong><code>ejercicios/01_lineas_educacion.R</code></strong> —
+reconstruye <code>src/12_educ.R</code> sobre
+<code>12_mayor_25_superior.csv</code>, el mismo dato de la Parte 1a.
+Solución: <code>soluciones/01_lineas_educacion.R</code>.</li>
+<li><strong><code>ejercicios/02_bump_pbg.R</code></strong> — la versión
+completa (con código real, no solo predicción) del bump chart de la
+Parte 2. Solución: <code>soluciones/02_bump_pbg.R</code>. &gt; ⚠️ Al día
+de hoy <code>data/inputs_md/15_pbg_per_capita_por_provincia.csv</code>
+(el CSV que lee este &gt; ejercicio) todavía no está en el repo —
+avisale a quien dicta la clase antes de intentar &gt; correrlo.</li>
+</ul>
 <h3 id="agregar-un-indicador-nuevo-de-punta-a-punta">Agregar un
 indicador nuevo de punta a punta</h3>
 <p>El recorrido completo del circuito —calcular un indicador que hoy no
