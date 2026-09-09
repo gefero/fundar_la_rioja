@@ -137,8 +137,19 @@
   .flow .node.frontera { border: 2px dashed var(--ink); }
   .flow .node .tag { font-size: .68rem; color: var(--body-lt); text-transform: uppercase; letter-spacing: .03em; }
   .flow .arrow { display: flex; align-items: center; justify-content: center; padding: 0 8px; color: #999; font-size: 1.3rem; }
-  .flow.vertical { flex-direction: column; align-items: center; }
+  .flow.vertical { flex-direction: column; align-items: center; width: 100%; }
   .flow.vertical .arrow { padding: 3px 0; }
+  .qtag {
+    font-size: .82rem; color: var(--body-lt); font-style: italic;
+    margin: 0 0 3px; text-align: center;
+  }
+  /* Cadena de pasos compacta (recorridos inversos): más angosta y de menor
+     altura por paso para que 5 pasos entren sin scroll interno. */
+  .flow.vertical.compact { max-width: 760px; margin: 0 auto; }
+  .flow.compact .node { padding: 6px 14px; font-size: .88rem; min-width: 0; }
+  .flow.compact .node .tag { font-size: .62rem; margin-top: 2px; }
+  .flow.compact .qtag { font-size: .72rem; margin: 0 0 1px; }
+  .flow.compact .arrow { padding: 0; font-size: 1rem; }
 
   .cols { display: grid; gap: 26px; }
   .cols.c2 { grid-template-columns: 1fr 1fr; }
@@ -148,6 +159,7 @@
   .card .lbl { font-weight: 700; color: var(--ink); font-size: .82rem; text-transform: uppercase; letter-spacing: .03em; display: block; margin-bottom: 6px; }
   .card p { margin: 0; }
   .card ul { margin-top: 8px; }
+  .card ol { margin-top: 8px; }
   .card .out {
     margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--rule);
     font-size: .88rem; color: var(--body-lt);
@@ -283,33 +295,108 @@ ggsave('outputs/plots/12_educ.png')
     <span class="pagenum">3</span>
   </section>
 
-  <!-- 4 -->
+  <!-- 4: reemplazado por el esquema de diapo4.png -->
   <section class="slide">
     <h2 class="title">La cadena completa</h2>
-    <div class="body" style="justify-content:center">
-      <div class="flow">
-        <div class="node frontera"><span class="tag">versionado</span>data/inputs_md/<br>12_mayor_25_superior.csv</div>
-        <div class="arrow">→</div>
-        <div class="node">src/12_educ.R<br><span class="tag">lee, dibuja, guarda</span></div>
-        <div class="arrow">→</div>
-        <div class="node hito">outputs/plots/<br>12_educ.png</div>
-      </div>
-      <div class="flow" style="margin-top:8px">
-        <div class="node" style="min-width:280px">informe/monitor_la_rioja.Rmd<br><span class="tag">inserta el PNG</span></div>
-        <div class="arrow" style="visibility:hidden">→</div>
-        <div class="node" style="min-width:280px">dashboard/<br><span class="tag">regenera en vivo desde el mismo CSV</span></div>
-      </div>
-      <p style="text-align:center;margin-top:10px">Por eso el CSV —y no el PNG— es lo que importa versionar.</p>
+    <div class="body" style="justify-content:center;align-items:center">
+      <svg viewBox="0 0 1000 460" style="width:100%;max-width:820px" role="img" aria-label="Cadena desde el CSV versionado hasta el informe y el dashboard">
+        <defs>
+          <marker id="arrow4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#999"/>
+          </marker>
+        </defs>
+
+        <text x="450" y="20" font-size="15" fill="#262626" text-anchor="middle">el CSV versionado (la &quot;frontera&quot;)</text>
+        <line x1="450" y1="28" x2="450" y2="58" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
+
+        <rect x="250" y="60" width="400" height="64" rx="4" fill="#EAF0FE" stroke="#1414D6" stroke-width="2"/>
+        <text x="450" y="87" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">data/inputs_md/</text>
+        <text x="450" y="107" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">12_mayor_25_superior.csv</text>
+
+        <!-- rama hacia dashboard/ -->
+        <polyline points="650,92 800,92 800,298" fill="none" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
+
+        <line x1="450" y1="124" x2="450" y2="154" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
+        <rect x="300" y="156" width="300" height="46" rx="4" fill="#fff" stroke="#b3b3b3" stroke-width="1.5"/>
+        <text x="450" y="184" font-family="ui-monospace,monospace" font-size="16" font-weight="700" fill="#262626" text-anchor="middle">src/12_educ.R</text>
+        <text x="450" y="220" font-size="12.5" fill="#7a7a7a" text-anchor="middle">lee el CSV, dibuja, guarda el PNG</text>
+
+        <line x1="450" y1="230" x2="450" y2="264" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
+        <rect x="280" y="266" width="340" height="46" rx="4" fill="#fff" stroke="#1414D6" stroke-width="2"/>
+        <text x="450" y="294" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">outputs/plots/12_educ.png</text>
+
+        <line x1="450" y1="312" x2="450" y2="344" stroke="#999" stroke-width="1.6" marker-end="url(#arrow4)"/>
+        <rect x="250" y="346" width="400" height="46" rx="4" fill="#fff" stroke="#b3b3b3" stroke-width="1.5"/>
+        <text x="450" y="374" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">informe/monitor_la_rioja.Rmd</text>
+        <text x="450" y="412" font-size="11.5" fill="#7a7a7a" text-anchor="middle">lo inserta con mostrar(&quot;outputs/plots/12_educ.png&quot;)</text>
+
+        <rect x="720" y="300" width="180" height="46" rx="4" fill="#fff" stroke="#b3b3b3" stroke-width="1.5"/>
+        <text x="810" y="328" font-family="ui-monospace,monospace" font-size="16" font-weight="700" fill="#262626" text-anchor="middle">dashboard/</text>
+        <text x="810" y="366" font-size="11.5" fill="#7a7a7a" text-anchor="middle">lo regenera en vivo</text>
+        <text x="810" y="380" font-size="11.5" fill="#7a7a7a" text-anchor="middle">desde el mismo CSV</text>
+      </svg>
+      <p style="text-align:center;margin-top:6px">Por eso el CSV —y no el PNG— es lo que importa versionar.</p>
     </div>
     <span class="pagenum">4</span>
   </section>
 
-  <!-- 5 -->
+  <!-- 5: NUEVA — recordatorio de la gramática de gráficos (clase 1) -->
+  <section class="slide">
+    <h2 class="title small">Recordatorio: la gramática de gráficos</h2>
+    <div class="body">
+      <p>En la clase 1 vimos que un gráfico se arma con un número chico de piezas que, combinadas,
+        generan cualquier gráfico posible — la idea de Wilkinson de una <strong>gramática</strong>.
+        En código, es <code>src/04_desoc.R</code> línea por línea:</p>
+      <pre>df &lt;- read_csv('./data/inputs_md/04_tasa_desoc.csv')   <span class="c"># 1. DATOS</span>
+
+df_plot %&gt;%
+  ggplot(aes(x = fecha, y = tasa_desoc,                 <span class="c"># 2. MAPEO ESTÉTICO</span>
+             group = la_rioja_region,
+             color = la_rioja_region)) +
+  geom_line(linewidth = 0.7) +                          <span class="c"># 3. OBJETO GEOMÉTRICO</span>
+  scale_color_fundar_multi(name = "Región") +            <span class="c"># 4. ESCALA (dato → color)</span>
+  ylim(0, 20) +                                          <span class="c"># 4. ESCALA (dato → posición y)</span>
+  theme_monitor() +                                      <span class="c"># 5. TODO LO QUE NO ES DATO</span>
+  labs(title = ..., x = ..., y = ..., caption = ...)     <span class="c"># 6. ANOTACIÓN</span></pre>
+      <p class="small"><strong><code>ggplot2</code> se llama así por esto:</strong> "gg" es
+        <em>grammar of graphics</em>. El <code>+</code> no es decorativo — es el operador que compone
+        las capas de la gramática, y por eso los diez scripts de viz del repo son la misma receta con
+        distintos ingredientes.</p>
+    </div>
+    <span class="pagenum">5</span>
+  </section>
+
+  <!-- 6: NUEVA — dentro/fuera de aes() -->
+  <section class="slide">
+    <h2 class="title">¿Dentro o fuera de <code style="color:var(--blue)">aes()</code>?</h2>
+    <div class="body">
+      <p>La distinción que separa un <strong>mapeo</strong> (depende del dato) de una
+        <strong>decisión constante</strong> (no depende de nada):</p>
+      <div class="cols c2">
+        <div class="card"><span class="lbl">Dentro de aes() → mapeo</span>
+          <pre style="margin-top:8px">color = la_rioja_region</pre>
+          <p style="margin-top:8px">El color <strong>depende de una columna</strong> del dato: cada
+            valor de <code>la_rioja_region</code> se traduce a un color distinto.</p></div>
+        <div class="card"><span class="lbl">Fuera de aes() → constante</span>
+          <pre style="margin-top:8px">linewidth = 0.7</pre>
+          <p style="margin-top:8px">El grosor es <strong>fijo</strong>: no varía con ningún dato, es
+            una decisión de diseño igual para todas las líneas.</p></div>
+      </div>
+      <p>Confundir estos dos es el error nº 1 de quien arranca con <code>ggplot2</code>. Va a volver
+        en el bump chart: ahí el grosor de línea <strong>sí</strong> depende del dato
+        (<code>linewidth = la_rioja_region</code>, dentro de <code>aes()</code>) — es una excepción
+        deliberada, no un error.</p>
+    </div>
+    <span class="pagenum">6</span>
+  </section>
+
+  <!-- 7 (antes 5) -->
   <section class="slide">
     <h2 class="title">Gráfico de líneas: lo que ya saben, y lo que lo vuelve del monitor</h2>
     <div class="body">
-      <p>La gramática del gráfico de líneas ya se vio en la clase 1. Las cuatro decisiones
-        que separan un gráfico de exploración de uno <strong>del monitor</strong>:</p>
+      <p>Aplicando la gramática que acabamos de repasar a un CSV nuevo. Las cuatro decisiones
+        que separan un gráfico de exploración de uno <strong>del monitor</strong> —y viven casi
+        todas en la capa de ESCALA— son:</p>
       <table>
         <tr><th>Decisión</th><th>En el código</th><th>Por qué</th></tr>
         <tr><td><code>factor(la_rioja_region)</code></td><td>Fuerza el orden 1&lt;2&lt;3</td>
@@ -324,10 +411,10 @@ ggsave('outputs/plots/12_educ.png')
       <p>Alternativa más robusta: <code>lubridate::yq(fecha)</code> + <code>scale_x_date()</code> —
         la que se usa en la práctica.</p>
     </div>
-    <span class="pagenum">5</span>
+    <span class="pagenum">7</span>
   </section>
 
-  <!-- 6 -->
+  <!-- 8 (antes 6) -->
   <section class="slide">
     <h2 class="title">Bump chart: la pregunta que responde</h2>
     <div class="body">
@@ -341,10 +428,73 @@ ggsave('outputs/plots/12_educ.png')
           <code>src/15_pbg_ranking_percapita.R</code> para el PBG per cápita.</p></div>
       <p><strong>Datos:</strong> <code>15_pbg_per_capita_por_provincia.csv</code> — 24 provincias × 15 años (2010–2024).</p>
     </div>
-    <span class="pagenum">6 · src/15_pbg_ranking_percapita.R</span>
+    <span class="pagenum">8 · src/15_pbg_ranking_percapita.R</span>
   </section>
 
-  <!-- 7: NUEVA — ilustración de un bump chart -->
+  <!-- 9: NUEVA — el script completo del bump -->
+  <section class="slide">
+    <h2 class="title small">El script completo del bump chart</h2>
+    <div class="body">
+      <pre>library(tidyverse)
+source("style/fundar_monitor_theme.R")
+
+prov &lt;- read_csv("data/inputs_md/15_pbg_per_capita_por_provincia.csv")   <span class="c"># 1. LEE</span>
+
+rank_df &lt;- prov %&gt;%
+  group_by(anio) %&gt;%
+  mutate(ranking = min_rank(desc(pbg_per_capita))) %&gt;%                  <span class="c"># 2. TRANSFORMA</span>
+  ungroup()
+
+ggplot(rank_df, aes(anio, ranking, group = provincia, color = la_rioja_region)) +
+  geom_line(aes(linewidth = la_rioja_region)) +
+  geom_text(data = etiqueta_lr, aes(label = ranking)) +
+  scale_y_reverse(breaks = 1:24) +
+  scale_color_fundar_multi() +
+  scale_linewidth_manual(values = c(0.3, 0.5, 1.4)) +
+  theme_monitor() +                                                     <span class="c"># 3. DIBUJA</span>
+  labs(title = "...", caption = fuente_fundar(...))
+
+ggsave("outputs/plots/clase3_bump_pbg.png")                              <span class="c"># 4. GUARDA</span></pre>
+      <p>Mismo esqueleto de siempre: <strong>lee → dibuja → guarda</strong>. Lo único que se mete en
+        el medio es un paso de <strong>transformación</strong> antes de graficar — el tema de la
+        próxima slide.</p>
+    </div>
+    <span class="pagenum">9</span>
+  </section>
+
+  <!-- 10: NUEVA — comparación script línea vs bump -->
+  <section class="slide">
+    <h2 class="title small">Comparación: el script de líneas vs. el del bump</h2>
+    <div class="body">
+      <div class="cols c2">
+        <div class="card"><span class="lbl">12_educ.R — línea</span>
+          <ol class="small">
+            <li><strong>LEE</strong> <code>read_csv(csv)</code></li>
+            <li><strong>DIBUJA</strong> <code>geom_line()</code> + <code>scale_color_fundar_multi()</code> + <code>theme_monitor()</code></li>
+            <li><strong>GUARDA</strong> <code>ggsave(png)</code></li>
+          </ol>
+        </div>
+        <div class="card"><span class="lbl">02_bump_pbg.R — bump</span>
+          <ol class="small">
+            <li><strong>LEE</strong> <code>read_csv(csv)</code></li>
+            <li><strong>TRANSFORMA</strong> (nuevo) <code>mutate(ranking = min_rank(...))</code></li>
+            <li><strong>DIBUJA</strong> <code>geom_line()</code> + <code>geom_text()</code> +
+              <code>scale_color_fundar_multi()</code> + <code>scale_y_reverse()</code> +
+              <code>scale_linewidth_manual()</code> + <code>theme_monitor()</code></li>
+            <li><strong>GUARDA</strong> <code>ggsave(png)</code></li>
+          </ol>
+        </div>
+      </div>
+      <p>Comparten <strong>LEE</strong>, <strong>GUARDA</strong>, y hasta
+        <code>scale_color_fundar_multi()</code> + <code>theme_monitor()</code> dentro de DIBUJA. El
+        bump agrega un paso de <strong>TRANSFORMA</strong> antes de graficar, y dos capas de escala
+        más (<code>scale_y_reverse()</code>, <code>scale_linewidth_manual()</code>) — nada que no sea
+        la misma gramática, aplicada con dos ingredientes de más.</p>
+    </div>
+    <span class="pagenum">10</span>
+  </section>
+
+  <!-- 11 (antes 7) — ilustración de un bump chart -->
   <section class="slide">
     <h2 class="title">Así se ve un bump chart</h2>
     <div class="body" style="justify-content:center;align-items:center">
@@ -376,10 +526,10 @@ ggsave('outputs/plots/12_educ.png')
         arranca última y termina primera — el bump chart deja ver esa trayectoria de un vistazo,
         cosa que una tabla de rankings anuales no logra.</p>
     </div>
-    <span class="pagenum">7</span>
+    <span class="pagenum">11</span>
   </section>
 
-  <!-- 8: NUEVA — cambio 1: de valor a ranking -->
+  <!-- 12 (antes 8) — cambio 1: de valor a ranking -->
   <section class="slide">
     <h2 class="title">Bump chart: la misma gramática, tres cambios</h2>
     <div class="body">
@@ -400,10 +550,10 @@ ggsave('outputs/plots/12_educ.png')
         <strong>ranking dentro de un mismo año</strong> sería inmune a la inflación, porque afecta a
         las 24 jurisdicciones por igual.</p>
     </div>
-    <span class="pagenum">8</span>
+    <span class="pagenum">12</span>
   </section>
 
-  <!-- 9: NUEVA — cambio 2: scale_y_reverse -->
+  <!-- 13 (antes 9) — cambio 2: scale_y_reverse -->
   <section class="slide">
     <h2 class="title">Cambio 2 de 3: el puesto 1 va arriba</h2>
     <div class="body">
@@ -424,10 +574,10 @@ ggsave('outputs/plots/12_educ.png')
       <p><strong>Pregunta para la sala:</strong> ¿qué pasa si sacamos <code>scale_y_reverse()</code>?
         — el gráfico se da vuelta y "subir en el ranking" se ve como bajar.</p>
     </div>
-    <span class="pagenum">9</span>
+    <span class="pagenum">13</span>
   </section>
 
-  <!-- 10: NUEVA — cambio 3: figura/fondo -->
+  <!-- 14 (antes 10) — cambio 3: figura/fondo -->
   <section class="slide">
     <h2 class="title">Cambio 3 de 3: el patrón figura/fondo</h2>
     <div class="body">
@@ -446,10 +596,10 @@ ggsave('outputs/plots/12_educ.png')
         leyenda una <strong>etiqueta al final de la línea</strong> de La Rioja (<code>geom_text</code>
         sobre el último año, con <code>coord_cartesian(clip = "off")</code>).</p>
     </div>
-    <span class="pagenum">10</span>
+    <span class="pagenum">14</span>
   </section>
 
-  <!-- 11: NUEVA — preguntas para la sala -->
+  <!-- 15 (antes 11) — preguntas para la sala -->
   <section class="slide">
     <h2 class="title">Bump chart: preguntas para la sala</h2>
     <div class="body">
@@ -460,19 +610,19 @@ ggsave('outputs/plots/12_educ.png')
       <div class="card"><span class="lbl">No puedo distinguir las 18 provincias del "Resto país" entre sí. ¿Es un problema?</span>
         <p>No: son contexto. La pregunta del gráfico es sobre La Rioja, no sobre el resto.</p></div>
     </div>
-    <span class="pagenum">11</span>
+    <span class="pagenum">15</span>
   </section>
 
-  <!-- 12: quiebre -->
+  <!-- 16 (antes 12): quiebre -->
   <section class="slide quote">
     <p class="q">El gráfico es soporte de una narrativa. Si el texto habla de cuatro cosas, no
       muestres doce. <strong style="color:var(--ink)">La granularidad del gráfico tiene que igualar
       la del texto.</strong></p>
     <p class="attrib">Informe final Argendata, págs. 40–42</p>
-    <span class="pagenum">12</span>
+    <span class="pagenum">16</span>
   </section>
 
-  <!-- 13 -->
+  <!-- 17 (antes 13) -->
   <section class="slide">
     <h2 class="title">El gráfico es soporte de un texto</h2>
     <div class="body">
@@ -483,10 +633,10 @@ ggsave('outputs/plots/12_educ.png')
         <code>13a_nbi_hogares.R</code> grafica solo el total, y está bien, porque el análisis habla
         del total.</p>
     </div>
-    <span class="pagenum">13</span>
+    <span class="pagenum">17</span>
   </section>
 
-  <!-- 14 -->
+  <!-- 18 (antes 14) -->
   <section class="slide">
     <h2 class="title">Los tres campos de texto de un gráfico</h2>
     <div class="body">
@@ -508,10 +658,10 @@ ggsave('outputs/plots/12_educ.png')
             indicadores tienen el mismo problema.</p></div>
       </div>
     </div>
-    <span class="pagenum">14</span>
+    <span class="pagenum">18</span>
   </section>
 
-  <!-- 15 -->
+  <!-- 19 (antes 15) -->
   <section class="slide">
     <h2 class="title">La Rioja es un dominio chico de la EPH</h2>
     <div class="body" style="justify-content:center">
@@ -525,45 +675,100 @@ ggsave('outputs/plots/12_educ.png')
       </ul>
       <p>Si se publica, esta advertencia va en el caption.</p>
     </div>
-    <span class="pagenum">15</span>
+    <span class="pagenum">19</span>
   </section>
 
-  <!-- 16: quiebre -->
+  <!-- 20 (antes 16): quiebre -->
   <section class="slide section">
     <h1>La lógica del monitor:<br>de dónde sale cada número</h1>
-    <span class="pagenum">16</span>
+    <span class="pagenum">20</span>
   </section>
 
-  <!-- 17 -->
+  <!-- 21 (antes 17): reemplazado por el esquema de diapo17.png -->
   <section class="slide">
     <h2 class="title small">Del dato crudo al gráfico publicado</h2>
-    <p style="margin:-14px 0 14px">La EPH (Encuesta Permanente de Hogares, INDEC) es la fuente de
-      la mitad de los indicadores del monitor — desempleo, informalidad, educación, NBI. No es la
-      única fuente, pero es la única con <strong>tres</strong> etapas en vez de una.</p>
-    <div class="body" style="justify-content:flex-start">
-      <div class="flow vertical" style="align-items:stretch">
-        <div class="flow">
-          <div class="node">INDEC (EPH)</div>
-          <div class="node" style="flex:1">SIPA · OPEX · CEPAL · Min. Economía · SRT</div>
-        </div>
-        <div class="flow">
-          <div class="node"><span class="tag">etapa 1 · descarga</span>00_descarga_eph.R</div>
-          <div class="node" style="flex:1"><span class="tag">prep por fuente</span>NN_prep_&lt;fuente&gt;.R</div>
-        </div>
-        <div class="node"><span class="tag">etapa 2 · limpieza</span>01_limpieza_eph.R</div>
-        <div class="node hito"><span class="tag">etapa 3 · cálculo</span>02_indicadores_*.R</div>
-        <div class="node frontera">★ data/inputs_md/*.csv — VERSIONADO ★</div>
-        <div class="flow">
-          <div class="node">src/NN_*.R → outputs/plots/</div>
-          <div class="node">dashboard/</div>
-          <div class="node">informe/monitor_la_rioja.Rmd</div>
-        </div>
-      </div>
+    <p style="margin:-14px 0 10px">La EPH (Encuesta Permanente de Hogares, INDEC) es la fuente de
+      la mitad de los indicadores del monitor. No es la única fuente, pero es la única con
+      <strong>tres</strong> etapas en vez de una.</p>
+    <div class="body" style="justify-content:center;align-items:center">
+      <svg viewBox="0 0 1000 530" style="width:100%;max-width:900px" role="img" aria-label="Pipeline completo desde INDEC y otras fuentes hasta el gráfico publicado">
+        <defs>
+          <marker id="arrow17" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#999"/>
+          </marker>
+        </defs>
+
+        <text x="230" y="20" font-size="16" font-weight="700" fill="#262626" text-anchor="middle">INDEC (EPH)</text>
+        <text x="765" y="20" font-size="14" font-weight="700" fill="#262626" text-anchor="middle">SIPA · OPEX · CEPAL · Min. Economía · SRT</text>
+        <line x1="230" y1="28" x2="230" y2="56" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
+        <line x1="765" y1="28" x2="765" y2="56" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
+
+        <!-- fila etapa 1 / prep -->
+        <rect x="50" y="58" width="360" height="46" rx="4" fill="#fff" stroke="#b3b3b3" stroke-width="1.5"/>
+        <text x="230" y="86" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">00_descarga_eph.R</text>
+        <text x="420" y="80" font-size="10.5" fill="#7a7a7a" text-anchor="start">ETAPA 1</text>
+        <text x="420" y="92" font-size="10.5" fill="#7a7a7a" text-anchor="start">DESCARGA</text>
+
+        <text x="420" y="48" font-size="10.5" fill="#7a7a7a" text-anchor="start">PREP POR FUENTE</text>
+        <rect x="580" y="58" width="370" height="46" rx="4" fill="#fff" stroke="#b3b3b3" stroke-width="1.5"/>
+        <text x="765" y="86" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">NN_prep_&lt;fuente&gt;.R</text>
+
+        <!-- notas alineadas al borde izquierdo de cada caja, lejos de la línea vertical -->
+        <text x="65" y="122" font-size="11" fill="#7a7a7a" text-anchor="start">→ raw_data/eph/**/*.rds</text>
+        <text x="65" y="135" font-size="10.5" fill="#7a7a7a" text-anchor="start">[No versionado, ~1 GB]</text>
+        <text x="595" y="122" font-size="10.5" fill="#7a7a7a" text-anchor="start">lee y homologa el crudo</text>
+        <text x="595" y="138" font-size="11" fill="#7a7a7a" text-anchor="start">→ inputs_md/*.csv</text>
+
+        <line x1="230" y1="104" x2="230" y2="148" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
+        <line x1="765" y1="104" x2="765" y2="333" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
+
+        <!-- etapa 2 -->
+        <rect x="50" y="150" width="360" height="46" rx="4" fill="#fff" stroke="#b3b3b3" stroke-width="1.5"/>
+        <text x="230" y="178" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">01_limpieza_eph.R</text>
+        <text x="420" y="172" font-size="10.5" fill="#7a7a7a" text-anchor="start">ETAPA 2</text>
+        <text x="420" y="184" font-size="10.5" fill="#7a7a7a" text-anchor="start">LIMPIEZA</text>
+
+        <text x="65" y="214" font-size="11" fill="#7a7a7a" text-anchor="start">→ proc_data/eph_*.rds</text>
+        <text x="65" y="227" font-size="10.5" fill="#7a7a7a" text-anchor="start">[No versionado]</text>
+
+        <line x1="230" y1="196" x2="230" y2="240" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
+
+        <!-- etapa 3 -->
+        <rect x="50" y="242" width="360" height="46" rx="4" fill="#fff" stroke="#b3b3b3" stroke-width="1.5"/>
+        <text x="230" y="270" font-family="ui-monospace,monospace" font-size="15" font-weight="700" fill="#262626" text-anchor="middle">02_indicadores_*.R</text>
+        <text x="420" y="264" font-size="10.5" fill="#7a7a7a" text-anchor="start">ETAPA 3</text>
+        <text x="420" y="276" font-size="10.5" fill="#7a7a7a" text-anchor="start">CÁLCULO</text>
+
+        <text x="65" y="306" font-size="11" fill="#7a7a7a" text-anchor="start">→ inputs_md/*.csv</text>
+
+        <line x1="230" y1="288" x2="230" y2="333" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
+
+        <!-- versionado -->
+        <rect x="50" y="335" width="900" height="46" rx="4" fill="#EAF0FE" stroke="#1414D6" stroke-width="2"/>
+        <text x="500" y="363" font-family="ui-monospace,monospace" font-size="17" font-weight="700" fill="#262626" text-anchor="middle">★ data/inputs_md/*.csv — VERSIONADO ★</text>
+
+        <line x1="190" y1="381" x2="190" y2="428" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
+        <line x1="505" y1="381" x2="505" y2="428" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
+        <line x1="815" y1="381" x2="815" y2="428" stroke="#999" stroke-width="1.5" marker-end="url(#arrow17)"/>
+
+        <!-- salidas -->
+        <rect x="50" y="430" width="280" height="46" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
+        <text x="190" y="458" font-family="ui-monospace,monospace" font-size="14" font-weight="700" fill="#262626" text-anchor="middle">src/NN_*.R</text>
+        <text x="190" y="494" font-size="11" fill="#7a7a7a" text-anchor="middle">→ outputs/plots/</text>
+
+        <rect x="360" y="430" width="290" height="46" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
+        <text x="505" y="458" font-family="ui-monospace,monospace" font-size="14" font-weight="700" fill="#262626" text-anchor="middle">dashboard/</text>
+        <text x="505" y="494" font-size="11" fill="#7a7a7a" text-anchor="middle">app.R + index.qmd</text>
+
+        <rect x="680" y="430" width="270" height="46" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
+        <text x="815" y="455" font-family="ui-monospace,monospace" font-size="12.5" font-weight="700" fill="#262626" text-anchor="middle">informe/monitor_la_rioja.Rmd</text>
+        <text x="815" y="494" font-size="11" fill="#7a7a7a" text-anchor="middle">(inserta los PNG)</text>
+      </svg>
     </div>
-    <span class="pagenum">17</span>
+    <span class="pagenum">21</span>
   </section>
 
-  <!-- 18: NUEVA — zoom a las tres etapas de la EPH -->
+  <!-- 22 (antes 18): zoom a las tres etapas de la EPH -->
   <section class="slide">
     <h2 class="title small">Zoom: las tres etapas de la EPH, script por script</h2>
     <div class="body">
@@ -601,12 +806,12 @@ ggsave('outputs/plots/12_educ.png')
         descarga completa tarda varios minutos; recalcular un indicador sobre datos ya limpios,
         segundos.</p>
     </div>
-    <span class="pagenum">18</span>
+    <span class="pagenum">22</span>
   </section>
 
-  <!-- 19 -->
+  <!-- 23 (antes 19): título nuevo -->
   <section class="slide">
-    <h2 class="title">Tres cosas para explicar del diagrama</h2>
+    <h2 class="title">Decisiones tomadas para el diseño del flujo</h2>
     <div class="body">
       <ol>
         <li><strong>Por qué la EPH tiene tres etapas y no un script:</strong> recalcular un
@@ -620,60 +825,62 @@ ggsave('outputs/plots/12_educ.png')
           esperadas y los datos correctos, las dos mitades trabajan en paralelo sin pisarse.</li>
       </ol>
     </div>
-    <span class="pagenum">19</span>
+    <span class="pagenum">23</span>
   </section>
 
-  <!-- 20: NUEVA — recorrido inverso, indicador de educación -->
+  <!-- 24 (antes 20): recorrido inverso, educación — reformulado como cadena de pasos -->
   <section class="slide">
     <h2 class="title small">Recorrido inverso: de un punto del gráfico al código</h2>
-    <p style="margin:-12px 0 12px">La mejor forma de que el diagrama deje de ser abstracto: tomar
-      un punto del gráfico de educación (<code>12_educ.png</code>) y rastrearlo hacia atrás, en vivo.</p>
-    <div class="body tight">
-      <table>
-        <tr><th>Pregunta</th><th>Respuesta</th><th>Archivo</th></tr>
-        <tr><td>¿Qué dibuja este punto?</td>
-          <td><code>porc_mayor_25_superior</code> de La Rioja, 2024-Q3</td>
-          <td><code>src/12_educ.R</code></td></tr>
-        <tr><td>¿De dónde salió ese número?</td>
-          <td>Una fila del CSV</td>
-          <td><code>12_mayor_25_superior.csv</code></td></tr>
-        <tr><td>¿Quién escribió esa fila?</td>
-          <td><code>sum(mayor_25_superior * PONDERA) / sum(PONDERA) * 100</code></td>
-          <td><code>02_indicadores_eph_individuo.R</code></td></tr>
-        <tr><td>¿De dónde sale <code>mayor_25_superior</code>?</td>
-          <td>Se deriva en la limpieza: <code>mayor_25 == 1 &amp; niv_educ_sup == 1</code>, a partir
-            de <code>CH06</code> y <code>NIVEL_ED</code></td>
-          <td><code>01_limpieza_eph.R</code></td></tr>
-        <tr><td>¿Y esas columnas crudas?</td>
-          <td>Descargadas por <code>00_descarga_eph.R</code></td>
-          <td><code>raw_data/eph/individuo/2024_3_EPH_individuo.rds</code></td></tr>
-      </table>
+    <div class="body" style="justify-content:center;gap:0">
+      <div class="flow vertical compact" style="align-items:stretch">
+        <p class="qtag">¿Qué dibuja este punto?</p>
+        <div class="node"><strong>porc_mayor_25_superior</strong> de La Rioja, 2024-Q3<span class="tag">src/12_educ.R</span></div>
+        <div class="arrow">↓</div>
+        <p class="qtag">¿De dónde salió ese número?</p>
+        <div class="node">Una fila del CSV<span class="tag">12_mayor_25_superior.csv</span></div>
+        <div class="arrow">↓</div>
+        <p class="qtag">¿Quién escribió esa fila?</p>
+        <div class="node"><code style="font-size:.85em">sum(mayor_25_superior*PONDERA)/sum(PONDERA)*100</code><span class="tag">02_indicadores_eph_individuo.R</span></div>
+        <div class="arrow">↓</div>
+        <p class="qtag">¿De dónde sale esa variable?</p>
+        <div class="node">Se deriva de <code style="font-size:.85em">CH06</code> + <code style="font-size:.85em">NIVEL_ED</code>, en la limpieza<span class="tag">01_limpieza_eph.R</span></div>
+        <div class="arrow">↓</div>
+        <p class="qtag">¿Y esas columnas crudas?</p>
+        <div class="node">Descargadas de la EPH<span class="tag">00_descarga_eph.R → raw_data/eph/individuo/2024_3_EPH_individuo.rds</span></div>
+      </div>
     </div>
-    <span class="pagenum">20</span>
+    <span class="pagenum">24</span>
   </section>
 
-  <!-- 21: NUEVA — recorrido inverso, bump -->
+  <!-- 25 (antes 21): recorrido inverso, bump — corregido: la transformación no viene de ningún CSV -->
   <section class="slide">
     <h2 class="title small">Recorrido inverso, más corto: el bump</h2>
-    <div class="body" style="justify-content:center">
-      <div class="flow vertical" style="align-items:stretch">
-        <div class="node">un punto del bump (La Rioja, un año, un ranking)</div>
-        <div class="flow" style="justify-content:center"><div class="arrow">↓</div></div>
-        <div class="node frontera">15_pbg_per_capita_por_provincia.csv</div>
-        <div class="flow" style="justify-content:center"><div class="arrow">↓</div></div>
-        <div class="node">15_prep_pbg_per_capita.R<br><span class="tag">VAB × 1e6 / población</span></div>
-        <div class="flow" style="justify-content:center"><div class="arrow">↓</div></div>
-        <div class="node">xlsx de CEPAL + población de DNAP<br><span class="tag">data/raw_data/pbg/</span></div>
+    <div class="body" style="justify-content:center;gap:0">
+      <div class="flow vertical compact" style="align-items:stretch">
+        <p class="qtag">Un punto del bump</p>
+        <div class="node">La Rioja, 2020, <strong>puesto 22°</strong></div>
+        <div class="arrow">↓</div>
+        <p class="qtag">¿De dónde sale el "puesto 22"?</p>
+        <div class="node">Se calcula en el script de viz — <strong>no viene de ningún CSV</strong><span class="tag">min_rank(desc(pbg_per_capita)) en ejercicios/02_bump_pbg.R</span></div>
+        <div class="arrow">↓</div>
+        <p class="qtag">¿Y pbg_per_capita, la columna que sí usa?</p>
+        <div class="node">Una fila del CSV versionado<span class="tag">15_pbg_per_capita_por_provincia.csv</span></div>
+        <div class="arrow">↓</div>
+        <p class="qtag">¿Quién escribió esa fila?</p>
+        <div class="node">VAB × 1e6 / población<span class="tag">15_prep_pbg_per_capita.R</span></div>
+        <div class="arrow">↓</div>
+        <p class="qtag">¿Y esas fuentes crudas?</p>
+        <div class="node">xlsx de CEPAL + población de DNAP<span class="tag">data/raw_data/pbg/</span></div>
       </div>
-      <p style="text-align:center;max-width:56ch;margin:14px auto 0"><strong>La EPH no aparece en
-        esta cadena</strong> — es una fuente distinta, con su propio <code>prep</code>. Repetir este
-        ejercicio con datos que no son de la EPH deja claro que el patrón (cruda → prep → CSV
-        versionado) es el mismo en todo el repo, aunque las fuentes cambien.</p>
+      <p style="text-align:center;max-width:64ch;margin:10px auto 0" class="small">A diferencia del
+        indicador de educación, el primer paso hacia atrás acá <strong>no busca un CSV</strong>: se
+        recalcula cada vez que corre el script (la <em>Comparación</em> de la slide 10). La EPH
+        tampoco aparece en esta cadena — el PBG es una fuente distinta, con su propio prep.</p>
     </div>
-    <span class="pagenum">21</span>
+    <span class="pagenum">25</span>
   </section>
 
-  <!-- 22 -->
+  <!-- 26 (antes 22) -->
   <section class="slide">
     <h2 class="title">Las cuatro trampas</h2>
     <div class="body">
@@ -690,12 +897,12 @@ ggsave('outputs/plots/12_educ.png')
       </ul>
       <p>Las trampas 3 y 4 son exactamente lo que tiene que aparecer en el caption de un gráfico publicado.</p>
     </div>
-    <span class="pagenum">22</span>
+    <span class="pagenum">26</span>
   </section>
 
-  <!-- 23 -->
+  <!-- 27 (antes 23): título sin "playbook" -->
   <section class="slide">
-    <h2 class="title">Cómo se actualiza: el playbook</h2>
+    <h2 class="title">Cómo se actualiza</h2>
     <div class="body">
       <table>
         <tr><th>Salió dato nuevo de…</th><th>Pasos</th><th>Frecuencia</th></tr>
@@ -706,10 +913,10 @@ ggsave('outputs/plots/12_educ.png')
       </table>
       <p>Fuerza bruta cuando no se sabe qué se tocó: <code>source("src/999_run_pipeline.R")</code>.</p>
     </div>
-    <span class="pagenum">23</span>
+    <span class="pagenum">27</span>
   </section>
 
-  <!-- 24 -->
+  <!-- 28 (antes 24) -->
   <section class="slide">
     <h2 class="title">El circuito de publicación</h2>
     <div class="body">
@@ -723,10 +930,10 @@ git push -u origin actualizo-eph-2026q2
         republica el dashboard solo.</strong> La rama y el PR permiten que otro mire el cambio antes
         de que salga.</p>
     </div>
-    <span class="pagenum">24</span>
+    <span class="pagenum">28</span>
   </section>
 
-  <!-- 25 -->
+  <!-- 29 (antes 25) -->
   <section class="slide">
     <h2 class="title">Práctica integradora — en parejas de perfiles mezclados</h2>
     <div class="body">
@@ -745,10 +952,10 @@ git push -u origin actualizo-eph-2026q2
       </div>
       <p>Consigna completa en <code>practica.md</code>.</p>
     </div>
-    <span class="pagenum">25</span>
+    <span class="pagenum">29</span>
   </section>
 
-  <!-- 26 -->
+  <!-- 30 (antes 26) -->
   <section class="slide">
     <h2 class="title">El mapa de pendientes del repositorio</h2>
     <div class="body">
@@ -759,10 +966,10 @@ git push -u origin actualizo-eph-2026q2
         <li><strong>Integrar los indicadores 17 y 18</strong> al <code>informe/monitor_la_rioja.Rmd</code>.</li>
       </ul>
     </div>
-    <span class="pagenum">26</span>
+    <span class="pagenum">30</span>
   </section>
 
-  <!-- 27: cierre -->
+  <!-- 31 (antes 27): cierre -->
   <section class="slide section">
     <h1 style="font-size:1.85rem;max-width:34ch;text-align:left">
       1. Un gráfico es un mapeo de datos a propiedades visuales — los canales no son intercambiables.
@@ -771,7 +978,7 @@ git push -u origin actualizo-eph-2026q2
       <br><br>
       3. El circuito es reproducible de punta a punta: el CSV es el contrato entre los dos equipos.
     </h1>
-    <span class="pagenum">27</span>
+    <span class="pagenum">31</span>
   </section>
 
 </div>
