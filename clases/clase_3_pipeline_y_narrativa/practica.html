@@ -33,9 +33,9 @@ datos · Taller de visualización - Monitor La Rioja</title>
 
 <main>
 <h1 id="práctica---clase-3">Práctica - Clase 3</h1>
-<p><strong>Duración:</strong> ~14 minutos en clase (el resto del
-material queda para hacer en casa; falta una tercera parte — ver nota al
-final). <strong>En parejas de perfiles mezclados.</strong></p>
+<p><strong>Duración:</strong> ~18 minutos en clase (el resto del
+material queda para hacer en casa). <strong>En parejas de perfiles
+mezclados.</strong></p>
 <p><strong>El foco de esta práctica es leer, no escribir.</strong> Las
 partes de acá abajo no piden completar código: piden mirar un gráfico y
 decir qué está bien o mal, o leer un fragmento de <code>ggplot2</code> y
@@ -205,14 +205,131 @@ el bump real suma <code>scale_linewidth_manual()</code>: contexto fino,
 La Rioja gruesa — el patrón figura/fondo no depende solo del color.</p>
 </details>
 <hr />
-<h2 id="parte-3-pendiente">Parte 3 · <em>(pendiente)</em></h2>
-<blockquote>
-<p><strong>Nota para quien dicta:</strong> el simulacro de actualización
-que iba acá (agregar una fila ficticia a un CSV, correr un script,
-revertir con <code>git checkout</code>) se sacó de la práctica. Falta
-una Parte 3 de reemplazo — conceptual sobre el pipeline, sin correr R en
-vivo — para completar los ~18’ de práctica en clase.</p>
-</blockquote>
+<h2 id="parte-3-del-pipeline-en-general-los-dos-4">Parte 3 · Del
+pipeline en general <em>(los dos, ~4’)</em></h2>
+<h3 id="a.-mapeá-la-cadena-un-indicador-nuevo-2">3a. Mapeá la cadena —
+un indicador nuevo <em>(2’)</em></h3>
+<p>Ya siguieron la cadena completa de la educación (Parte 1a) y de la
+desocupación (Parte 1b). Ahora armen la misma cadena para la
+<strong>tasa de empleo</strong>
+(<code>outputs/plots/10_tasa_empleo.png</code>) — es la misma familia de
+datos (EPH), pero con una diferencia en el denominador. Completen los
+blancos abriendo los archivos — <strong>no hace falta correr
+nada</strong>:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Eslabón</th>
+<th>Dónde</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lo dibuja</td>
+<td><code>src/10_tasa_empleo.R</code>, columna <code>______</code></td>
+</tr>
+<tr>
+<td>El número está en</td>
+<td><code>data/inputs_md/______.csv</code></td>
+</tr>
+<tr>
+<td>Lo calcula</td>
+<td><code>src/02_indicadores_eph_individuo.R</code>, bloque
+<code>"10"</code>: <code>ocupado / ______ * 100</code></td>
+</tr>
+<tr>
+<td>De dónde sale <code>ocupado</code></td>
+<td><code>src/01_limpieza_eph.R</code>: se deriva de
+<code>______</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>La pregunta que importa:</strong> la tasa de desocupación
+(Parte 1b) divide por <code>pea</code> (ocupados + desocupados). La tasa
+de empleo divide por <code>______</code>. ¿Por qué no da lo mismo?
+(Pista: alguien que dejó de buscar trabajo no es PEA, pero sigue siendo
+población.)</p>
+<details>
+<summary>
+Respuesta
+</summary>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Eslabón</th>
+<th>Dónde</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lo dibuja</td>
+<td><code>src/10_tasa_empleo.R</code>, columna
+<code>tasa_empleo</code></td>
+</tr>
+<tr>
+<td>El número está en</td>
+<td><code>data/inputs_md/10_tasa_empleo.csv</code></td>
+</tr>
+<tr>
+<td>Lo calcula</td>
+<td><code>src/02_indicadores_eph_individuo.R</code>, bloque
+<code>"10"</code>: <code>ocupado / pob_tot * 100</code></td>
+</tr>
+<tr>
+<td>De dónde sale <code>ocupado</code></td>
+<td><code>src/01_limpieza_eph.R</code>:
+<code>ocupado = if_else(ESTADO == "Ocupado", 1, 0)</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>pob_tot</code> es <code>sum(PONDERA)</code> de
+<strong>todo</strong> el dominio, sin filtrar por <code>ESTADO</code> —
+mientras que <code>pea</code> solo suma ocupados y desocupados. Por eso
+“tasa de empleo” (ocupados cada 100 habitantes) y “tasa de desocupación”
+(% de la PEA) no son espejo una de la otra: tienen denominadores
+distintos, aunque comparten el mismo
+<code>ocupado</code>/<code>ESTADO</code> de origen.</p>
+</details>
+<h3 id="b.-qué-pasa-si-2">3b. ¿Qué pasa si…? <em>(2’)</em></h3>
+<p>Tres escenarios. Para cada uno, digan <strong>en qué archivo</strong>
+harían el cambio — alcanza con nombrarlo, no hace falta escribir
+código.</p>
+<ol type="1">
+<li>Sale la onda 2025-T3 de la EPH.</li>
+<li>El Ministerio de Capital Humano le cambia el nombre a la hoja
+“Total” del Excel del SIPA.</li>
+<li>Quieren agregar la <strong>tasa de actividad</strong> como indicador
+nuevo (la variante avanzada del <code>practica.Rmd</code>).</li>
+</ol>
+<details>
+<summary>
+Respuestas
+</summary>
+<ol type="1">
+<li><strong>Ningún script cambia.</strong> Se vuelve a correr
+<code>00_descarga_eph.R</code> (trae el trimestre nuevo) →
+<code>01_limpieza_eph.R</code> → <code>02_indicadores_eph_*.R</code>:
+todos los CSV de la EPH se recalculan solos con el trimestre nuevo
+adentro.</li>
+<li>Se rompe <code>03_prep_salarios_privados_SIPA.R</code> — es el único
+que lee esa hoja por nombre. Hay que editar el string
+<code>"Total"</code> ahí. No toca ni la EPH ni
+<code>03_salarios_privados_SIPA.R</code> (el del gráfico, que solo lee
+el CSV ya limpio).</li>
+<li>No alcanza con agregarle una columna a un CSV que ya existe: hace
+falta un script de cálculo nuevo que escriba un CSV nuevo en
+<code>data/inputs_md/</code>, y un script de gráfico nuevo que lo lea.
+Cada CSV es la salida de <strong>un</strong> indicador.</li>
+</ol>
+</details>
 <hr />
 <h2 id="para-la-puesta-en-común">Para la puesta en común</h2>
 <ul>
@@ -220,6 +337,10 @@ vivo — para completar los ~18’ de práctica en clase.</p>
 de la pareja, o cada uno vio uno distinto?</li>
 <li>Alguna predicción de la Parte 2 que les haya salido al revés de lo
 que esperaban — ¿por qué falló la intuición?</li>
+<li>El porqué de la Parte 3a: ¿por qué la tasa de empleo y la de
+desocupación no son complementarias?</li>
+<li>Cuál de los tres escenarios de la Parte 3b les generó más dudas
+sobre qué archivo tocar.</li>
 <li>Si llegaron al rastreo del pipeline (más abajo): en qué eslabón se
 les hizo menos obvio de dónde salía el número.</li>
 </ul>
