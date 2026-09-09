@@ -58,6 +58,7 @@ Construir los gráficos del monitor desde su CSV (un gráfico de líneas y un bu
 el flujo completo: de dónde salen los datos, qué cadena de scripts hay detrás, cómo alinear
 narrativa y visualización, y qué hacer cuando sale un dato nuevo.
 
+- [Diapositivas - teórica](./clase_3_pipeline_y_narrativa/slides.html)
 - [Práctica - consigna](./clase_3_pipeline_y_narrativa/practica.html)
 - [Práctica - notebook (.Rmd)](./clase_3_pipeline_y_narrativa/practica.Rmd)
 - Ejercicios:
