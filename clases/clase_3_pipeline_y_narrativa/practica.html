@@ -65,10 +65,14 @@ monitor</figcaption>
 el hallazgo? ¿Por qué sí o no?</li>
 </ol>
 <p>Ahora sí: abrí <code>outputs/plots/12_educ.png</code> (la versión
-real del monitor, mismo dato) y compará. Para cada problema que
-nombraste en la pregunta 2, decí <strong>qué decisión del código lo
-resuelve</strong> — no hace falta escribir la línea exacta, alcanza con
-nombrarla:</p>
+real del monitor, mismo dato) y compará.</p>
+<figure>
+<img src="../../outputs/plots/12_educ.png" alt="Gráfico real" />
+<figcaption aria-hidden="true">Gráfico real</figcaption>
+</figure>
+<p>Para cada problema que nombraste en la pregunta 2, decí <strong>qué
+decisión del código lo resuelve</strong> — no hace falta escribir la
+línea exacta, alcanza con nombrarla:</p>
 <table>
 <thead>
 <tr>
@@ -121,9 +125,13 @@ que falta — <code>ylim()</code>, un <code>factor()</code>, una paleta —
 no hace falta escribir el código completo)</li>
 </ol>
 <p>Ahora comparen con el original:
-<code>outputs/plots/04_desoc.png</code>. ¿Encontraron los dos errores, o
-se les pasó alguno? El código real que sí lo hace bien está en
-<code>src/04_desoc.R</code>.</p>
+<code>outputs/plots/04_desoc.png</code>.</p>
+<figure>
+<img src="../../outputs/plots/04_desoc.png" alt="Gráfico real" />
+<figcaption aria-hidden="true">Gráfico real</figcaption>
+</figure>
+<p>¿Encontraron los dos errores, o se les pasó alguno? El código real
+que sí lo hace bien está en <code>src/04_desoc.R</code>.</p>
 <blockquote>
 <p><strong>Nota para quien dicta:</strong> los errores plantados son (1)
 el eje Y recortado — va de 3 a 12, cuando el real arranca en 0 y llega a
@@ -373,13 +381,6 @@ de hoy <code>data/inputs_md/15_pbg_per_capita_por_provincia.csv</code>
 (el CSV que lee este &gt; ejercicio) todavía no está en el repo —
 avisale a quien dicta la clase antes de intentar &gt; correrlo.</li>
 </ul>
-<h3 id="agregar-un-indicador-nuevo-de-punta-a-punta">Agregar un
-indicador nuevo de punta a punta</h3>
-<p>El recorrido completo del circuito —calcular un indicador que hoy no
-existe, graficarlo y abrir el PR— está en el <code>practica.Rmd</code>,
-sección “Variante avanzada”. El indicador es la <strong>tasa de
-actividad</strong> (PEA sobre población total), derivable de dos CSV ya
-versionados.</p>
 </main>
 
 <footer class="site-footer">
