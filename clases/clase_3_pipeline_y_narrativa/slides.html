@@ -6,32 +6,31 @@
 <title>Clase 3 · Del CSV al monitor</title>
 <!--
   Deck autocontenido (sin librerías externas: sin conexión no depende de
-  ningún CDN). Paleta y tipografía calcadas de style/fundar_monitor_theme.R
-  y clases/_site_style.css, para que se sienta parte del mismo sitio que el
-  dashboard y las demás páginas de clases/.
+  ningún CDN). Estilo calcado del deck real de la materia
+  (clases/clase_2_integridad_y_catalogo/Clase_2_Integridad_visual.pdf):
+  fondo blanco, título en azul, cuerpo en gris oscuro, viñetas simples,
+  logos de Fundar / factor~data en la portada, numeración de página abajo
+  a la derecha. Nada de paleta del dashboard acá a propósito — es la piel
+  del deck de cátedra, no la del monitor.
   Navegación: flechas / espacio / clic en los botones · Esc = vista general.
   Para exportar a PDF: imprimir desde el navegador (una diapositiva por hoja).
 -->
 <style>
   :root {
-    --bg:        #FBFAF6;
-    --panel:     #FFFFFF;
-    --ink:       #1C1C1C;
-    --ink-muted: #6b6558;
-    --rule:      #E4DFD3;
-    --beige:     #EDE8E0;
-    --oscuro:    #1C1C1C;
-    --verde:     #52C8A0;
-    --rosa:      #F4877A;
-    --teal:      #2D6E6E;
-    --oliva:     #C8C87A;
-    --menta-claro:#A8DCC8;
+    --bg:      #FFFFFF;
+    --blue:    #1414D6;
+    --ink:     #262626;
+    --body:    #595959;
+    --body-lt: #7a7a7a;
+    --rule:    #D9D9D9;
+    --pagenum: #8c8c8c;
+    --code-bg: #F2F2F2;
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0; height: 100%;
-    background: var(--oscuro);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #1c1c1c;
+    font-family: Arial, Helvetica, -apple-system, "Segoe UI", Roboto, sans-serif;
     color: var(--ink);
   }
   code, pre, .mono {
@@ -45,122 +44,138 @@
     display: none;
     flex-direction: column;
     background: var(--bg);
-    padding: 56px 88px 44px;
+    padding: 54px 84px 40px;
     opacity: 0;
-    transition: opacity .25s ease;
+    transition: opacity .2s ease;
   }
   .slide.active { display: flex; opacity: 1; }
 
-  .slide .eyebrow {
-    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
-    font-size: 0.72rem; letter-spacing: .12em; text-transform: uppercase;
-    color: var(--teal); margin: 0 0 10px; font-weight: 600;
+  .slide h2.title {
+    color: var(--blue);
+    font-weight: 800;
+    font-size: 2.15rem;
+    line-height: 1.2;
+    margin: 0 0 26px;
   }
-  .slide h1 { font-size: 2.5rem;  line-height: 1.15; margin: 0 0 6px; }
-  .slide h2 { font-size: 1.9rem;  line-height: 1.2;  margin: 0 0 20px; color: var(--ink); }
-  .slide h3 { font-size: 1.15rem; color: var(--teal); margin: 0 0 8px; }
-  .slide p  { font-size: 1.15rem; line-height: 1.5; color: var(--ink); }
-  .slide .lead { font-size: 1.3rem; color: var(--ink-muted); max-width: 62ch; }
-  .slide .body { flex: 1; overflow: auto; display: flex; flex-direction: column; gap: 18px; }
-  .slide ul, .slide ol { font-size: 1.12rem; line-height: 1.55; padding-left: 1.2em; }
-  .slide li { margin-bottom: 8px; }
-  .slide li::marker { color: var(--teal); }
-  .slide strong { color: var(--teal); }
-  .muted { color: var(--ink-muted); }
+  .slide .kicker {
+    font-size: .95rem; color: var(--ink); margin: 0 0 4px;
+  }
+  .slide .body { flex: 1; overflow: auto; display: flex; flex-direction: column; gap: 16px; }
+  .slide p { font-size: 1.12rem; line-height: 1.55; color: var(--body); margin: 0; }
+  .slide p strong, .slide li strong { color: var(--ink); font-weight: 700; }
+  .slide ul, .slide ol { font-size: 1.1rem; line-height: 1.55; color: var(--body); padding-left: 1.3em; margin: 0; }
+  .slide li { margin-bottom: 10px; }
+  .slide li::marker { color: #b3b3b3; }
+  .small { font-size: .95rem !important; }
 
-  /* ---- Diapositiva de título / cierre --------------------------------- */
-  .slide.title, .slide.section {
-    background: linear-gradient(120deg, var(--teal), var(--oscuro));
-    color: #fff; justify-content: center;
+  /* ---- Diapositiva de portada ------------------------------------------ */
+  .slide.title {
+    justify-content: flex-start;
+    padding-top: 70px;
   }
-  .slide.title .eyebrow, .slide.section .eyebrow { color: #C9E8DE; }
-  .slide.title h1, .slide.section h1 { color: #fff; font-size: 3rem; max-width: 22ch; }
-  .slide.title .lead, .slide.section .lead { color: #E4F2ED; }
-  .slide.title .meta { margin-top: 40px; font-size: .95rem; color: #C9E8DE; }
+  .slide.title .kicker { font-size: 1.15rem; color: var(--ink); margin-bottom: 6px; }
+  .slide.title h1 {
+    color: var(--blue);
+    font-weight: 800;
+    font-size: 2.6rem;
+    line-height: 1.22;
+    margin: 0 0 46px;
+  }
+  .slide.title .byline { margin-top: auto; padding-bottom: 18px; }
+  .slide.title .byline p { font-size: 1.05rem; color: var(--ink); margin: 0; }
+  .slide.title .byline .name { font-weight: 700; }
+  .slide.title .byline a { color: #1a7a7a; text-decoration: underline; }
+  .slide.title .logos {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding-top: 10px;
+  }
+  .slide.title .logos svg { height: 34px; width: auto; display: block; }
+
+  /* ---- Diapositiva "quiebre" (frase grande centrada) -------------------- */
+  .slide.section {
+    align-items: center; justify-content: center; text-align: center;
+  }
+  .slide.section h1 {
+    color: var(--blue); font-weight: 800; font-size: 2.4rem; line-height: 1.3;
+    max-width: 24ch; margin: 0;
+  }
+
+  /* ---- Diapositiva "cita" (frase grande, atribuida) ---------------------- */
+  .slide.quote { align-items: center; justify-content: center; }
+  .slide.quote .q {
+    font-style: italic; color: var(--body); font-size: 1.7rem; line-height: 1.4;
+    max-width: 46ch; text-align: center; margin: 0 auto;
+  }
+  .slide.quote .attrib { text-align: center; color: var(--body-lt); margin-top: 18px; font-size: 1rem; }
 
   /* ---- Tablas ----------------------------------------------------------- */
-  table { width: 100%; border-collapse: collapse; font-size: 1.02rem; }
-  th, td { border-bottom: 1px solid var(--rule); padding: 10px 14px; text-align: left; vertical-align: top; }
-  th { color: var(--ink-muted); font-weight: 600; font-size: .85rem; text-transform: uppercase; letter-spacing: .03em; }
-  tr.destacada td { background: var(--beige); }
-  tr.destacada td:first-child { border-left: 3px solid var(--teal); }
+  table { width: 100%; border-collapse: collapse; font-size: 1rem; }
+  th, td { border-bottom: 1px solid var(--rule); padding: 9px 12px; text-align: left; vertical-align: top; color: var(--body); }
+  th { color: var(--ink); font-weight: 700; font-size: .82rem; text-transform: uppercase; letter-spacing: .02em; }
+  td strong { color: var(--ink); }
 
   /* ---- Código ------------------------------------------------------------ */
   pre {
-    background: var(--beige); color: var(--ink);
-    padding: 16px 20px; border-radius: 8px; font-size: .95rem;
-    line-height: 1.5; overflow-x: auto; margin: 0;
+    background: var(--code-bg); color: var(--ink);
+    padding: 14px 18px; border-radius: 4px; font-size: .92rem;
+    line-height: 1.5; overflow-x: auto; margin: 0; border: 1px solid var(--rule);
   }
-  pre .c { color: var(--ink-muted); }         /* comentario */
-  pre .s { color: var(--teal); }              /* string / call destacado */
+  pre .c { color: #8c8c8c; }
+  pre .s { color: var(--blue); }
 
   /* ---- Diagramas de caja y flecha (CSS, sin librerías) ------------------- */
   .flow { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; }
   .flow .node {
-    background: var(--panel); border: 1.5px solid var(--rule); border-radius: 10px;
-    padding: 14px 18px; min-width: 150px; text-align: center; font-size: .95rem;
-    display: flex; flex-direction: column; justify-content: center;
+    background: #fff; border: 1.5px solid #b3b3b3; border-radius: 3px;
+    padding: 12px 16px; min-width: 150px; text-align: center; font-size: .92rem;
+    display: flex; flex-direction: column; justify-content: center; color: var(--ink);
   }
-  .flow .node.hito { border-color: var(--teal); background: #EAF6F1; }
-  .flow .node.frontera { border: 2px dashed var(--teal); background: #EAF6F1; }
-  .flow .node .tag { font-size: .72rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .04em; }
-  .flow .arrow { display: flex; align-items: center; justify-content: center; padding: 0 8px; color: var(--teal); font-size: 1.4rem; }
+  .flow .node.hito { border-color: var(--blue); border-width: 2px; }
+  .flow .node.frontera { border: 2px dashed var(--ink); }
+  .flow .node .tag { font-size: .68rem; color: var(--body-lt); text-transform: uppercase; letter-spacing: .03em; }
+  .flow .arrow { display: flex; align-items: center; justify-content: center; padding: 0 8px; color: #999; font-size: 1.3rem; }
   .flow.vertical { flex-direction: column; align-items: center; }
-  .flow.vertical .arrow { padding: 4px 0; }
+  .flow.vertical .arrow { padding: 3px 0; }
 
-  .cols { display: grid; gap: 28px; }
+  .cols { display: grid; gap: 26px; }
   .cols.c2 { grid-template-columns: 1fr 1fr; }
-  .cols.c3 { grid-template-columns: 1fr 1fr 1fr; }
 
-  .badge {
-    display: inline-block; background: var(--rosa); color: #fff;
-    font-size: .78rem; font-weight: 600; padding: 3px 10px; border-radius: 999px;
-    margin-bottom: 10px;
-  }
-  .card {
-    background: var(--panel); border: 1px solid var(--rule); border-radius: 10px;
-    padding: 18px 20px;
-  }
-  .card.bien  { border-left: 4px solid var(--verde); }
-  .card.mal   { border-left: 4px solid var(--rosa); }
-  .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .card { border: 1px solid var(--rule); border-radius: 4px; padding: 16px 18px; }
+  .card .lbl { font-weight: 700; color: var(--ink); font-size: .82rem; text-transform: uppercase; letter-spacing: .03em; display: block; margin-bottom: 6px; }
+  .card p { margin: 0; }
 
-  /* ---- Barra de progreso / número ---------------------------------------- */
-  .footer-bar {
-    position: absolute; left: 88px; right: 88px; bottom: 18px;
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: .78rem; color: var(--ink-muted);
+  /* ---- Numeración / controles --------------------------------------------- */
+  .pagenum {
+    position: absolute; right: 30px; bottom: 16px;
+    font-size: .8rem; color: var(--pagenum);
   }
-  .slide.title .footer-bar, .slide.section .footer-bar { color: #C9E8DE; }
-  .progress { height: 3px; background: var(--rule); position: absolute; top: 0; left: 0; right: 0; }
-  .progress .bar { height: 100%; background: var(--teal); width: 0%; transition: width .25s ease; }
+  .progress { height: 3px; background: var(--rule); position: absolute; top: 0; left: 0; right: 0; z-index: 5; }
+  .progress .bar { height: 100%; background: var(--blue); width: 0%; transition: width .2s ease; }
 
-  /* ---- Controles ---------------------------------------------------------- */
   .nav-btn {
     position: fixed; top: 50%; transform: translateY(-50%);
-    background: rgba(28,28,28,.55); color: #fff; border: none;
-    width: 42px; height: 42px; border-radius: 50%; font-size: 1.3rem;
+    background: rgba(20,20,20,.5); color: #fff; border: none;
+    width: 40px; height: 40px; border-radius: 50%; font-size: 1.3rem;
     cursor: pointer; z-index: 20; display: flex; align-items: center; justify-content: center;
   }
-  .nav-btn:hover { background: rgba(28,28,28,.85); }
-  .nav-btn.prev { left: 14px; }
-  .nav-btn.next { right: 14px; }
+  .nav-btn:hover { background: rgba(20,20,20,.8); }
+  .nav-btn.prev { left: 12px; }
+  .nav-btn.next { right: 12px; }
 
-  /* ---- Vista general (Esc) ------------------------------------------------ */
-  .overview { position: fixed; inset: 0; background: rgba(20,18,16,.94); z-index: 30;
+  .overview { position: fixed; inset: 0; background: rgba(20,18,16,.95); z-index: 30;
     display: none; padding: 40px; overflow: auto; }
   .overview.show { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-content: start; }
   .overview .thumb {
-    background: var(--bg); border-radius: 6px; padding: 14px; color: var(--ink);
+    background: #fff; border-radius: 4px; padding: 14px; color: var(--ink);
     cursor: pointer; border: 2px solid transparent; font-size: .72rem; line-height: 1.35;
     aspect-ratio: 16/9; overflow: hidden; position: relative;
   }
-  .overview .thumb:hover { border-color: var(--verde); }
-  .overview .thumb .n { position: absolute; bottom: 6px; right: 8px; color: var(--ink-muted); }
-  .overview .thumb b { display: block; font-size: .82rem; color: var(--teal); margin-bottom: 4px; }
+  .overview .thumb:hover { border-color: var(--blue); }
+  .overview .thumb .n { position: absolute; bottom: 6px; right: 8px; color: #999; }
+  .overview .thumb b { display: block; font-size: .84rem; color: var(--blue); margin-bottom: 4px; }
 
   @media print {
-    .nav-btn, .footer-bar .hint, .progress { display: none !important; }
+    .nav-btn, .pagenum .hint, .progress { display: none !important; }
     .deck { height: auto; }
     .slide { position: static; display: block !important; opacity: 1 !important;
       page-break-after: always; height: 100vh; }
@@ -172,44 +187,54 @@
 <div class="deck" id="deck">
   <div class="progress"><div class="bar" id="progressBar"></div></div>
 
-  <!-- 1 -->
+  <!-- 1: PORTADA -->
   <section class="slide title">
-    <p class="eyebrow">Fundar · grupo factor~data — Taller de visualización, Monitor La Rioja</p>
+    <p class="kicker">Taller de visualización de datos · Monitor Socioeconómico La Rioja</p>
     <h1>Clase 3<br>Del CSV al monitor</h1>
-    <p class="lead">Construir los gráficos del monitor desde su CSV, y entender el flujo completo:
-      de dónde salen los datos, qué cadena de scripts hay detrás, y qué hacer cuando sale un dato nuevo.</p>
-    <p class="meta">Mantenimiento + comunicación, trabajando acoplados</p>
-    <div class="footer-bar"><span></span><span class="hint">→ / espacio para avanzar · Esc: vista general</span></div>
+    <p style="font-size:1.05rem;color:var(--body);max-width:60ch;margin:-24px 0 0">
+      Construir los gráficos del monitor desde su CSV, y entender el flujo completo: de dónde
+      salen los datos, qué cadena de scripts hay detrás, y qué hacer cuando sale un dato nuevo.</p>
+    <div class="byline">
+      <p><span class="name">Germán Rosati</span> - <a href="mailto:german.rosati@gmail.com">german.rosati@gmail.com</a></p>
+      <p>Fundar — grupo factor~data</p>
+    </div>
+    <div class="logos">
+      <svg viewBox="0 0 340 150" role="img" aria-label="Fundar">
+        <rect x="2" y="6" width="300" height="30" fill="#1A1A1A"/>
+        <rect x="2" y="50" width="300" height="30" fill="#1A1A1A"/>
+        <circle cx="22" cy="118" r="20" fill="#1A1A1A"/>
+        <text x="112" y="139" font-family="Arial,Helvetica,sans-serif" font-size="64" font-weight="600" fill="#1A1A1A" letter-spacing="-1">fundar</text>
+      </svg>
+      <svg viewBox="0 0 490 150" role="img" aria-label="factor~data">
+        <path fill="#1A1A1A" fill-rule="evenodd" d="M10,18 L52,18 L60,28 L68,18 L110,18 L110,122 L68,122 L60,112 L52,122 L10,122 Z M24,32 L54,32 L60,40 L66,32 L96,32 L96,108 L66,108 L60,100 L54,108 L24,108 Z"/>
+        <text x="140" y="70" font-family="ui-monospace,monospace" font-size="44" font-weight="700" fill="#1A1A1A">factor~data</text>
+        <text x="142" y="116" font-family="ui-monospace,monospace" font-size="33" font-weight="400" fill="#1A1A1A" letter-spacing="1">EIDAES_UNSAM</text>
+      </svg>
+    </div>
+    <span class="pagenum">1 · → / espacio para avanzar · Esc: vista general</span>
   </section>
 
   <!-- 2 -->
   <section class="slide">
-    <p class="eyebrow">Objetivo de la clase</p>
-    <h2>Cerrar el circuito</h2>
+    <h2 class="title">Objetivo de la clase</h2>
     <div class="body">
-      <p class="lead">Las clases 1 y 2 fueron sobre <strong>el gráfico como objeto</strong>. Esta es sobre
-        <strong>el flujo que lo produce</strong>: qué archivo lo dibuja, de dónde salió el CSV que lee,
-        qué cadena de scripts hay detrás, y qué tiene que hacer alguien de la provincia cuando sale un dato nuevo.</p>
+      <p style="font-size:1.2rem">Las clases 1 y 2 fueron sobre <strong>el gráfico como objeto</strong>. Esta es
+        sobre <strong>el flujo que lo produce</strong>: qué archivo lo dibuja, de dónde salió el CSV que lee,
+        qué cadena de scripts hay detrás, y qué tiene que hacer alguien de la provincia cuando sale un dato
+        nuevo.</p>
       <div class="cols c2">
-        <div class="card bien">
-          <h3>Mantenimiento</h3>
-          <p style="margin:0">Construir un gráfico del monitor desde su CSV.</p>
-        </div>
-        <div class="card bien">
-          <h3>Comunicación</h3>
-          <p style="margin:0">Saber qué advertencia va en el caption.</p>
-        </div>
+        <div class="card"><span class="lbl">Mantenimiento</span><p>Construir un gráfico del monitor desde su CSV.</p></div>
+        <div class="card"><span class="lbl">Comunicación</span><p>Saber qué advertencia va en el caption.</p></div>
       </div>
-      <p class="muted">Es la clase donde los dos perfiles hacen cosas distintas pero acopladas —
-        la práctica final los obliga a trabajar juntos.</p>
+      <p>Es la clase donde los dos perfiles hacen cosas distintas pero acopladas — la práctica final
+        los obliga a trabajar juntos.</p>
     </div>
-    <div class="footer-bar"><span>Bloque 0</span><span></span></div>
+    <span class="pagenum">2</span>
   </section>
 
   <!-- 3 -->
   <section class="slide">
-    <p class="eyebrow">El último eslabón</p>
-    <h2>Anatomía de un script de visualización</h2>
+    <h2 class="title">Anatomía de un script de visualización</h2>
     <div class="body">
       <div class="cols c2">
         <pre>library(tidyverse)
@@ -242,13 +267,12 @@ ggsave('outputs/plots/12_educ.png')
         </ul>
       </div>
     </div>
-    <div class="footer-bar"><span>Bloque 0 · <code>src/12_educ.R</code></span><span></span></div>
+    <span class="pagenum">3</span>
   </section>
 
   <!-- 4 -->
   <section class="slide">
-    <p class="eyebrow">El último eslabón</p>
-    <h2>La cadena completa</h2>
+    <h2 class="title">La cadena completa</h2>
     <div class="body" style="justify-content:center">
       <div class="flow">
         <div class="node frontera"><span class="tag">versionado</span>data/inputs_md/<br>12_mayor_25_superior.csv</div>
@@ -262,17 +286,16 @@ ggsave('outputs/plots/12_educ.png')
         <div class="arrow" style="visibility:hidden">→</div>
         <div class="node" style="min-width:280px">dashboard/<br><span class="tag">regenera en vivo desde el mismo CSV</span></div>
       </div>
-      <p class="muted" style="text-align:center;margin-top:10px">Por eso el CSV —y no el PNG— es lo que importa versionar.</p>
+      <p style="text-align:center;margin-top:10px">Por eso el CSV —y no el PNG— es lo que importa versionar.</p>
     </div>
-    <div class="footer-bar"><span>Bloque 0</span><span></span></div>
+    <span class="pagenum">4</span>
   </section>
 
   <!-- 5 -->
   <section class="slide">
-    <p class="eyebrow">Gráfico de líneas</p>
-    <h2>Lo que ya saben, y lo que lo vuelve del monitor</h2>
+    <h2 class="title">Gráfico de líneas: lo que ya saben, y lo que lo vuelve del monitor</h2>
     <div class="body">
-      <p class="lead">La gramática del gráfico de líneas ya se vio en la clase 1. Las cuatro decisiones
+      <p>La gramática del gráfico de líneas ya se vio en la clase 1. Las cuatro decisiones
         que separan un gráfico de exploración de uno <strong>del monitor</strong>:</p>
       <table>
         <tr><th>Decisión</th><th>En el código</th><th>Por qué</th></tr>
@@ -282,36 +305,32 @@ ggsave('outputs/plots/12_educ.png')
           <td>Sin esto, <code>ggplot</code> recorta y exagera la variación (integridad visual).</td></tr>
         <tr><td>Paleta del proyecto</td><td><code>scale_color_fundar_multi()</code></td>
           <td>Sin esta línea, tres colores de igual peso y La Rioja no salta.</td></tr>
-        <tr class="destacada"><td>Eje X domado</td><td><code>scale_x_discrete(breaks = quiebres_x)</code></td>
+        <tr><td>Eje X domado</td><td><code>scale_x_discrete(breaks = quiebres_x)</code></td>
           <td><code>fecha</code> es texto, 75 categorías → el truco deja 2 marcas por año.</td></tr>
       </table>
-      <p class="muted">Alternativa más robusta: <code>lubridate::yq(fecha)</code> + <code>scale_x_date()</code> —
+      <p>Alternativa más robusta: <code>lubridate::yq(fecha)</code> + <code>scale_x_date()</code> —
         la que se usa en la práctica.</p>
     </div>
-    <div class="footer-bar"><span>Bloque A</span><span></span></div>
+    <span class="pagenum">5</span>
   </section>
 
   <!-- 6 -->
   <section class="slide">
-    <p class="eyebrow">Bump chart</p>
-    <h2>La pregunta que responde</h2>
+    <h2 class="title">Bump chart: la pregunta que responde</h2>
     <div class="body">
-      <p class="lead"><strong>¿En qué puesto está La Rioja respecto de las otras provincias, y cómo
-        cambió ese puesto?</strong> — algo que la serie de tiempo no responde bien.</p>
-      <div class="card">
-        <h3>Es la MISMA gramática que las líneas</h3>
-        <p style="margin:0"><code>data → aes → geom → scale → theme → labs</code>. Un bump chart
-          <strong>es</strong> un gráfico de líneas. Cambian tres cosas.</p>
-      </div>
+      <p style="font-size:1.2rem"><strong>¿En qué puesto está La Rioja respecto de las otras provincias, y
+        cómo cambió ese puesto?</strong> — algo que la serie de tiempo no responde bien.</p>
+      <div class="card"><span class="lbl">Es la MISMA gramática que las líneas</span>
+        <p><code>data → aes → geom → scale → theme → labs</code>. Un bump chart <strong>es</strong> un
+          gráfico de líneas. Cambian tres cosas.</p></div>
       <p><strong>Datos:</strong> <code>15_pbg_per_capita_por_provincia.csv</code> — 24 provincias × 15 años.</p>
     </div>
-    <div class="footer-bar"><span>Bloque A · <code>src/15_pbg_ranking_percapita.R</code></span><span></span></div>
+    <span class="pagenum">6 · src/15_pbg_ranking_percapita.R</span>
   </section>
 
   <!-- 7 -->
   <section class="slide">
-    <p class="eyebrow">Bump chart</p>
-    <h2>Las tres cosas que cambian</h2>
+    <h2 class="title">Bump chart: las tres cosas que cambian</h2>
     <div class="body">
       <ol>
         <li><strong>De valor a ranking</strong> — el gráfico dibuja <code>ranking</code>, no
@@ -319,36 +338,41 @@ ggsave('outputs/plots/12_educ.png')
           dentro de <code>group_by(anio)</code>. El ranking es comparable entre años aunque el nivel
           no lo sea.</li>
         <li><strong><code>scale_y_reverse()</code></strong> — el puesto 1 va arriba, como lo espera el ojo.</li>
-        <li><strong>Patrón figura/fondo</strong> — 24 líneas del mismo color son ilegibles: contexto en
-          tono claro, NOA-Resto en tono medio, <span class="swatch" style="background:var(--teal)"></span>La Rioja
-          en teal oscuro y gruesa, la única que se sigue punto por punto.</li>
+        <li><strong>Patrón figura/fondo</strong> — 24 líneas del mismo color son ilegibles: contexto
+          en tono claro, NOA-Resto en tono medio, La Rioja gruesa y oscura, la única que se sigue
+          punto por punto.</li>
       </ol>
-      <p class="muted">Reemplaza a la leyenda una etiqueta al final de la línea de La Rioja.</p>
+      <p>Reemplaza a la leyenda una etiqueta al final de la línea de La Rioja.</p>
     </div>
-    <div class="footer-bar"><span>Bloque A</span><span></span></div>
+    <span class="pagenum">7</span>
   </section>
 
-  <!-- 8 -->
-  <section class="slide">
-    <p class="eyebrow">Narrativa</p>
-    <h2>El gráfico es soporte de un texto</h2>
-    <div class="body" style="justify-content:center">
-      <div class="card" style="text-align:center;padding:32px">
-        <p class="lead" style="margin:0">Si el texto habla de cuatro cosas, no muestres doce.<br>
-          <strong>La granularidad del gráfico tiene que igualar la del texto.</strong></p>
-      </div>
-      <p class="muted">Caso ENGHo: el análisis menciona cuatro rubros, el gráfico desagrega doce.
-        La solución no es un gráfico más lindo: es desagregar solo lo que el texto discute y agregar
-        el resto. En el monitor: <code>13a_nbi_hogares.R</code> grafica solo el total de NBI, porque
-        el análisis habla del total.</p>
-    </div>
-    <div class="footer-bar"><span>Bloque B · Informe final Argendata, págs. 40–42</span><span></span></div>
+  <!-- 8: quiebre -->
+  <section class="slide quote">
+    <p class="q">El gráfico es soporte de una narrativa. Si el texto habla de cuatro cosas, no
+      muestres doce. <strong style="color:var(--ink)">La granularidad del gráfico tiene que igualar
+      la del texto.</strong></p>
+    <p class="attrib">Informe final Argendata, págs. 40–42</p>
+    <span class="pagenum">8</span>
   </section>
 
   <!-- 9 -->
   <section class="slide">
-    <p class="eyebrow">Narrativa</p>
-    <h2>Los tres campos de texto de un gráfico</h2>
+    <h2 class="title">El gráfico es soporte de un texto</h2>
+    <div class="body">
+      <p>Caso ENGHo: el análisis publicado menciona cuatro rubros de consumo, el gráfico
+        desagrega doce. La solución no es un gráfico más lindo: es <strong>desagregar solo lo que el
+        texto discute</strong> y agregar el resto.</p>
+      <p>En el monitor pasa lo mismo con las cinco sub-dimensiones de NBI: hoy
+        <code>13a_nbi_hogares.R</code> grafica solo el total, y está bien, porque el análisis habla
+        del total.</p>
+    </div>
+    <span class="pagenum">9</span>
+  </section>
+
+  <!-- 10 -->
+  <section class="slide">
+    <h2 class="title">Los tres campos de texto de un gráfico</h2>
     <div class="body">
       <table>
         <tr><th>Campo</th><th>Qué tiene que decir</th><th>Ejemplo</th></tr>
@@ -356,27 +380,26 @@ ggsave('outputs/plots/12_educ.png')
           <td>"La desocupación en La Rioja se ubica por debajo del promedio del NOA desde 2021"</td></tr>
         <tr><td><strong>Subtítulo</strong></td><td>Unidad, universo, período, transformación</td>
           <td>"Desocupados como % de la PEA. Aglomerado La Rioja, 2007–2025, promedio de 4 ondas"</td></tr>
-        <tr class="destacada"><td><strong>Caption</strong></td><td>Fuente + advertencias metodológicas</td>
+        <tr><td><strong>Caption</strong></td><td>Fuente + advertencias metodológicas</td>
           <td>"Serie interrumpida entre 2015-T3 y 2016-T1"</td></tr>
       </table>
       <div class="cols c2">
-        <div class="card bien"><span class="badge" style="background:var(--verde)">Mejor ejemplo</span>
-          <p style="margin:0"><code>03b_salarios_registrados_EPH.R</code>: el caption marca el cambio
-            de metodología de ingresos (2015-2016) y <strong>el gráfico dibuja esa línea</strong>.</p></div>
-        <div class="card mal"><span class="badge">Peor ejemplo</span>
-          <p style="margin:0"><code>04_desoc.R</code>: el título es el nombre de la variable, no dice
-            nada. Los diez indicadores tienen el mismo problema.</p></div>
+        <div class="card"><span class="lbl">Mejor ejemplo</span>
+          <p><code>03b_salarios_registrados_EPH.R</code>: el caption marca el cambio de metodología
+            de ingresos (2015-2016) y <strong>el gráfico dibuja esa línea</strong>.</p></div>
+        <div class="card"><span class="lbl">Peor ejemplo</span>
+          <p><code>04_desoc.R</code>: el título es el nombre de la variable, no dice nada. Los diez
+            indicadores tienen el mismo problema.</p></div>
       </div>
     </div>
-    <div class="footer-bar"><span>Bloque B</span><span></span></div>
+    <span class="pagenum">10</span>
   </section>
 
-  <!-- 10 -->
+  <!-- 11 -->
   <section class="slide">
-    <p class="eyebrow">Narrativa · advertencia específica del proyecto</p>
-    <h2>La Rioja es un dominio chico de la EPH</h2>
+    <h2 class="title">La Rioja es un dominio chico de la EPH</h2>
     <div class="body" style="justify-content:center">
-      <ul style="font-size:1.25rem">
+      <ul style="font-size:1.22rem">
         <li>Nunca reportar un nivel a partir de <strong>un solo trimestre</strong>: promediar las
           cuatro ondas del año.</li>
         <li>Un <code>0,00</code> en una sub-dimensión de NBI <strong>no significa "no hay
@@ -384,22 +407,20 @@ ggsave('outputs/plots/12_educ.png')
         <li>En el bump: un cambio de <strong>un solo puesto</strong> entre años consecutivos es
           probablemente ruido, no tendencia.</li>
       </ul>
-      <p class="muted">Si se publica, esta advertencia va en el caption.</p>
+      <p>Si se publica, esta advertencia va en el caption.</p>
     </div>
-    <div class="footer-bar"><span>Bloque B</span><span></span></div>
+    <span class="pagenum">11</span>
   </section>
 
-  <!-- 11 -->
+  <!-- 12: quiebre -->
   <section class="slide section">
-    <p class="eyebrow">La slide más importante de la clase</p>
-    <h1 style="font-size:2.1rem">La lógica del monitor:<br>de dónde sale cada número</h1>
-    <div class="footer-bar"><span>Bloque C</span><span></span></div>
+    <h1>La lógica del monitor:<br>de dónde sale cada número</h1>
+    <span class="pagenum">12</span>
   </section>
 
-  <!-- 12 -->
+  <!-- 13 -->
   <section class="slide">
-    <p class="eyebrow">El circuito de datos</p>
-    <h2>Del dato crudo al gráfico publicado</h2>
+    <h2 class="title">Del dato crudo al gráfico publicado</h2>
     <div class="body">
       <div class="flow vertical" style="align-items:stretch">
         <div class="flow">
@@ -420,13 +441,12 @@ ggsave('outputs/plots/12_educ.png')
         </div>
       </div>
     </div>
-    <div class="footer-bar"><span>Bloque C</span><span></span></div>
+    <span class="pagenum">13</span>
   </section>
 
-  <!-- 13 -->
+  <!-- 14 -->
   <section class="slide">
-    <p class="eyebrow">El circuito de datos</p>
-    <h2>Tres cosas para explicar del diagrama</h2>
+    <h2 class="title">Tres cosas para explicar del diagrama</h2>
     <div class="body">
       <ol>
         <li><strong>Por qué la EPH tiene tres etapas y no un script:</strong> para poder re-ejecutar
@@ -439,13 +459,12 @@ ggsave('outputs/plots/12_educ.png')
           datos. Abajo: equipo de comunicación. El contrato es el CSV.</li>
       </ol>
     </div>
-    <div class="footer-bar"><span>Bloque C</span><span></span></div>
+    <span class="pagenum">14</span>
   </section>
 
-  <!-- 14 -->
+  <!-- 15 -->
   <section class="slide">
-    <p class="eyebrow">El circuito de datos</p>
-    <h2>Las cuatro trampas</h2>
+    <h2 class="title">Las cuatro trampas</h2>
     <div class="body">
       <ul>
         <li><strong>La descarga incremental no re-descarga.</strong> Si agregás una variable, los
@@ -458,15 +477,14 @@ ggsave('outputs/plots/12_educ.png')
         <li><strong>La Rioja es un dominio chico.</strong> Sub-dimensiones de NBI en <code>0,00</code>
           por muestra insuficiente, no por ausencia de privación.</li>
       </ul>
-      <p class="muted">Las trampas 3 y 4 son exactamente lo que tiene que aparecer en el caption de un gráfico publicado.</p>
+      <p>Las trampas 3 y 4 son exactamente lo que tiene que aparecer en el caption de un gráfico publicado.</p>
     </div>
-    <div class="footer-bar"><span>Bloque C</span><span></span></div>
+    <span class="pagenum">15</span>
   </section>
 
-  <!-- 15 -->
+  <!-- 16 -->
   <section class="slide">
-    <p class="eyebrow">Cómo se actualiza y cómo se publica</p>
-    <h2>El playbook</h2>
+    <h2 class="title">Cómo se actualiza: el playbook</h2>
     <div class="body">
       <table>
         <tr><th>Salió dato nuevo de…</th><th>Pasos</th><th>Frecuencia</th></tr>
@@ -475,56 +493,50 @@ ggsave('outputs/plots/12_educ.png')
         <tr><td>CEPAL / PBG</td><td>Reemplazar Excel → <code>15_prep_pbg.R</code> → <code>15_prep_pbg_per_capita.R</code> → viz</td><td>Cuando publiquen</td></tr>
         <tr><td>OPEX, SRT, finanzas, educación</td><td>Reemplazar raw → <code>prep</code> → viz</td><td>Anual</td></tr>
       </table>
-      <p class="muted">Fuerza bruta cuando no se sabe qué se tocó: <code>source("src/999_run_pipeline.R")</code>.</p>
+      <p>Fuerza bruta cuando no se sabe qué se tocó: <code>source("src/999_run_pipeline.R")</code>.</p>
     </div>
-    <div class="footer-bar"><span>Bloque D</span><span></span></div>
+    <span class="pagenum">16</span>
   </section>
 
-  <!-- 16 -->
+  <!-- 17 -->
   <section class="slide">
-    <p class="eyebrow">Cómo se actualiza y cómo se publica</p>
-    <h2>El circuito de publicación</h2>
+    <h2 class="title">El circuito de publicación</h2>
     <div class="body">
       <pre>git checkout -b actualizo-eph-2026q2   <span class="c"># NUNCA sobre main</span>
 git add data/inputs_md/ outputs/plots/
 git commit -m "Actualizo indicadores EPH, onda 2026-T2"
 git push -u origin actualizo-eph-2026q2
 <span class="c"># → abrir un Pull Request en GitHub</span></pre>
-      <p class="lead">El push a <code>main</code> publica. El workflow de GitHub Actions renderiza el
-        dashboard y lo publica en <code>gh-pages</code> — <strong>actualizar un CSV republica el
-        dashboard solo.</strong> La rama y el PR permiten que otro mire el cambio antes de que salga.</p>
+      <p style="font-size:1.15rem">El push a <code>main</code> publica. El workflow de GitHub Actions
+        renderiza el dashboard y lo publica en <code>gh-pages</code> — <strong>actualizar un CSV
+        republica el dashboard solo.</strong> La rama y el PR permiten que otro mire el cambio antes
+        de que salga.</p>
     </div>
-    <div class="footer-bar"><span>Bloque D</span><span></span></div>
-  </section>
-
-  <!-- 17 -->
-  <section class="slide">
-    <p class="eyebrow">Práctica integradora — en parejas de perfiles mezclados</p>
-    <h2>Dos partes cortas</h2>
-    <div class="body">
-      <div class="cols c2">
-        <div class="card">
-          <h3>1 · Terminar el bump <span class="muted">(mantenimiento lidera)</span></h3>
-          <p style="margin:0">Cuatro huecos en <code>ejercicios/02_bump_pbg.R</code>: el
-            <code>min_rank()</code>, el <code>scale_y_reverse()</code>, el
-            <code>scale_linewidth_manual()</code> y la etiqueta final.</p>
-        </div>
-        <div class="card">
-          <h3>2 · Simulacro + recorrido inverso <span class="muted">(los dos)</span></h3>
-          <p style="margin:0">Fila ficticia en un CSV → correr el script → ver el PNG extenderse →
-            revertir con <code>git checkout</code>. Después: rastrear tres números publicados hasta
-            su fuente cruda.</p>
-        </div>
-      </div>
-      <p class="muted">Consigna completa en <code>practica.md</code> / <code>practica.Rmd</code>.</p>
-    </div>
-    <div class="footer-bar"><span>95–113'</span><span></span></div>
+    <span class="pagenum">17</span>
   </section>
 
   <!-- 18 -->
   <section class="slide">
-    <p class="eyebrow">Cierre</p>
-    <h2>El mapa de pendientes del repositorio</h2>
+    <h2 class="title">Práctica integradora — en parejas de perfiles mezclados</h2>
+    <div class="body">
+      <div class="cols c2">
+        <div class="card"><span class="lbl">1 · Terminar el bump (mantenimiento lidera)</span>
+          <p>Cuatro huecos en <code>ejercicios/02_bump_pbg.R</code>: el <code>min_rank()</code>, el
+            <code>scale_y_reverse()</code>, el <code>scale_linewidth_manual()</code> y la etiqueta
+            final.</p></div>
+        <div class="card"><span class="lbl">2 · Simulacro + recorrido inverso (los dos)</span>
+          <p>Fila ficticia en un CSV → correr el script → ver el PNG extenderse → revertir con
+            <code>git checkout</code>. Después: rastrear tres números publicados hasta su fuente
+            cruda.</p></div>
+      </div>
+      <p>Consigna completa en <code>practica.md</code> / <code>practica.Rmd</code>.</p>
+    </div>
+    <span class="pagenum">18</span>
+  </section>
+
+  <!-- 19 -->
+  <section class="slide">
+    <h2 class="title">El mapa de pendientes del repositorio</h2>
     <div class="body">
       <ul>
         <li><strong>Títulos que nombran variables</strong> en vez de afirmar hallazgos — reescribir los diez <code>labs()</code>.</li>
@@ -533,18 +545,19 @@ git push -u origin actualizo-eph-2026q2
         <li><strong>Integrar los indicadores 17 y 18</strong> al <code>informe/monitor_la_rioja.Rmd</code>.</li>
       </ul>
     </div>
-    <div class="footer-bar"><span>113–120'</span><span></span></div>
+    <span class="pagenum">19</span>
   </section>
 
-  <!-- 19 -->
+  <!-- 20: cierre -->
   <section class="slide section">
-    <p class="eyebrow">Las tres ideas del taller</p>
-    <h1 style="font-size:1.9rem;text-align:left;max-width:none">
-      1. Un gráfico es un mapeo de datos a propiedades visuales — los canales no son intercambiables.<br><br>
-      2. La pregunta define la herramienta, y un gráfico claro igual puede mentir.<br><br>
+    <h1 style="font-size:1.85rem;max-width:34ch;text-align:left">
+      1. Un gráfico es un mapeo de datos a propiedades visuales — los canales no son intercambiables.
+      <br><br>
+      2. La pregunta define la herramienta, y un gráfico claro igual puede mentir.
+      <br><br>
       3. El circuito es reproducible de punta a punta: el CSV es el contrato entre los dos equipos.
     </h1>
-    <div class="footer-bar"><span>Clases 1 · 2 · 3</span><span></span></div>
+    <span class="pagenum">20</span>
   </section>
 
 </div>
@@ -561,7 +574,6 @@ git push -u origin actualizo-eph-2026q2
   function render() {
     slides.forEach(function (s, i) { s.classList.toggle('active', i === current); });
     document.getElementById('progressBar').style.width = ((current + 1) / slides.length * 100) + '%';
-    var counters = document.querySelectorAll('.footer-bar span:last-child.count');
     location.hash = 's' + (current + 1);
   }
 
@@ -577,14 +589,12 @@ git push -u origin actualizo-eph-2026q2
     ov.innerHTML = '';
     slides.forEach(function (s, i) {
       var h = s.querySelector('h1,h2');
-      var eyebrow = s.querySelector('.eyebrow');
-      var div = document.createElement('div');
-      div.className = 'thumb';
       var titulo = h ? Array.prototype.map.call(h.childNodes, function (n) {
         return n.nodeType === 3 ? n.textContent : (n.tagName === 'BR' ? ' ' : n.textContent);
       }).join('').replace(/\s+/g, ' ').trim() : '';
-      div.innerHTML = '<b>' + (eyebrow ? eyebrow.textContent : '') + '</b>' +
-        titulo + '<span class="n">' + (i + 1) + '</span>';
+      var div = document.createElement('div');
+      div.className = 'thumb';
+      div.innerHTML = '<b>' + (i + 1) + '</b>' + titulo + '<span class="n"></span>';
       div.onclick = function () { goTo(i); };
       ov.appendChild(div);
     });
@@ -605,7 +615,6 @@ git push -u origin actualizo-eph-2026q2
     else if (e.key === 'End') { goTo(slides.length - 1); }
   });
 
-  // Deep-link a una diapositiva (#s5) y click fuera de los thumbs cierra la vista general.
   (function () {
     var m = location.hash.match(/^#s(\d+)$/);
     if (m) { current = Math.max(0, Math.min(slides.length - 1, parseInt(m[1], 10) - 1)); }
